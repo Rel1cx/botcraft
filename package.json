@@ -12,9 +12,9 @@
         "preinstall": "npx only-allow pnpm",
         "lint": "rome format . --write && pnpm eslint --color src --fix",
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
+        "prepare": "husky install",
         "preview": "vite preview",
-        "typecheck": "tsc --noEmit -p .",
-        "prepare": "husky install"
+        "typecheck": "tsc --noEmit -p ."
     },
     "dependencies": {
         "@codemirror/lang-markdown": "6.1.1",

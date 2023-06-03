@@ -1,4 +1,4 @@
-import { Option as O, Task } from "ftld"
+import { Option as O } from "ftld"
 import { set } from "idb-keyval"
 import { atom, getDefaultStore } from "jotai"
 import { atomWithImmer } from "jotai-immer"
@@ -182,9 +182,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDSta
         return
     }
 
-    const stream = await Task.from(() =>
-        getChatCompletionStream(apiKey.unwrap(), messages, options, {}, abortController.signal),
-    ).run()
+    const stream = await getChatCompletionStream(apiKey.unwrap(), messages, options, {}, abortController.signal)
 
     if (stream.isErr()) {
         const error = stream.unwrapErr()

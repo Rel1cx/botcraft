@@ -1,3 +1,5 @@
+import { Option as O, Task } from "ftld"
+import type { HTTPError, KyResponse } from "ky"
 import ky from "ky"
 import { pick } from "rambda"
 
@@ -19,20 +21,18 @@ export const getChatCompletionStream = async (
         ...customHeaders,
     }
 
-    const response = await ky.post(VITE_OPENAI_API_ENDPOINT, {
-        signal,
-        headers,
-        body: JSON.stringify({
-            messages: messages.map(pick(["role", "content"])),
-            ...options,
-            max_tokens: undefined,
-            stream: true,
+    const result = await Task.from<KyResponse, HTTPError>(() =>
+        ky.post(VITE_OPENAI_API_ENDPOINT, {
+            signal,
+            headers,
+            body: JSON.stringify({
+                messages: messages.map(pick(["role", "content"])),
+                ...options,
+                max_tokens: undefined,
+                stream: true,
+            }),
         }),
-    })
+    ).run()
 
-    if (!response.body) {
-        throw new Error("No response body")
-    }
-
-    return response.body
+    return result.flatMap((v) => O.from(v.body).result())
 }
