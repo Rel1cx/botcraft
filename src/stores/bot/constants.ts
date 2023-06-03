@@ -1,7 +1,4 @@
 import type { ChatCompletionOptions } from "@/api/types"
-import { UUIDStamp } from "@/lib/uuid"
-
-import type { ChatItem } from "./types"
 
 export const DEFAULT_CHAT_COMPLETION_OPTIONS: ChatCompletionOptions = {
     model: "gpt-3.5-turbo",
@@ -18,10 +15,3 @@ export const DEFAULT_SYSTEM_MESSAGE = `I am a researcher with expertise in multi
 Additional rule:
 
 1. Answer should be written in markdown format.`
-
-export const EMPTY_CHAT_ITEM: ChatItem = {
-    id: UUIDStamp(),
-    title: "",
-    messages: [],
-    updatedAt: Date.now(),
-}

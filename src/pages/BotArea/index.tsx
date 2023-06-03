@@ -1,5 +1,4 @@
 import { useMountEffect } from "@react-hookz/web"
-import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
 import { Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
@@ -8,15 +7,8 @@ import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
 import { UUIDStamp } from "@/lib/uuid"
 import { Router } from "@/router"
-import type { MessageItem } from "@/stores"
-import {
-    addChatAtom,
-    addMessageAtom,
-    apiKeyAtom,
-    DEFAULT_SYSTEM_MESSAGE,
-    EMPTY_CHAT_ITEM,
-    sortedChatsAtom,
-} from "@/stores"
+import type { ChatItem, MessageItem } from "@/stores"
+import { addChatAtom, addMessageAtom, apiKeyAtom, DEFAULT_SYSTEM_MESSAGE, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout"
 import ChatDetail from "./ChatDetail"
@@ -47,10 +39,12 @@ const RedirectChat = ({ botName }: { botName: string }) => {
             updatedAt: Date.now(),
         }
 
-        const newChat = produce(EMPTY_CHAT_ITEM, (draft) => {
-            draft.id = UUIDStamp()
-            draft.messages.push(preCreatedMessage.id)
-        })
+        const newChat: ChatItem = {
+            id: UUIDStamp(),
+            title: "",
+            updatedAt: Date.now(),
+            messages: [preCreatedMessage.id],
+        }
 
         addMessage(preCreatedMessage)
         addChat(newChat)

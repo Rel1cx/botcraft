@@ -15,7 +15,6 @@ import { readerToObservable } from "@/lib/stream"
 import type { Remap } from "@/lib/utilityTypes"
 import { UUIDStamp } from "@/lib/uuid"
 
-import { EMPTY_CHAT_ITEM } from "./constants"
 import type { ChatItem, ChatMeta, MessageItem } from "./types"
 
 const store = getDefaultStore()
@@ -25,8 +24,6 @@ export const apiKeyAtom = atom("", (_, set, payload: string) => {
     set(apiKeyAtom, val)
     void configManager.setConfig("apiKey", val)
 })
-
-export const emptyChatAtom = atom(() => EMPTY_CHAT_ITEM)
 
 export const chatsAtom = atomWithImmer<Record<UUIDStamp, ChatItem>>({})
 

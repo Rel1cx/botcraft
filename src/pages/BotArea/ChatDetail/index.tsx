@@ -1,13 +1,12 @@
-import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { lazy, useRef } from "react"
+import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
 import TitleInput from "@/components/atoms/TitleInput"
 import { UUIDStamp } from "@/lib/uuid"
 import { Router } from "@/router"
-import type { MessageItem } from "@/stores"
+import type { ChatItem, MessageItem } from "@/stores"
 import {
     addChatAtom,
     addMessageAtom,
@@ -15,7 +14,6 @@ import {
     chatsAtom,
     DEFAULT_CHAT_COMPLETION_OPTIONS,
     DEFAULT_SYSTEM_MESSAGE,
-    EMPTY_CHAT_ITEM,
     removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
@@ -59,10 +57,12 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
             updatedAt: Date.now(),
         }
 
-        const newChat = produce(EMPTY_CHAT_ITEM, (draft) => {
-            draft.id = UUIDStamp()
-            draft.messages.push(preCreatedMessage.id)
-        })
+        const newChat: ChatItem = {
+            id: UUIDStamp(),
+            messages: [preCreatedMessage.id],
+            title: "",
+            updatedAt: Date.now(),
+        }
 
         addMessage(preCreatedMessage)
         addChat(newChat)
@@ -96,18 +96,27 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const shouldSend = useEvent((value: string) => value.trim() !== "" && !isGenerating)
 
+    const aside = useMemo(
+        () => (
+            <TimeStack
+                items={sortedChats}
+                newItemName="New chat"
+                selected={chatID}
+                onItemAdd={onAddChatClick}
+                onItemRemove={onChatRemoveClick}
+            />
+        ),
+        [chatID, onAddChatClick, onChatRemoveClick, sortedChats],
+    )
+
+    if (!chat) {
+        return <Layout asideHeader={botName} aside={aside} />
+    }
+
     return (
         <Layout
             asideHeader={botName}
-            aside={
-                <TimeStack
-                    items={sortedChats}
-                    newItemName="New chat"
-                    selected={chatID}
-                    onItemAdd={onAddChatClick}
-                    onItemRemove={onChatRemoveClick}
-                />
-            }
+            aside={aside}
             header={
                 <TitleInput
                     id="chat-title"
