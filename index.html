@@ -12,8 +12,9 @@
 <body>
     <div id="root"></div>
     <script type="module">
-        import {Progress} from 'https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js'
+        import { Progress } from 'https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js'
         window.progress = new Progress({
+            color: "skyblue",
             height: 3
         })
         window.progress.start()
