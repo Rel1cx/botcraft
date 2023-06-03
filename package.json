@@ -13,7 +13,8 @@
         "lint": "rome format . --write && pnpm eslint --color src --fix",
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
         "preview": "vite preview",
-        "typecheck": "tsc --noEmit -p ."
+        "typecheck": "tsc --noEmit -p .",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@codemirror/lang-markdown": "6.1.1",
@@ -43,7 +44,7 @@
         "highlight.js": "11.8.0",
         "idb-keyval": "6.2.1",
         "immer": "10.0.2",
-        "jotai": "2.1.0",
+        "jotai": "2.1.1",
         "jotai-game": "0.1.0",
         "jotai-immer": "0.2.0",
         "katex": "0.16.7",
@@ -92,6 +93,7 @@
         "eslint-config-with-tsconfig": "1.5.5",
         "forgetti": "0.6.0",
         "hkt-toolbelt": "0.22.0-beta.1",
+        "husky": "8.0.3",
         "local-pkg": "0.4.3",
         "postcss": "8.4.24",
         "rollup-plugin-visualizer": "5.9.0",
