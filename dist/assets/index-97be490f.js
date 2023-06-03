@@ -1,1 +1,0 @@
-import{o as t,q as r,p as s}from"./index-f6597d30.js";import{a as e}from"./react-c99c05cb.js";import"https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js";const a=t(e.memo,o=>s.jsx("div",{children:s.jsx("h1",{children:"404"})})),n=()=>{let o=r(e.useRef,1);return 0 in o?o[0]:o[0]=s.jsx(a,{v:[]})};export{n as default};

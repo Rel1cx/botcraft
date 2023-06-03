@@ -110,7 +110,13 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     )
 
     if (!chat) {
-        return <Layout asideHeader={botName} aside={aside} />
+        return (
+            <Layout asideHeader={botName} aside={aside}>
+                <div className={css.content}>
+                    <div>Select a chat to start</div>
+                </div>
+            </Layout>
+        )
     }
 
     return (

@@ -16,7 +16,7 @@ export default defineConfig({
         forgetti({
             preset: "react",
             filter: {
-                include: "src/(pages|components)/**/*.{ts,js,tsx,jsx}",
+                include: "src/components/**/*.{ts,js,tsx,jsx}",
                 exclude: "node_modules/**/*.{ts,js,tsx,jsx}",
             },
         }),
