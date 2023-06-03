@@ -1,4 +1,3 @@
-import { Text } from "@mantine/core"
 import { useMountEffect } from "@react-hookz/web"
 import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
@@ -81,7 +80,7 @@ const BotArea = ({ botName }: BotProps) => {
     )
 
     return (
-        <RootLayout nav={<AvatarList selected={botName} />} navFooter={<Text weight="bold">Limina</Text>}>
+        <RootLayout nav={<AvatarList selected={botName} />}>
             <Suspense>{contentView}</Suspense>
         </RootLayout>
     )

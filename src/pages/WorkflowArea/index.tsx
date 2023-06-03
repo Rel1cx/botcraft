@@ -6,15 +6,7 @@ import RootLayout from "../RootLayout"
 
 const WorkflowArea = () => {
     return (
-        <RootLayout
-            nav={<AvatarList />}
-            navHeader="Flow"
-            navFooter={
-                <Text color="#565869" weight="bold">
-                    Limina
-                </Text>
-            }
-        >
+        <RootLayout nav={<AvatarList />} navHeader="Flow">
             {/* <Suspense>{contentView}</Suspense> */}
         </RootLayout>
     )

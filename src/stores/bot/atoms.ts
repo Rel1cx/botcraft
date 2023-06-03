@@ -1,4 +1,4 @@
-import { Option as O, Result as R, Task } from "ftld"
+import { Option as O, Task } from "ftld"
 import { set } from "idb-keyval"
 import { atom, getDefaultStore } from "jotai"
 import { atomWithImmer } from "jotai-immer"
