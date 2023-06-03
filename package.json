@@ -47,6 +47,7 @@
         "jotai-game": "0.1.0",
         "jotai-immer": "0.2.0",
         "katex": "0.16.7",
+        "ky": "0.33.3",
         "lucide-react": "0.233.0",
         "nominal-types": "0.2.0",
         "rambda": "7.5.0",

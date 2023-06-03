@@ -14,6 +14,7 @@ export const main = style({
 })
 
 export const navContainer = style({
+    flexShrink: 0,
     width: "68px",
     height: "100%",
     display: "flex",

@@ -1,3 +1,4 @@
+import ky from "ky"
 import { pick } from "rambda"
 
 import { VITE_OPENAI_API_ENDPOINT } from "../env"
@@ -16,9 +17,8 @@ export const getChatCompletionStream = async (
         ...customHeaders,
     }
 
-    const response = await fetch(VITE_OPENAI_API_ENDPOINT, {
+    const response = await ky.post(VITE_OPENAI_API_ENDPOINT, {
         signal,
-        method: "POST",
         headers,
         body: JSON.stringify({
             messages: messages.map(pick(["role", "content"])),
@@ -28,16 +28,8 @@ export const getChatCompletionStream = async (
         }),
     })
 
-    if (response.status === 403) {
-        throw new Error("Invalid API key")
-    }
-
-    if (response.status === 429) {
-        throw new Error("Rate limit exceeded")
-    }
-
     if (!response.body) {
-        throw new Error("Response body is empty")
+        throw new Error("No response body")
     }
 
     return response.body

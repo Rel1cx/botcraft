@@ -1,5 +1,3 @@
-import { Text } from "@mantine/core"
-
 import { AvatarList } from "@/components/AvatarList"
 
 import RootLayout from "../RootLayout"

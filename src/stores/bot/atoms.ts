@@ -145,32 +145,6 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDSta
         updatedAt: Date.now(),
     }
 
-    const handleError = (error: unknown) => {
-        abortController.abort()
-
-        const message: MessageItem = {
-            id: UUIDStamp(),
-            content: stringify(error),
-            role: "assistant",
-            updatedAt: Date.now(),
-        }
-
-        console.log(message)
-
-        set(messagesAtom, (draft) => {
-            draft[message.id] = message
-        })
-
-        set(chatsAtom, (draft) => {
-            draft[id]?.messages.push(message.id)
-        })
-
-        set(
-            chatCompletionTaskAtom,
-            O.Some<ChatCompletionTask>({ ...taskMeta, type: "error", error: new Error(stringify(error)) }),
-        )
-    }
-
     set(messagesAtom, (draft) => {
         draft[taskMeta.generatingMessageID] = message
     })
@@ -190,6 +164,17 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDSta
         }),
     )
 
+    const handleError = (error: unknown) => {
+        set(
+            chatCompletionTaskAtom,
+            O.Some<ChatCompletionTask>({
+                ...taskMeta,
+                type: "error",
+                error: error instanceof Error ? error : new Error(stringify(error)),
+            }),
+        )
+    }
+
     const apiKey = await configManager.getConfig("apiKey")
 
     if (!apiKey.isSome()) {
@@ -205,7 +190,8 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDSta
     ).run()
 
     if (stream.isErr()) {
-        handleError(stream.unwrapErr())
+        const error = stream.unwrapErr()
+        handleError(error)
         return
     }
 

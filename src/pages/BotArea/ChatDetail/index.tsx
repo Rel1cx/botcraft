@@ -91,9 +91,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
             draft.messages.push(message.id)
         })
 
-        const result = await requestChatCompletion(chatID, DEFAULT_CHAT_COMPLETION_OPTIONS)
-
-        console.debug(result)
+        await requestChatCompletion(chatID, DEFAULT_CHAT_COMPLETION_OPTIONS)
     })
 
     const shouldSend = useEvent((value: string) => value.trim() !== "" && !isGenerating)
