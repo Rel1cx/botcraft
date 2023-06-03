@@ -1,16 +1,9 @@
 /* eslint-disable functional/no-throw-statements */
 import { parse, stringify } from "telejson"
 
-import type { ChatCompletionChunk, ChatMessage, EventSourceData } from "../api/types"
-import { ChatCompletionChunkSchema, ChatMessageSchema } from "../api/types"
+import { isChatCompletionChunk } from "@/zod"
 
-export const isChunk = (value: unknown): value is ChatCompletionChunk => {
-    return ChatCompletionChunkSchema.safeParse(value).success
-}
-
-export const isChatMessage = (value: unknown): value is ChatMessage => {
-    return ChatMessageSchema.safeParse(value).success
-}
+import type { EventSourceData } from "./types"
 
 const parseChunk = (chunk: string): EventSourceData => {
     try {
@@ -25,7 +18,7 @@ const parseChunk = (chunk: string): EventSourceData => {
 
         const parsed: unknown = parse(jsonString)
 
-        if (isChunk(parsed)) {
+        if (isChatCompletionChunk(parsed)) {
             return parsed
         }
 

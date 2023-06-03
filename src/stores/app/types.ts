@@ -1,3 +1,4 @@
 export type AppLayout = {
-    isConfigModalOpen: boolean
+    hideSidebar: boolean
+    hideNavbar: boolean
 }

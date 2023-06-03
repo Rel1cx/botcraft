@@ -12,8 +12,7 @@ import { navigatorDetector } from "typesafe-i18n/detectors"
 
 import { detectLocale } from "./i18n/i18n-util"
 import { loadLocaleAsync } from "./i18n/i18n-util.async"
-import { autoBlur } from "./lib/dom"
-import { waitDOMContentLoaded } from "./lib/helper"
+import { autoBlur, waitDOMContentLoaded } from "./lib/browser"
 import App from "./pages/App"
 import { loadConfigToAtom, loadDBToAtom } from "./stores"
 

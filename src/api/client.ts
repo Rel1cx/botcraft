@@ -1,8 +1,10 @@
 import ky from "ky"
 import { pick } from "rambda"
 
+import type { ChatMessage } from "@/zod"
+
 import { VITE_OPENAI_API_ENDPOINT } from "../env"
-import type { ChatCompletionOptions, ChatMessage } from "./types"
+import type { ChatCompletionOptions } from "./types"
 
 export const getChatCompletionStream = async (
     apiKey: string,
