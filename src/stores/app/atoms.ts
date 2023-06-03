@@ -3,7 +3,7 @@ import { atom, getDefaultStore } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { atomWithImmer } from "jotai-immer"
 
-import { UUIDStamp } from "@/lib/uuid"
+import { makeID } from "@/lib/uuid"
 
 import { DEFAULT_APP_LAYOUT } from "./constants"
 import type { AppLayout } from "./types"
@@ -25,4 +25,4 @@ export const setAppLayout = (mutator: (draft: Draft<AppLayout>) => void) => {
     store.set(appLayoutAtom, mutator)
 }
 
-export const activeChatIDAtom = atomWithStorage("activeChatID", UUIDStamp())
+export const activeChatIDAtom = atomWithStorage("activeChatID", makeID())

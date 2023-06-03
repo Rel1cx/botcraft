@@ -1,12 +1,12 @@
 import type { Role } from "@/api/types"
-import type { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
 
 export type IDProtocol = {
     id: string
 }
 
 export type StampIDProtocol = {
-    id: UUIDStamp
+    id: StampID
 }
 
 export type RoleProtocol = {

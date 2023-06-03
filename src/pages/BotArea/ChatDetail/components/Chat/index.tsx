@@ -1,7 +1,7 @@
 import { useResizeObserver } from "@react-hookz/web"
 import { lazy, Suspense, useRef } from "react"
 
-import type { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
 import type { ChatItem } from "@/stores"
 import { useMessage } from "@/stores"
 
@@ -15,7 +15,7 @@ export type ChatProps = {
     onHeightChange?: (height: number) => void
 }
 
-const ChatMessageRenderer = ({ id }: { id: UUIDStamp }) => {
+const ChatMessageRenderer = ({ id }: { id: StampID }) => {
     const [data] = useMessage(id)
 
     return <Suspense>{data ? <Message data={data} /> : null}</Suspense>

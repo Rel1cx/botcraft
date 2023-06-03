@@ -4,7 +4,8 @@ import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
 import TitleInput from "@/components/atoms/TitleInput"
-import { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
+import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import type { ChatItem, MessageItem } from "@/stores"
 import {
@@ -30,7 +31,7 @@ const MarkdownEditor = lazy(() => import("@/components/atoms/MarkdownEditor"))
 
 type ChatDetailProps = {
     botName: string
-    chatID: UUIDStamp
+    chatID: StampID
 }
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
@@ -51,14 +52,14 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const onAddChatClick = useEvent(() => {
         const preCreatedMessage: MessageItem = {
-            id: UUIDStamp(),
+            id: makeID(),
             role: "system",
             content: DEFAULT_SYSTEM_MESSAGE,
             updatedAt: Date.now(),
         }
 
         const newChat: ChatItem = {
-            id: UUIDStamp(),
+            id: makeID(),
             messages: [preCreatedMessage.id],
             title: "",
             updatedAt: Date.now(),
@@ -81,7 +82,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const onMessageCreate = useEvent(async (content: string) => {
         const message: MessageItem = {
-            id: UUIDStamp(),
+            id: makeID(),
             content,
             role: "user",
             updatedAt: Date.now(),

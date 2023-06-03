@@ -13,7 +13,8 @@ import type { ChatCompletionOptions } from "@/api/types"
 import { configManager } from "@/config"
 import { readerToObservable } from "@/lib/stream"
 import type { Remap } from "@/lib/utilityTypes"
-import { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
+import { makeID } from "@/lib/uuid"
 
 import type { ChatItem, ChatMeta, MessageItem } from "./types"
 
@@ -25,13 +26,13 @@ export const apiKeyAtom = atom("", (_, set, payload: string) => {
     void configManager.setConfig("apiKey", val)
 })
 
-export const chatsAtom = atomWithImmer<Record<UUIDStamp, ChatItem>>({})
+export const chatsAtom = atomWithImmer<Record<StampID, ChatItem>>({})
 
 store.sub(chatsAtom, () => {
     void set("chats", store.get(chatsAtom))
 })
 
-export const messagesAtom = atomWithImmer<Record<UUIDStamp, MessageItem>>({})
+export const messagesAtom = atomWithImmer<Record<StampID, MessageItem>>({})
 
 store.sub(messagesAtom, () => {
     void set("messages", store.get(messagesAtom))
@@ -64,13 +65,13 @@ export const addChatAtom = atom(null, (_, set, payload: ChatItem) => {
     })
 })
 
-export const removeChatAtom = atom(null, (_, set, id: UUIDStamp) => {
+export const removeChatAtom = atom(null, (_, set, id: StampID) => {
     set(chatsAtom, (draft) => {
         Reflect.deleteProperty(draft, id)
     })
 })
 
-export const updateChatAtom = atom(null, (_, set, id: UUIDStamp, mutator: (draft: ChatItem) => void) => {
+export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: ChatItem) => void) => {
     set(chatsAtom, (draft) => {
         const chat = draft[id]
         invariant(chat, "Chat not found")
@@ -84,16 +85,16 @@ export const addMessageAtom = atom(null, (_, set, payload: MessageItem) => {
     })
 })
 
-export const removeMessageAtom = atom(null, (_, set, id: UUIDStamp) => {
+export const removeMessageAtom = atom(null, (_, set, id: StampID) => {
     set(messagesAtom, (draft) => {
         Reflect.deleteProperty(draft, id)
     })
 })
 
 export type ChatCompletionTaskMeta = {
-    id: UUIDStamp
-    chatID: UUIDStamp
-    generatingMessageID: UUIDStamp
+    id: StampID
+    chatID: StampID
+    generatingMessageID: StampID
 }
 
 export type ChatCompletionTask =
@@ -118,7 +119,7 @@ export type ChatCompletionTask =
 
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
-export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDStamp, options: ChatCompletionOptions) => {
+export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID, options: ChatCompletionOptions) => {
     const chat = get(chatsAtom)[id]
 
     if (!chat) {
@@ -130,9 +131,9 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: UUIDSta
     const abortController = new AbortController()
 
     const taskMeta: ChatCompletionTaskMeta = {
-        id: UUIDStamp(),
+        id: makeID(),
         chatID: id,
-        generatingMessageID: UUIDStamp(),
+        generatingMessageID: makeID(),
     }
 
     const message: MessageItem = {

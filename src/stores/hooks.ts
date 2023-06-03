@@ -1,14 +1,14 @@
 import { atom, useAtom } from "jotai"
 import { useMemo } from "react"
 
-import type { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
 
 import { chatsAtom, messagesAtom } from "./bot/atoms"
 
-export const useChat = (id: UUIDStamp) => {
+export const useChat = (id: StampID) => {
     return useAtom(useMemo(() => atom((get) => get(chatsAtom)[id]), [id]))
 }
 
-export const useMessage = (id: UUIDStamp) => {
+export const useMessage = (id: StampID) => {
     return useAtom(useMemo(() => atom((get) => get(messagesAtom)[id]), [id]))
 }

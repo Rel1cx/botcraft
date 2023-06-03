@@ -5,7 +5,7 @@ import { match } from "ts-pattern"
 
 import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
-import { UUIDStamp } from "@/lib/uuid"
+import { makeID, StampID } from "@/lib/uuid"
 import { Router } from "@/router"
 import type { ChatItem, MessageItem } from "@/stores"
 import { addChatAtom, addMessageAtom, apiKeyAtom, DEFAULT_SYSTEM_MESSAGE, sortedChatsAtom } from "@/stores"
@@ -33,14 +33,14 @@ const RedirectChat = ({ botName }: { botName: string }) => {
         }
 
         const preCreatedMessage: MessageItem = {
-            id: UUIDStamp(),
+            id: makeID(),
             role: "system",
             content: DEFAULT_SYSTEM_MESSAGE,
             updatedAt: Date.now(),
         }
 
         const newChat: ChatItem = {
-            id: UUIDStamp(),
+            id: makeID(),
             title: "",
             updatedAt: Date.now(),
             messages: [preCreatedMessage.id],
@@ -67,7 +67,7 @@ const BotArea = ({ botName }: BotProps) => {
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
                 .with({ name: "BotChat" }, ({ params }) => (
-                    <ChatDetail botName={params.botName} chatID={params.chatID as UUIDStamp} />
+                    <ChatDetail botName={params.botName} chatID={StampID(params.chatID).unwrap()} />
                 ))
                 .otherwise(() => null),
         [hasApiKey, route],

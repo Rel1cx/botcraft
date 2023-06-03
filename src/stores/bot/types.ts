@@ -1,8 +1,8 @@
-import type { UUIDStamp } from "@/lib/uuid"
+import type { StampID } from "@/lib/uuid"
 import type { ChatProtocol, MessageProtocol } from "@/protocols/chat"
 
 export type ChatItem = Omit<ChatProtocol, "content"> & {
-    messages: UUIDStamp[]
+    messages: StampID[]
 }
 
 export type MessageItem = MessageProtocol
