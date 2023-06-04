@@ -1,11 +1,22 @@
+import { Result } from "ftld"
+import type { Observable } from "rxjs"
+import { from, map, mergeMap, timeout } from "rxjs"
+
+import { getChatCompletionStream } from "@/api/client"
+import { getContentFromEventSource, parseEventSource } from "@/api/helper"
+import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
-import { makeID } from "@/lib/uuid"
-import type { Bot } from "@/protocols/bot"
-import type { MessageItem } from "@/stores"
+import { readerToObservable } from "@/lib/stream"
+import { countTokens } from "@/lib/tokenizer"
+import type { ChatMessage } from "@/zod"
+
+import type { Bot } from "./Bot"
 
 export class ChatGPT implements Bot {
     id = "0"
+
+    apiKey = ""
 
     name = "ChatGPT-3.5"
 
@@ -19,42 +30,61 @@ export class ChatGPT implements Bot {
 
     introMessage = "Hello! How can I assist you today?"
 
-    options = {
+    abortController = new AbortController()
+
+    options: ChatCompletionOptions = {
         model: "gpt-3.5-turbo",
         temperature: 0.5,
         max_tokens: 4096,
-        top_p: 1,
         presence_penalty: 0,
+        // top_p: 1,
         frequency_penalty: 0,
     }
 
     initChat() {
-        const firstMessage: MessageItem = {
-            id: makeID(),
+        const firstMessage: ChatMessage = {
             role: "system",
             content: DEFAULT_SYSTEM_MESSAGE,
-            updatedAt: Date.now(),
         }
         return [firstMessage]
     }
 
-    estimateMessageTokenCount(message: MessageItem) {
-        // TODO: Implement this
-        return -1
+    estimateTokenCount(messages: ChatMessage[]) {
+        return countTokens(messages, this.options.model)
     }
 
-    estimateTotalTokenCount(messages: MessageItem[]) {
-        // TODO: Implement this
-        return -1
+    // TODO: Implement this
+    generateChatCompletion(messages: ChatMessage[]) {
+        return Promise.resolve(Result.Err(new Error("Not implemented")))
     }
 
-    // @ts-expect-error TODO: Implement this
-    generateChatCompletion(messages: MessageItem[]) {
-        return []
-    }
+    async generateChatCompletionStream(messages: ChatMessage[]): Promise<Result<Error, Observable<string>>> {
+        const stream = await getChatCompletionStream(
+            this.apiKey,
+            messages,
+            this.options,
+            {},
+            this.abortController.signal,
+        )
 
-    // @ts-expect-error TODO: Implement this
-    generateChatCompletionStream(messages: MessageItem[]) {
-        return []
+        if (stream.isErr()) {
+            return Result.Err(stream.unwrapErr())
+        }
+
+        const reader = stream.unwrap().getReader()
+
+        const observable = readerToObservable(reader)
+
+        const textDecoder = new TextDecoder()
+
+        return Result.Ok(
+            observable.pipe(
+                timeout(8000),
+                map((value) => textDecoder.decode(value)),
+                map(parseEventSource),
+                mergeMap((events) => from(events)),
+                map(getContentFromEventSource),
+            ),
+        )
     }
 }

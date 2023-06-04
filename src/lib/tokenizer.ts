@@ -5,7 +5,7 @@ import type { ChatMessage } from "@/zod"
 
 const cl100k_base = await import("@dqbd/tiktoken/encoders/cl100k_base.json")
 
-const encoder = new Tiktoken(
+export const encoder = new Tiktoken(
     cl100k_base.bpe_ranks,
     {
         ...cl100k_base.special_tokens,

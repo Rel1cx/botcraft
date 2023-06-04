@@ -31,3 +31,11 @@ const parseChunk = (chunk: string): EventSourceData => {
 export const parseEventSource = (data: string) => {
     return data.split("\n\n").filter(Boolean).map(parseChunk)
 }
+
+export const getContentFromEventSource = (event: EventSourceData) => {
+    if (event === "[DONE]") {
+        return ""
+    }
+
+    return event.choices[0]?.delta?.content ?? ""
+}

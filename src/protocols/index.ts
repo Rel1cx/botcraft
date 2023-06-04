@@ -1,3 +1,6 @@
 export * from "./base"
+export * from "./bot"
 export * from "./chat"
+export * from "./io"
 export * from "./list"
+export * from "./preset"
