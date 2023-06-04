@@ -51,6 +51,11 @@ export const newChatButton = style({
     ":active": {
         background: vars.colors.overlay,
     },
+
+    ":disabled": {
+        filter: "opacity(0.5)",
+        cursor: "not-allowed",
+    },
 })
 
 export const sectionTitle = style({

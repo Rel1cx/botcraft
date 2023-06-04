@@ -102,11 +102,12 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 items={sortedChats}
                 newItemName="New chat"
                 selected={chatID}
+                disableMutation={isGenerating}
                 onItemAdd={onAddChatClick}
                 onItemRemove={onChatRemoveClick}
             />
         ),
-        [chatID, onAddChatClick, onChatRemoveClick, sortedChats],
+        [chatID, isGenerating, onAddChatClick, onChatRemoveClick, sortedChats],
     )
 
     if (!chat) {

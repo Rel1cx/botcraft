@@ -1,1 +1,0 @@
-import{p as r}from"./index-7ca05fac.js";import"https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js";import"./react-c99c05cb.js";const s=()=>r.jsx("div",{children:r.jsx("h1",{children:"404"})});export{s as default};

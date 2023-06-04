@@ -16,6 +16,7 @@ import * as css from "./styles.css"
 type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
     selected?: string
     newItemName?: string
+    disableMutation?: boolean
     onItemAdd?: () => void
     onItemRemove?: (id: string) => void
     onItemPin?: (id: string) => void
@@ -36,7 +37,16 @@ const NewItemButton = ({ title, ...rest }: React.ComponentProps<"button">) => {
 }
 
 const TimeStack = memo(
-    ({ items, newItemName, onItemAdd, onItemPin, onItemRemove, onItemUnpin, selected }: TimeStackProps) => {
+    ({
+        disableMutation = false,
+        items,
+        newItemName,
+        onItemAdd,
+        onItemPin,
+        onItemRemove,
+        onItemUnpin,
+        selected,
+    }: TimeStackProps) => {
         const markers = useMemo(() => {
             const markers: BiMap<string, number> = new BiMap()
 
@@ -68,7 +78,7 @@ const TimeStack = memo(
         return (
             <div className={css.container}>
                 <Box w="100%" mb="0.5rem" px="0.5rem">
-                    <NewItemButton title={newItemName} onClick={handleItemAdd} />
+                    <NewItemButton title={newItemName} disabled={disableMutation} onClick={handleItemAdd} />
                 </Box>
                 <List
                     gap={12}
