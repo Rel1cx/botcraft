@@ -34,7 +34,7 @@
         "@rizzzse/bimap": "1.2.1",
         "@swan-io/chicane": "1.4.0",
         "@total-typescript/ts-reset": "0.4.2",
-        "@uiw/react-codemirror": "4.20.3",
+        "@uiw/react-codemirror": "4.20.4",
         "bind-event-listener": "3.0.0",
         "clsx": "1.2.1",
         "cm6-theme-basic-light": "0.2.0",

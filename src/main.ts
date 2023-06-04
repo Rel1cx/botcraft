@@ -30,7 +30,7 @@ const main = async () => {
     O.from(document.querySelector("#root"))
         .result()
         .map(createRoot)
-        .tap((root) => root.render(createElement(App)))
+        .tap((root) => root.render(createElement(App, { locale })))
         // eslint-disable-next-line no-console
         .tapErr(console.error)
 
