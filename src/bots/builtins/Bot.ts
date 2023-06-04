@@ -16,8 +16,6 @@ export abstract class Bot implements BotProtocol, IDProtocol, NameProtocol, Icon
 
     abstract options: Record<string, unknown>
 
-    abstract apiKey: string
-
     abstract icon: string
 
     // abstract tokenEncode: (text: string) => Uint32Array

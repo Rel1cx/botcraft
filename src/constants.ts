@@ -9,9 +9,4 @@ export const DEFAULT_CHAT_COMPLETION_OPTIONS: ChatCompletionOptions = {
     frequency_penalty: 0,
 }
 
-// eslint-disable-next-line max-len
-export const DEFAULT_SYSTEM_MESSAGE = `I am a researcher with expertise in multiple fields, capable of assisting users in solving problems.
-
-Additional rule:
-
-1. Answer should be written in markdown format.`
+export const DEFAULT_SYSTEM_MESSAGE = "I have expertise in multiple fields and can assist users in solving problems."

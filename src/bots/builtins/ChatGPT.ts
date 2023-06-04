@@ -6,6 +6,7 @@ import { getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
+import { configManager } from "@/config"
 import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
@@ -15,8 +16,6 @@ import type { Bot } from "./Bot"
 
 export class ChatGPT implements Bot {
     id = "0"
-
-    apiKey = ""
 
     name = "ChatGPT-3.5"
 
@@ -59,8 +58,10 @@ export class ChatGPT implements Bot {
     }
 
     async generateChatCompletionStream(messages: ChatMessage[]): Promise<Result<Error, Observable<string>>> {
+        const apiKey = await configManager.getConfig("apiKey")
+
         const stream = await getChatCompletionStream(
-            this.apiKey,
+            apiKey.unwrap(),
             messages,
             this.options,
             {},
