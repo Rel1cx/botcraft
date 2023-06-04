@@ -3,21 +3,19 @@ import { set } from "idb-keyval"
 import { atom, getDefaultStore } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 import { omit, pick, sortBy } from "rambda"
-import { from, map, mergeMap, timeout } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { getChatCompletionStream } from "@/api/client"
-import { parseEventSource } from "@/api/helper"
-import type { ChatCompletionOptions } from "@/api/types"
+import { ChatGPT } from "@/bots/builtins/ChatGPT"
 import { configManager } from "@/config"
-import { readerToObservable } from "@/lib/stream"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import type { BotProtocol } from "@/protocols/bot"
 
 import type { ChatItem, ChatMeta, MessageItem } from "./types"
+
+const defaultBot = new ChatGPT()
 
 const store = getDefaultStore()
 
@@ -122,7 +120,7 @@ export type ChatCompletionTask =
 
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
-export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID, options: ChatCompletionOptions) => {
+export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID) => {
     const chat = get(chatsAtom)[id]
 
     if (!chat) {
@@ -176,17 +174,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         )
     }
 
-    const apiKey = await configManager.getConfig("apiKey")
-
-    if (!apiKey.isSome()) {
-        set(
-            chatCompletionTaskAtom,
-            O.Some<ChatCompletionTask>({ ...taskMeta, type: "error", error: new Error("API key is not set") }),
-        )
-        return
-    }
-
-    const stream = await getChatCompletionStream(apiKey.unwrap(), messages, options, {}, abortController.signal)
+    const stream = await defaultBot.generateChatCompletionStream(messages)
 
     if (stream.isErr()) {
         const error = stream.unwrapErr()
@@ -194,42 +182,23 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         return
     }
 
-    const reader = stream.unwrap().getReader()
-
-    const observable = readerToObservable(reader)
-
-    const textDecoder = new TextDecoder()
-
-    observable
-        .pipe(
-            timeout(8000),
-            map((value) => textDecoder.decode(value)),
-            map(parseEventSource),
-            mergeMap((events) => from(events)),
-        )
-        .subscribe({
-            next(event) {
-                if (event === "[DONE]") {
-                    return
-                }
-
-                const content = event.choices[0]?.delta?.content ?? ""
-
-                set(messagesAtom, (draft) => {
-                    const message = draft[taskMeta.generatingMessageID]
-                    invariant(message, "chat should exist")
-                    message.content += content
-                    message.updatedAt = Date.now()
-                })
-                set(chatsAtom, (draft) => {
-                    const chat = draft[id]
-                    invariant(chat, "chat should exist")
-                    chat.updatedAt = Date.now()
-                })
-            },
-            error: handleError,
-            complete() {
-                set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
-            },
-        })
+    stream.unwrap().subscribe({
+        next(msg) {
+            set(messagesAtom, (draft) => {
+                const message = draft[taskMeta.generatingMessageID]
+                invariant(message, "chat should exist")
+                message.content += msg
+                message.updatedAt = Date.now()
+            })
+            set(chatsAtom, (draft) => {
+                const chat = draft[id]
+                invariant(chat, "chat should exist")
+                chat.updatedAt = Date.now()
+            })
+        },
+        error: handleError,
+        complete() {
+            set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
+        },
+    })
 })

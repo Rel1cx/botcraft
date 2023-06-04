@@ -4,7 +4,7 @@ import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
 import TitleInput from "@/components/atoms/TitleInput"
-import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
+import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
@@ -91,7 +91,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
             draft.messages.push(message.id)
         })
 
-        await requestChatCompletion(chatID, DEFAULT_CHAT_COMPLETION_OPTIONS)
+        await requestChatCompletion(chatID)
     })
 
     const shouldSend = useEvent((value: string) => value.trim() !== "" && !isGenerating)

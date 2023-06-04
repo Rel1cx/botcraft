@@ -7,7 +7,7 @@ import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { configManager } from "@/config"
-import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
+import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
 import type { ChatMessage } from "@/zod"
@@ -31,14 +31,7 @@ export class ChatGPT implements Bot {
 
     abortController = new AbortController()
 
-    options: ChatCompletionOptions = {
-        model: "gpt-3.5-turbo",
-        temperature: 0.5,
-        max_tokens: 4096,
-        presence_penalty: 0,
-        // top_p: 1,
-        frequency_penalty: 0,
-    }
+    options: ChatCompletionOptions = DEFAULT_CHAT_COMPLETION_OPTIONS
 
     initChat() {
         const firstMessage: ChatMessage = {
