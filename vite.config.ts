@@ -5,6 +5,7 @@ import { defineConfig } from "vite"
 import { imagetools } from "vite-imagetools"
 import forgetti from "vite-plugin-forgetti"
 import preload from "vite-plugin-preload"
+import topLevelAwait from "vite-plugin-top-level-await"
 import wasm from "vite-plugin-wasm"
 
 const isDev = process.env.NODE_ENV === "development"
@@ -22,6 +23,7 @@ export default defineConfig({
         }),
         vanillaExtractPlugin(),
         wasm(),
+        topLevelAwait(),
         imagetools(),
         !isDev &&
             preload({
@@ -40,6 +42,7 @@ export default defineConfig({
     },
     envPrefix: ["VITE_"],
     build: {
+        target: "es2021",
         minify: "esbuild",
         rollupOptions: {
             output: {
