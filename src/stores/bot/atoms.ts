@@ -15,6 +15,7 @@ import { readerToObservable } from "@/lib/stream"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
+import type { BotProtocol } from "@/protocols/bot"
 
 import type { ChatItem, ChatMeta, MessageItem } from "./types"
 
@@ -25,6 +26,8 @@ export const apiKeyAtom = atom("", (_, set, payload: string) => {
     set(apiKeyAtom, val)
     void configManager.setConfig("apiKey", val)
 })
+
+export const botsAtom = atomWithImmer<Record<string, BotProtocol>>({})
 
 export const chatsAtom = atomWithImmer<Record<StampID, ChatItem>>({})
 

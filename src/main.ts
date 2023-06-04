@@ -1,4 +1,3 @@
-import "@total-typescript/ts-reset"
 import "@/styles/base.css"
 import "@/styles/global.scss"
 import "@/styles/overrides.scss"
@@ -7,7 +6,6 @@ import { Option as O } from "ftld"
 import { enableMapSet, setAutoFreeze, setUseStrictShallowCopy } from "immer"
 import { createElement } from "react"
 import { createRoot } from "react-dom/client"
-import type { Progress } from "rsup-progress"
 import { navigatorDetector } from "typesafe-i18n/detectors"
 
 import { detectLocale } from "./i18n/i18n-util"
@@ -33,6 +31,7 @@ const main = async () => {
         .result()
         .map(createRoot)
         .tap((root) => root.render(createElement(App)))
+        // eslint-disable-next-line no-console
         .tapErr(console.error)
 
     autoBlur(document)
@@ -42,9 +41,3 @@ const main = async () => {
 }
 
 void main()
-
-declare global {
-    interface Window {
-        progress: Progress
-    }
-}

@@ -21,13 +21,13 @@ export type IconProtocol = {
     icon: string
 }
 
-export type ContentProtocol<T> = {
-    content: T
-}
-
-export type NameableProtocol = {
+export type NameProtocol = {
     name: string
     description: string
+}
+
+export type ContentProtocol<T> = {
+    content: T
 }
 
 export type CreatableProtocol = {

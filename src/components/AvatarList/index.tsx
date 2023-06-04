@@ -2,23 +2,25 @@ import { Indicator } from "@mantine/core"
 import { Link } from "@swan-io/chicane"
 import { Plus } from "lucide-react"
 
-import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
+import type { IconProtocol, ListItemProtocol, ListProtocol } from "@/protocols"
 import { vars } from "@/theme/vars.css"
 
 import Avatar from "../atoms/Avatar"
 import Icon from "../atoms/Icon"
 import * as css from "./styles.css"
 
-type AvatarListProps = {
+type AvatarListProps = ListProtocol<ListItemProtocol & IconProtocol> & {
     selected?: string
 }
 
-export const AvatarList = ({ selected }: AvatarListProps) => {
+export const AvatarList = ({ items, selected }: AvatarListProps) => {
     return (
         <div className={css.container}>
-            <Link to="/bots/ChatGPT">
-                <Avatar bg={chatgpt} />
-            </Link>
+            {items.map((item) => (
+                <Link key={item.id} to={`/bots/${item.id}`}>
+                    <Avatar bg={item.icon} />
+                </Link>
+            ))}
             <Indicator inline label="WIP" size={14}>
                 <div className={css.plus}>
                     <Icon as={Plus} size={24} color={vars.colors.overlay} />

@@ -3,16 +3,26 @@ import { useAtomValue, useSetAtom } from "jotai"
 import { Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
+import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
+import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import { makeID, StampID } from "@/lib/uuid"
 import { Router } from "@/router"
 import type { ChatItem, MessageItem } from "@/stores"
-import { addChatAtom, addMessageAtom, apiKeyAtom, DEFAULT_SYSTEM_MESSAGE, sortedChatsAtom } from "@/stores"
+import { addChatAtom, addMessageAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout"
 import ChatDetail from "./ChatDetail"
 import Settings from "./Settings"
+
+const bots = [
+    {
+        id: "0",
+        title: "ChatGPT",
+        icon: chatgpt,
+    },
+]
 
 type BotProps = {
     botName: string
@@ -74,7 +84,7 @@ const BotArea = ({ botName }: BotProps) => {
     )
 
     return (
-        <RootLayout nav={<AvatarList selected={botName} />}>
+        <RootLayout nav={<AvatarList items={bots} selected={botName} />}>
             <Suspense>{contentView}</Suspense>
         </RootLayout>
     )

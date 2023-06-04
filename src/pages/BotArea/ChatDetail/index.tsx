@@ -4,6 +4,7 @@ import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
 import TitleInput from "@/components/atoms/TitleInput"
+import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
@@ -13,8 +14,6 @@ import {
     addMessageAtom,
     chatCompletionTaskAtom,
     chatsAtom,
-    DEFAULT_CHAT_COMPLETION_OPTIONS,
-    DEFAULT_SYSTEM_MESSAGE,
     removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,

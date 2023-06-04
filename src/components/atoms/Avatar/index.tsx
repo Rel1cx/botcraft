@@ -3,6 +3,7 @@ import type { PropsWithChildren } from "react"
 import * as css from "./styles.css"
 
 type AvatarProps = PropsWithChildren<{
+    title?: string
     bg?: string
     size?: number
     radius?: string | number
