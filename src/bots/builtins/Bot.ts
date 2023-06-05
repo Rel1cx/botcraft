@@ -1,9 +1,7 @@
-import type { BotProtocol, CreatableProtocol, IconProtocol, IDProtocol, NameProtocol } from "@/protocols"
+import type { BotProtocol, CreatableProtocol, IconProtocol, NameProtocol } from "@/protocols"
 import type { ChatMessage } from "@/zod"
 
-export abstract class Bot implements BotProtocol, IDProtocol, NameProtocol, IconProtocol, CreatableProtocol {
-    abstract id: string
-
+export abstract class Bot implements BotProtocol, NameProtocol, IconProtocol, CreatableProtocol {
     abstract name: string
 
     abstract description: string

@@ -15,8 +15,6 @@ import type { ChatMessage } from "@/zod"
 import type { Bot } from "./Bot"
 
 export class ChatGPT implements Bot {
-    id = "0"
-
     name = "ChatGPT-3.5"
 
     icon = chatgpt

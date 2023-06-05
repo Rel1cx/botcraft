@@ -18,7 +18,7 @@ import Settings from "./Settings"
 
 const bots = [
     {
-        id: "0",
+        id: "ChatGPT",
         title: "ChatGPT",
         icon: chatgpt,
     },
