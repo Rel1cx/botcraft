@@ -11,7 +11,7 @@ export const baseContainer = style({
 export const baseContent = style({
     padding: "0.5rem 1rem",
     borderRadius: "1rem",
-    maxWidth: "100%",
+    maxWidth: "80%",
     lineHeight: "1.5",
     overflow: "hidden",
     background: "#f1f2f2",

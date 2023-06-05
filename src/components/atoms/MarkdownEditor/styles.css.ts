@@ -4,9 +4,6 @@ import { vars } from "@/theme/vars.css"
 
 export const container = style({
     display: "flex",
-    margin: "1rem",
-    borderRadius: "0.5rem",
-    background: vars.colors.background,
     fontSize: "16px",
 
     "@media": {
@@ -22,14 +19,13 @@ export const content = style({
 
 globalStyle(`${content} .cm-editor`, {
     padding: "0.5rem",
+    outline: "none",
     backgroundColor: "transparent",
-    borderRadius: "0.5rem",
-    outline: "2px solid transparent",
-    transition: "outline-color 100ms ease-out",
+    transition: "background-color 100ms ease-out",
 })
 
 globalStyle(`${content} .cm-editor.cm-focused`, {
-    outlineColor: vars.colors.overlay,
+    backgroundColor: vars.colors.background,
 })
 
 globalStyle(`${content} .cm-editor .cm-scroller`, {

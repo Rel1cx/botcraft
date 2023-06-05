@@ -125,7 +125,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         return
     }
 
-    const messages: Omit<MessageItem, "id">[] = Object.values(get(messagesAtom)).map(omit(["id"]))
+    const messages: Omit<MessageItem, "id">[] = Array.from(get(messagesAtom).values()).map(omit(["id"]))
 
     const abortController = new AbortController()
 
