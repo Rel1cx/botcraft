@@ -13,7 +13,7 @@ const parseChunk = (chunk: string): EventSourceData => {
             .join("")
 
         if (jsonString === "[DONE]") {
-            throw new Error(jsonString)
+            return jsonString
         }
 
         const parsed: unknown = parse(jsonString)
