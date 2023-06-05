@@ -6,7 +6,7 @@ import { omit, pick, sortBy } from "rambda"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { ChatGPT } from "@/bots/builtins/ChatGPT"
+import { defaultBot } from "@/bots"
 import { configManager } from "@/config"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
@@ -14,8 +14,6 @@ import { makeID } from "@/lib/uuid"
 import type { BotProtocol } from "@/protocols/bot"
 
 import type { ChatItem, ChatMeta, MessageItem } from "./types"
-
-const defaultBot = new ChatGPT()
 
 const store = getDefaultStore()
 
@@ -25,22 +23,22 @@ export const apiKeyAtom = atom("", (_, set, payload: string) => {
     void configManager.setConfig("apiKey", val)
 })
 
-export const botsAtom = atomWithImmer<Record<string, BotProtocol>>({})
+export const botsAtom = atomWithImmer<Map<string, BotProtocol>>(new Map())
 
-export const chatsAtom = atomWithImmer<Record<StampID, ChatItem>>({})
+export const chatsAtom = atomWithImmer<Map<StampID, ChatItem>>(new Map())
 
 store.sub(chatsAtom, () => {
     void set("chats", store.get(chatsAtom))
 })
 
-export const messagesAtom = atomWithImmer<Record<StampID, MessageItem>>({})
+export const messagesAtom = atomWithImmer<Map<StampID, MessageItem>>(new Map())
 
 store.sub(messagesAtom, () => {
     void set("messages", store.get(messagesAtom))
 })
 
 export const chatMetaAtom = atom((get) => {
-    return Object.values(get(chatsAtom)).reduceRight<ChatMeta[]>((acc, item) => {
+    return Array.from(get(chatsAtom).values()).reduceRight<ChatMeta[]>((acc, item) => {
         const title = item.title === "" ? "Untitled" : item.title
 
         acc.push({
@@ -62,19 +60,19 @@ export const sortedChatsAtom = atom((get) => {
 
 export const addChatAtom = atom(null, (_, set, payload: ChatItem) => {
     set(chatsAtom, (draft) => {
-        draft[payload.id] = payload
+        draft.set(payload.id, payload)
     })
 })
 
 export const removeChatAtom = atom(null, (_, set, id: StampID) => {
     set(chatsAtom, (draft) => {
-        Reflect.deleteProperty(draft, id)
+        draft.delete(id)
     })
 })
 
 export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: ChatItem) => void) => {
     set(chatsAtom, (draft) => {
-        const chat = draft[id]
+        const chat = draft.get(id)
         invariant(chat, "Chat not found")
         void mutator(chat)
     })
@@ -82,7 +80,7 @@ export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: 
 
 export const addMessageAtom = atom(null, (_, set, payload: MessageItem) => {
     set(messagesAtom, (draft) => {
-        draft[payload.id] = payload
+        draft.set(payload.id, payload)
     })
 })
 
@@ -121,7 +119,7 @@ export type ChatCompletionTask =
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
 export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID) => {
-    const chat = get(chatsAtom)[id]
+    const chat = get(chatsAtom).get(id)
 
     if (!chat) {
         return
@@ -145,11 +143,11 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
     }
 
     set(messagesAtom, (draft) => {
-        draft[taskMeta.generatingMessageID] = message
+        draft.set(taskMeta.generatingMessageID, message)
     })
 
     set(chatsAtom, (draft) => {
-        draft[id]?.messages.push(taskMeta.generatingMessageID)
+        draft.get(id)?.messages.push(taskMeta.generatingMessageID)
     })
 
     set(
@@ -185,13 +183,13 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
     stream.unwrap().subscribe({
         next(msg) {
             set(messagesAtom, (draft) => {
-                const message = draft[taskMeta.generatingMessageID]
+                const message = draft.get(taskMeta.generatingMessageID)
                 invariant(message, "chat should exist")
                 message.content += msg
                 message.updatedAt = Date.now()
             })
             set(chatsAtom, (draft) => {
-                const chat = draft[id]
+                const chat = draft.get(id)
                 invariant(chat, "chat should exist")
                 chat.updatedAt = Date.now()
             })

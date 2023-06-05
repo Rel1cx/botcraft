@@ -4,6 +4,7 @@
     "rules": {
         "new-cap": "off",
         "camelcase": "off",
+        "unicorn/prefer-spread": "off",
         "@typescript-eslint/no-redeclare": "off"
     },
     "overrides": [

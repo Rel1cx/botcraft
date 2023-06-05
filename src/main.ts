@@ -16,7 +16,7 @@ import { loadConfigToAtom, loadDBToAtom } from "./stores"
 
 enableMapSet()
 setAutoFreeze(true)
-setUseStrictShallowCopy(false)
+setUseStrictShallowCopy(true)
 
 const main = async () => {
     const locale = detectLocale(navigatorDetector)

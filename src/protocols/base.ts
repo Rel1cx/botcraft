@@ -1,38 +1,8 @@
-import type { Role } from "@/api/types"
-import type { StampID } from "@/lib/uuid"
-
-export type IDProtocol = {
-    id: string
+export type EquatableProtocol<T> = {
+    equals: (other: T) => boolean
 }
 
-export type StampIDProtocol = {
-    id: StampID
-}
-
-export type RoleProtocol = {
-    role: Role
-}
-
-export type TitleProtocol = {
-    title: string
-}
-
-export type IconProtocol = {
-    icon: string
-}
-
-export type NameProtocol = {
-    name: string
-    description: string
-}
-
-export type ContentProtocol<T> = {
-    content: T
-}
-
-export type CreatableProtocol = {
-    // createdAt: number
-    updatedAt: number
-    // createdBy: Role
-    // updatedBy: Role
+export type CodableProtocol<T> = {
+    encode: (a: T) => string
+    decode: (a: string) => T
 }

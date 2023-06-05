@@ -2,6 +2,7 @@ import { MantineProvider } from "@mantine/core"
 import { lazy, StrictMode, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
+import { defaultBot } from "@/bots"
 import Redirect from "@/components/atoms/Redirect"
 import TypesafeI18n from "@/i18n/i18n-react"
 import type { Locales } from "@/i18n/i18n-types"
@@ -27,7 +28,7 @@ const App = ({ locale }: { locale: Locales }) => {
                                 () =>
                                     match(route)
                                         // TODO: Add a Home page
-                                        .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
+                                        .with({ name: "Home" }, () => <Redirect to={`/bots/${defaultBot.name}`} />)
                                         .with({ name: "BotArea" }, ({ params }) => <Bot botName={params.botName} />)
                                         .otherwise(() => <NotFound />),
                                 [route],

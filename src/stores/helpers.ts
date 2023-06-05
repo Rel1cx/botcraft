@@ -10,8 +10,8 @@ import type { ChatItem, MessageItem } from "./bot/types"
 export const store = getDefaultStore()
 
 export const loadDBToAtom = async () => {
-    const chats = await get<Record<StampID, ChatItem>>("chats")
-    const messages = await get<Record<StampID, MessageItem>>("messages")
+    const chats = await get<Map<StampID, ChatItem>>("chats")
+    const messages = await get<Map<StampID, MessageItem>>("messages")
 
     if (!chats || !messages) {
         return
