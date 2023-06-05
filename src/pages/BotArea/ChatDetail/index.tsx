@@ -70,7 +70,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const onChatRemoveClick = useEvent(() => {
         const chats = getChats()
-        const isLast = Object.keys(chats).length === 1
+        const isLast = chats.size === 1
         // TODO: Allow safe removal of last chat
         if (isLast) {
             return
