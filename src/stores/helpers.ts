@@ -17,8 +17,8 @@ export const loadDBToAtom = async () => {
         return
     }
 
-    store.set(chatsAtom, chats)
-    store.set(messagesAtom, messages)
+    store.set(chatsAtom, new Map(chats))
+    store.set(messagesAtom, new Map(messages))
 }
 
 export const loadConfigToAtom = async () => {
