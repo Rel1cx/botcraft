@@ -10,11 +10,10 @@ import { configManager } from "@/config"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
+import type { BotProtocol, CreatableProtocol, IconProtocol, NameProtocol } from "@/protocols"
 import type { ChatMessage } from "@/zod"
 
-import type { Bot } from "./Bot"
-
-export class ChatGPT implements Bot {
+export class ChatGPT implements BotProtocol, NameProtocol, IconProtocol, CreatableProtocol {
     name = "ChatGPT-3.5"
 
     icon = chatgpt
@@ -23,9 +22,9 @@ export class ChatGPT implements Bot {
 
     updatedAt = Date.now()
 
-    initialPrompt = ""
+    prompt = ""
 
-    introMessage = "Hello! How can I assist you today?"
+    intro = "Hello! How can I assist you today?"
 
     abortController = new AbortController()
 

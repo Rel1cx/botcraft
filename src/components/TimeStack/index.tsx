@@ -1,3 +1,4 @@
+import { Button } from "@ariakit/react"
 import { Box } from "@mantine/core"
 import { BiMap } from "@rizzzse/bimap"
 import { Link } from "@swan-io/chicane"
@@ -24,7 +25,7 @@ type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
 }
 
 const SectionTitle = ({ title }: TitleProtocol) => {
-    return <span className={css.sectionTitle}>{title}</span>
+    return <Button className={css.sectionTitle}>{title}</Button>
 }
 
 const NewItemButton = ({ title, ...rest }: React.ComponentProps<"button">) => {
