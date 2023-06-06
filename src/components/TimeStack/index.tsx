@@ -1,5 +1,4 @@
 import { Button } from "@ariakit/react"
-import { Box } from "@mantine/core"
 import { BiMap } from "@rizzzse/bimap"
 import { Link } from "@swan-io/chicane"
 import { formatDistanceToNow } from "date-fns"
@@ -25,15 +24,26 @@ type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
 }
 
 const SectionTitle = ({ title }: TitleProtocol) => {
-    return <Button className={css.sectionTitle}>{title}</Button>
+    return <span className={css.sectionTitle}>{title}</span>
 }
 
-const NewItemButton = ({ title, ...rest }: React.ComponentProps<"button">) => {
+const NewItemButton = ({
+    disabled = false,
+    onClick,
+    title,
+}: { title?: string; disabled?: boolean; onClick?: () => void }) => {
     return (
-        <button type="button" className={css.newChatButton} {...rest}>
+        <Button
+            as="button"
+            className={css.newChatButton}
+            clickOnEnter
+            clickOnSpace
+            disabled={disabled}
+            onClick={onClick}
+        >
             <Icon as={PlusIcon} />
             <span>{title}</span>
-        </button>
+        </Button>
     )
 }
 
@@ -41,7 +51,7 @@ const TimeStack = memo(
     ({
         disableMutation = false,
         items,
-        newItemName,
+        newItemName = "New item",
         onItemAdd,
         onItemPin,
         onItemRemove,
@@ -78,9 +88,10 @@ const TimeStack = memo(
 
         return (
             <div className={css.container}>
-                <Box w="100%" mb="0.5rem" px="0.5rem">
+                <div className={css.actionArea}>
                     <NewItemButton title={newItemName} disabled={disableMutation} onClick={handleItemAdd} />
-                </Box>
+                </div>
+
                 <List
                     gap={12}
                     data={items}

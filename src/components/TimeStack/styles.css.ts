@@ -31,6 +31,11 @@ export const item = style({
     },
 })
 
+export const actionArea = style({
+    marginBottom: "0.5rem",
+    padding: "0 0.5rem",
+})
+
 export const newChatButton = style({
     position: "relative",
     padding: "0 0.5rem",
