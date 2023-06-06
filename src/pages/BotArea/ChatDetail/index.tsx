@@ -3,6 +3,7 @@ import { useTransientAtom } from "jotai-game"
 import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
+import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
 import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import type { StampID } from "@/lib/uuid"
@@ -111,13 +112,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     )
 
     if (!chat) {
-        return (
-            <Layout asideHeader={botName} aside={aside}>
-                <div className={css.content}>
-                    <div>Select a chat to start</div>
-                </div>
-            </Layout>
-        )
+        return <Redirect to={`/bots/${botName}/new`} />
     }
 
     return (

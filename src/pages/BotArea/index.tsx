@@ -76,9 +76,15 @@ const BotArea = ({ botName }: BotProps) => {
                 ))
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
-                .with({ name: "BotChat" }, ({ params }) => (
-                    <ChatDetail botName={params.botName} chatID={StampID(params.chatID).unwrap()} />
-                ))
+                .with({ name: "BotChat" }, ({ params }) => {
+                    const chatID = StampID(params.chatID)
+
+                    if (chatID.isErr()) {
+                        return <Redirect to={`/bots/${params.botName}`} />
+                    }
+
+                    return <ChatDetail botName={params.botName} chatID={chatID.unwrap()} />
+                })
                 .otherwise(() => null),
         [hasApiKey, route],
     )
