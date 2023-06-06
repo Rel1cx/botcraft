@@ -27,7 +27,6 @@ const App = ({ locale }: { locale: Locales }) => {
                             {useMemo(
                                 () =>
                                     match(route)
-                                        // TODO: Add a Home page
                                         .with({ name: "Home" }, () => <Redirect to={`/bots/${defaultBot.name}`} />)
                                         .with({ name: "BotArea" }, ({ params }) => <Bot botName={params.botName} />)
                                         .otherwise(() => <NotFound />),

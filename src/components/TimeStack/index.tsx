@@ -67,7 +67,7 @@ const TimeStack = memo(
 
         const handleItemRemove = useEvent((id: string) => onItemRemove?.(id))
 
-        useHotkeys("del, backspace", () => {
+        useHotkeys("del", () => {
             if (!selected) {
                 return
             }

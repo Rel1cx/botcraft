@@ -3,9 +3,10 @@ import { style } from "@vanilla-extract/css"
 import { vars } from "@/theme/vars.css"
 
 export const container = style({
-    height: "100%",
-    width: "100%",
+    flex: "1 1 auto",
     padding: "12px 2px",
+    display: "flex",
+    flexFlow: "column nowrap",
     overflowY: "auto",
 })
 
@@ -31,6 +32,7 @@ export const item = style({
 })
 
 export const newChatButton = style({
+    position: "relative",
     padding: "0 0.5rem",
     width: "100%",
     height: "38px",

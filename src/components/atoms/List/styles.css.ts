@@ -4,13 +4,19 @@ import { vars } from "@/theme/vars.css"
 
 export const container = style({
     flex: "1 1 auto",
+    display: "flex",
+    flexFlow: "column nowrap",
 })
 
 export const content = style({
+    flex: "1 1 auto",
+    display: "flex",
+    flexFlow: "column nowrap",
     padding: "0 0.5rem",
 })
 
 export const itemList = style({
+    flex: "1 1 auto",
     display: "flex",
     flexFlow: "column nowrap",
     width: "100%",
