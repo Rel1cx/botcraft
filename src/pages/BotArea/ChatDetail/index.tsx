@@ -1,15 +1,17 @@
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { lazy, useMemo, useRef } from "react"
+import { lazy, Suspense, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { defaultBot } from "@/bots/index"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
+import Chat from "@/components/Chat"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
+import type { ChatItem } from "@/stores"
 import {
     addChatAtom,
     addMessageAtom,
@@ -20,10 +22,10 @@ import {
     sortedChatsAtom,
     updateChatAtom,
     useChat,
+    useMessage,
 } from "@/stores"
 
 import { Layout } from "../Layout"
-import Chat from "./components/Chat"
 import * as css from "./styles.css"
 
 const TimeStack = lazy(() => import("@/components/TimeStack"))
@@ -32,6 +34,20 @@ const MarkdownEditor = lazy(() => import("@/components/atoms/MarkdownEditor"))
 type ChatDetailProps = {
     botName: string
     chatID: StampID
+}
+
+const Message = lazy(() => import("@/components/atoms/Message"))
+
+export type ChatProps = {
+    data: ChatItem
+    isGenerating?: boolean
+    onHeightChange?: (height: number) => void
+}
+
+const ChatMessageRenderer = ({ id }: { id: StampID }) => {
+    const [data] = useMessage(id)
+
+    return <Suspense>{data ? <Message data={data} /> : null}</Suspense>
 }
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
@@ -122,6 +138,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 <Chat
                     data={chat}
                     isGenerating={isGenerating}
+                    MessageRenderer={ChatMessageRenderer}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({
                             top: contentRef.current.scrollHeight,
