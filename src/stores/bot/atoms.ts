@@ -7,13 +7,14 @@ import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
 import { defaultBot } from "@/bots"
+import type { ChatData, MessageData } from "@/bots/builtins/types"
 import { configManager } from "@/config"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import type { BotProtocol } from "@/protocols/bot"
 
-import type { ChatItem, ChatMeta, MessageItem } from "./types"
+import type { ChatItem, ChatMeta } from "./types"
 
 const store = getDefaultStore()
 
@@ -31,7 +32,7 @@ store.sub(chatsAtom, () => {
     void set("chats", store.get(chatsAtom))
 })
 
-export const messagesAtom = atomWithImmer<Map<StampID, MessageItem>>(new Map())
+export const messagesAtom = atomWithImmer<Map<StampID, MessageData>>(new Map())
 
 store.sub(messagesAtom, () => {
     void set("messages", store.get(messagesAtom))
@@ -58,9 +59,20 @@ export const sortedChatsAtom = atom((get) => {
     return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
-export const addChatAtom = atom(null, (_, set, payload: ChatItem) => {
+export const addChatAtom = atom(null, (_, set, payload: ChatData) => {
+    const messages = new Set<StampID>()
+    set(messagesAtom, (draft) => {
+        for (const message of payload.content) {
+            draft.set(message.id, message)
+            messages.add(message.id)
+        }
+    })
     set(chatsAtom, (draft) => {
-        draft.set(payload.id, payload)
+        const chat = {
+            ...omit(["content"], payload),
+            messages: Array.from(messages),
+        }
+        draft.set(chat.id, chat)
     })
 })
 
@@ -78,7 +90,7 @@ export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: 
     })
 })
 
-export const addMessageAtom = atom(null, (_, set, payload: MessageItem) => {
+export const addMessageAtom = atom(null, (_, set, payload: MessageData) => {
     set(messagesAtom, (draft) => {
         draft.set(payload.id, payload)
     })
@@ -125,7 +137,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         return
     }
 
-    const messages: Omit<MessageItem, "id">[] = Array.from(get(messagesAtom).values()).map(omit(["id"]))
+    const content = Array.from(get(messagesAtom).values())
 
     const abortController = new AbortController()
 
@@ -135,7 +147,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         generatingMessageID: makeID(),
     }
 
-    const message: MessageItem = {
+    const message: MessageData = {
         id: taskMeta.generatingMessageID,
         content: "",
         role: "assistant",
@@ -172,7 +184,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         )
     }
 
-    const stream = await defaultBot.generateChatCompletionStream(messages)
+    const stream = await defaultBot.generateChatCompletionStream({ ...omit(["messages"], chat), content })
 
     if (stream.isErr()) {
         const error = stream.unwrapErr()

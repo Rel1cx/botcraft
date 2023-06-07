@@ -11,12 +11,12 @@ import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
-import type { MessageItem } from "@/stores"
+import type { MessageData } from "@/bots/builtins/types"
 
 import * as css from "./styles.css"
 
 export type MessageProps = {
-    data: MessageItem
+    data: MessageData
 }
 
 const remarkExtensions = [remarkGfm, remarkBreaks, remarkMath]

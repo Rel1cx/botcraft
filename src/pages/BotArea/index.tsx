@@ -6,12 +6,11 @@ import { match } from "ts-pattern"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
-import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
-import { makeID, StampID } from "@/lib/uuid"
+import { StampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import type { ChatItem, MessageItem } from "@/stores"
 import { addChatAtom, addMessageAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
 
+import { defaultBot } from "../../bots"
 import RootLayout from "../RootLayout"
 import ChatDetail from "./ChatDetail"
 import Settings from "./Settings"
@@ -42,22 +41,10 @@ const RedirectChat = ({ botName }: { botName: string }) => {
             return
         }
 
-        const preCreatedMessage: MessageItem = {
-            id: makeID(),
-            role: "system",
-            content: DEFAULT_SYSTEM_MESSAGE,
-            updatedAt: Date.now(),
-        }
+        const newChat = defaultBot.initChat()
 
-        const newChat: ChatItem = {
-            id: makeID(),
-            title: "",
-            updatedAt: Date.now(),
-            messages: [preCreatedMessage.id],
-        }
-
-        addMessage(preCreatedMessage)
         addChat(newChat)
+
         Router.push("BotChat", { botName, chatID: newChat.id })
     })
 

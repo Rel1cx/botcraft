@@ -1,17 +1,18 @@
 import { get } from "idb-keyval"
 import { getDefaultStore } from "jotai"
 
+import type { MessageData } from "@/bots/builtins/types"
 import { configManager } from "@/config"
 import type { StampID } from "@/lib/uuid"
 
 import { apiKeyAtom, chatsAtom, messagesAtom } from "./bot/atoms"
-import type { ChatItem, MessageItem } from "./bot/types"
+import type { ChatItem } from "./bot/types"
 
 export const store = getDefaultStore()
 
 export const loadDBToAtom = async () => {
     const chats = await get<Map<StampID, ChatItem>>("chats")
-    const messages = await get<Map<StampID, MessageItem>>("messages")
+    const messages = await get<Map<StampID, MessageData>>("messages")
 
     if (!chats || !messages) {
         return

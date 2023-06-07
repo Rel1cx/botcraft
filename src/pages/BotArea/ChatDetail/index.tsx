@@ -3,13 +3,13 @@ import { useTransientAtom } from "jotai-game"
 import { lazy, useMemo, useRef } from "react"
 import useEvent from "react-use-event-hook"
 
+import type { MessageData } from "@/bots/builtins/types"
+import { defaultBot } from "@/bots/index"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
-import { DEFAULT_SYSTEM_MESSAGE } from "@/constants"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
-import type { ChatItem, MessageItem } from "@/stores"
 import {
     addChatAtom,
     addMessageAtom,
@@ -51,21 +51,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const isGenerating = chatCompletionTask.isSome() && chatCompletionTask.unwrap().type === "pending"
 
     const onAddChatClick = useEvent(() => {
-        const preCreatedMessage: MessageItem = {
-            id: makeID(),
-            role: "system",
-            content: DEFAULT_SYSTEM_MESSAGE,
-            updatedAt: Date.now(),
-        }
-
-        const newChat: ChatItem = {
-            id: makeID(),
-            messages: [preCreatedMessage.id],
-            title: "",
-            updatedAt: Date.now(),
-        }
-
-        addMessage(preCreatedMessage)
+        const newChat = defaultBot.initChat()
         addChat(newChat)
     })
 
@@ -81,7 +67,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     })
 
     const onMessageCreate = useEvent(async (content: string) => {
-        const message: MessageItem = {
+        const message: MessageData = {
             id: makeID(),
             content,
             role: "user",

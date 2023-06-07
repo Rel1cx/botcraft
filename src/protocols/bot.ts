@@ -1,4 +1,17 @@
-import type { ChatMessage } from "@/zod"
+import type { Remap } from "@/lib/utilityTypes"
+
+import type { ContentProtocol, CreatableProtocol, RoleProtocol, StampIDProtocol, TitleProtocol } from "./misc"
+
+export type MessageProtocol = Remap<StampIDProtocol & RoleProtocol & CreatableProtocol & ContentProtocol<string>>
+
+export type ChatProtocol = Remap<
+    StampIDProtocol &
+        TitleProtocol &
+        CreatableProtocol &
+        ContentProtocol<MessageProtocol[]> & {
+            intro: string
+        }
+>
 
 export type BotProtocol = {
     prompt: string
@@ -11,11 +24,11 @@ export type BotProtocol = {
 
     // tokenDecode: (tokens: Uint32Array) => string
 
-    initChat: () => ChatMessage[]
+    initChat: () => ChatProtocol
 
-    estimateTokenCount: (message: ChatMessage[]) => number
+    estimateTokenCount: (content: ChatProtocol["content"]) => number
 
-    generateChatCompletion: (messages: ChatMessage[]) => Promise<unknown>
+    generateChatCompletion: (chat: ChatProtocol) => Promise<unknown>
 
-    generateChatCompletionStream: (messages: ChatMessage[]) => Promise<unknown>
+    generateChatCompletionStream: (chat: ChatProtocol) => Promise<unknown>
 }

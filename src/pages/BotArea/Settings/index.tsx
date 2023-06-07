@@ -1,5 +1,6 @@
-import clsx from "clsx"
+import { TextInput } from "@mantine/core"
 import { useAtom } from "jotai"
+import type { ChangeEvent } from "react"
 
 import { apiKeyAtom } from "@/stores"
 
@@ -15,12 +16,23 @@ const Settings = ({ botName }: SettingsProps) => {
 
     return (
         <Layout header={`${botName} Settings`}>
-            <div className={clsx("prose-sm", css.content)}>
-                <h3>API Key</h3>
-                <input
-                    type="text"
+            <div className={css.content}>
+                <TextInput
+                    name="botName"
+                    label="Bot Name"
+                    value={botName}
+                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                        // setBotName(evt.target.value)
+                    }}
+                />
+
+                <TextInput name="endpoint" label="Endpoint" value="" disabled />
+
+                <TextInput
+                    name="apiKey"
+                    label="API Key"
                     value={apiKey}
-                    onChange={(evt) => {
+                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
                         setApiKey(evt.target.value)
                     }}
                 />

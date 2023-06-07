@@ -1,10 +1,9 @@
+import type { ChatData } from "@/bots/builtins/types"
 import type { StampID } from "@/lib/uuid"
-import type { ChatProtocol, MessageProtocol } from "@/protocols/chat"
+import type { ChatProtocol } from "@/protocols"
 
-export type ChatItem = Omit<ChatProtocol, "content"> & {
+export type ChatItem = Omit<ChatData, "content"> & {
     messages: StampID[]
 }
-
-export type MessageItem = MessageProtocol
 
 export type ChatMeta = Pick<ChatProtocol, "id" | "title" | "updatedAt">
