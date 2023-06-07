@@ -2,7 +2,6 @@ import "@/styles/base.css"
 import "@/styles/global.scss"
 import "@/styles/overrides.scss"
 
-import { Option as O } from "ftld"
 import { enableMapSet, setAutoFreeze, setUseStrictShallowCopy } from "immer"
 import { createElement } from "react"
 import { createRoot } from "react-dom/client"
@@ -27,16 +26,20 @@ const main = async () => {
 
     await loadDBToAtom()
 
-    O.from(document.querySelector("#root"))
-        .result()
-        .map(createRoot)
-        .tap((root) => root.render(createElement(App, { locale })))
-        // eslint-disable-next-line no-console
-        .tapErr(console.error)
+    const el = document.querySelector("#root")
+
+    if (!el) {
+        throw new Error("Element #root not found")
+    }
+
+    const root = createRoot(el)
+
+    root.render(createElement(App, { locale }))
 
     autoBlur(document)
 
     await waitDOMContentLoaded()
+
     window.progress.end()
 }
 

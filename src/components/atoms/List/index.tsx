@@ -1,5 +1,4 @@
-import { Box, createPolymorphicComponent } from "@mantine/core"
-import clsx from "clsx"
+import { Slot } from "@radix-ui/react-slot"
 import { forwardRef, Fragment, memo, useRef } from "react"
 
 import type { ListItemProtocol } from "@/protocols"
@@ -18,20 +17,16 @@ type ListProps = {
 const defaultData: ListItemProtocol[] = []
 
 export type ListItemProps = {
+    asChild?: boolean
     children: React.ReactNode
-    className?: string
 }
 
-export const ListItem = createPolymorphicComponent<"div", ListItemProps>(
-    memo(
-        forwardRef<HTMLDivElement, ListItemProps>(({ children, className, ...rest }: ListItemProps, ref) => {
-            return (
-                <Box component="div" ref={ref} className={clsx(css.item, className)} {...rest}>
-                    <div className={css.itemText}>{children}</div>
-                </Box>
-            )
-        }),
-    ),
+export const ListItem = memo(
+    forwardRef<HTMLDivElement, ListItemProps>(({ asChild, ...rest }: ListItemProps, ref) => {
+        const Comp = asChild ? Slot : "div"
+
+        return <Comp className={css.item} ref={ref} {...rest} />
+    }),
 )
 
 const List = memo(

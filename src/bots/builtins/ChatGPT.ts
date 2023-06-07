@@ -74,7 +74,11 @@ export class ChatGPT implements BotProtocol, NameProtocol, IconProtocol, Creatab
             return Result.Err(stream.unwrapErr())
         }
 
-        const reader = stream.unwrap().getReader()
+        const reader = stream.unwrap()?.getReader()
+
+        if (!reader) {
+            return Result.Err(new Error("Failed to get reader"))
+        }
 
         const observable = readerToObservable(reader)
 

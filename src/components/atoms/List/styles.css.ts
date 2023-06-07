@@ -28,22 +28,16 @@ export const item = style({
     alignItems: "center",
     width: "100%",
     height: "38px",
-    borderRadius: "0.25rem",
+    fontSize: "14px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
     background: "#fff",
+    borderRadius: "0.25rem",
     cursor: "pointer",
 })
 
 globalStyle(`${itemList} [data-selected='true']`, {
     color: "#fff",
     background: vars.colors.primary,
-})
-
-export const itemText = style({
-    width: "100%",
-    color: "inherit",
-    fontWeight: "400",
-    fontSize: "14px",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
 })

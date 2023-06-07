@@ -101,14 +101,10 @@ const TimeStack = memo(
                             {markers.inverse.has(index) ? (
                                 <SectionTitle title={markers.inverse.get(index) ?? ""} />
                             ) : null}
-                            <ListItem
-                                component={Link}
-                                className={css.item}
-                                data-id={item.id}
-                                data-selected={selected}
-                                to={`/bots/ChatGPT/${item.id}`}
-                            >
-                                {item.title}
+                            <ListItem asChild data-id={item.id} data-selected={selected}>
+                                <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
+                                    {item.title}
+                                </Link>
                             </ListItem>
                         </>
                     )}

@@ -1,4 +1,4 @@
-import { Option as O, Task } from "ftld"
+import { Task } from "ftld"
 import type { HTTPError, KyResponse } from "ky"
 import ky from "ky"
 import { pick } from "rambda"
@@ -34,5 +34,5 @@ export const getChatCompletionStream = async (
         }),
     ).run()
 
-    return result.flatMap((v) => O.from(v.body).result())
+    return result.map((v) => v.body)
 }
