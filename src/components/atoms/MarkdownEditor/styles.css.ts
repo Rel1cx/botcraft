@@ -5,6 +5,9 @@ import { vars } from "@/theme/vars.css"
 export const container = style({
     display: "flex",
     fontSize: "16px",
+    borderRadius: "0.5rem",
+    backgroundColor: vars.colors.background,
+    overflow: "hidden",
 
     "@media": {
         "screen and (max-width: 768px)": {

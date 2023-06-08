@@ -1,3 +1,5 @@
+import "/public/fonts/font.css"
+
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { lazy, Suspense, useMemo, useRef } from "react"
@@ -8,6 +10,7 @@ import { defaultBot } from "@/bots/index"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
 import Chat from "@/components/Chat"
+import { ChatMessageEditor } from "@/components/ChatMessgeEditor"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
@@ -97,8 +100,6 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         await requestChatCompletion(chatID)
     })
 
-    const shouldSend = useEvent((value: string) => value.trim() !== "" && !isGenerating)
-
     const aside = useMemo(
         () => (
             <TimeStack
@@ -147,7 +148,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <MarkdownEditor onComplete={onMessageCreate} shouldComplete={shouldSend} />
+                <ChatMessageEditor id={chatID} onComplete={onMessageCreate} shouldSend={!isGenerating} />
             </div>
         </Layout>
     )
