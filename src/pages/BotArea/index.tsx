@@ -4,13 +4,13 @@ import { Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
+import { defaultBot } from "@/bots"
 import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
-import { StampID } from "@/lib/uuid"
+import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { addChatAtom, addMessageAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
 
-import { defaultBot } from "../../bots"
 import RootLayout from "../RootLayout"
 import ChatDetail from "./ChatDetail"
 import Settings from "./Settings"
@@ -64,13 +64,13 @@ const BotArea = ({ botName }: BotProps) => {
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
                 .with({ name: "BotChat" }, ({ params }) => {
-                    const chatID = StampID(params.chatID)
+                    const { chatID } = params
 
-                    if (chatID.isErr()) {
+                    if (!isStampID(chatID)) {
                         return <Redirect to={`/bots/${params.botName}`} />
                     }
 
-                    return <ChatDetail botName={params.botName} chatID={chatID.unwrap()} />
+                    return <ChatDetail botName={params.botName} chatID={chatID} />
                 })
                 .otherwise(() => null),
         [hasApiKey, route],

@@ -1,4 +1,4 @@
-import { Option as O } from "ftld"
+import { Option as O } from "@swan-io/boxed"
 import { set } from "idb-keyval"
 import { atom, getDefaultStore } from "jotai"
 import { atomWithImmer } from "jotai-immer"
@@ -186,13 +186,13 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
 
     const stream = await defaultBot.generateChatCompletionStream({ ...omit(["messages"], chat), content })
 
-    if (stream.isErr()) {
-        const error = stream.unwrapErr()
+    if (!stream.isOk()) {
+        const error = stream.getError()
         handleError(error)
         return
     }
 
-    stream.unwrap().subscribe({
+    stream.get().subscribe({
         next(msg) {
             set(messagesAtom, (draft) => {
                 const message = draft.get(taskMeta.generatingMessageID)

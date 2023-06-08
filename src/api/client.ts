@@ -1,4 +1,4 @@
-import { Task } from "ftld"
+import { Result as R } from "@swan-io/boxed"
 import type { HTTPError, KyResponse } from "ky"
 import ky from "ky"
 import { pick } from "rambda"
@@ -21,7 +21,7 @@ export const getChatCompletionStream = async (
         ...customHeaders,
     }
 
-    const result = await Task.from<KyResponse, HTTPError>(() =>
+    const result = await R.fromPromise<KyResponse, HTTPError>(
         ky.post(VITE_OPENAI_API_ENDPOINT, {
             signal,
             headers,
@@ -32,7 +32,7 @@ export const getChatCompletionStream = async (
                 stream: true,
             }),
         }),
-    ).run()
+    )
 
-    return result.map((v) => v.body)
+    return result.map((r) => r.body)
 }

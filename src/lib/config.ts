@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import { Option as O, Task } from "ftld"
+import { Option as O, Result as R } from "@swan-io/boxed"
 import type { UseStore } from "idb-keyval"
 import { clear, createStore, del, delMany, get, getMany, keys, set, setMany } from "idb-keyval"
 import { zipObj } from "rambda"
@@ -25,23 +25,23 @@ export class ConfigManager<T> {
 
     async getConfig<K extends Extract<keyof T, string>>(key: K) {
         const val: T[K] | undefined = await get(key, this.#store)
-        return O.from(val)
+        return O.fromNullable(val)
     }
 
     setConfig<K extends Extract<keyof T, string>>(key: K, value: T[K]) {
-        return Task.from<void, Error>(() => set(key, value, this.#store)).run()
+        return R.fromPromise<void, Error>(set(key, value, this.#store))
     }
 
     setConfigMany(data: Partial<T>) {
-        return Task.from<void, Error>(() => setMany(Object.entries(data), this.#store)).run()
+        return R.fromPromise<void, Error>(setMany(Object.entries(data), this.#store))
     }
 
     deleteConfig<K extends Extract<keyof T, string>>(key: K) {
-        return Task.from<void, Error>(() => del(key, this.#store)).run()
+        return R.fromPromise<void, Error>(del(key, this.#store))
     }
 
     deleteConfigMany(keys: Extract<keyof T, string>[]) {
-        return Task.from<void, Error>(() => delMany(keys, this.#store)).run()
+        return R.fromPromise<void, Error>(delMany(keys, this.#store))
     }
 
     loadConfig() {
@@ -50,10 +50,10 @@ export class ConfigManager<T> {
             const valList = await getMany<T[keyof T]>(keyList, this.#store)
             return this.parse(zipObj(keyList, valList))
         }
-        return Task.from(load).run()
+        return R.fromPromise(load())
     }
 
     resetConfig() {
-        return Task.from<void, Error>(() => clear(this.#store)).run()
+        return R.fromPromise<void, Error>(clear(this.#store))
     }
 }

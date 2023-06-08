@@ -1,4 +1,4 @@
-import { Result } from "ftld"
+import { Result } from "@swan-io/boxed"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
 
@@ -54,30 +54,34 @@ export class ChatGPT implements BotProtocol, NameProtocol, IconProtocol, Creatab
     }
 
     // TODO: Implement this
-    generateChatCompletion(chat: ChatData): Promise<Result<Error, unknown>> {
-        return Promise.resolve(Result.Err(new Error("Not implemented")))
+    generateChatCompletion(chat: ChatData): Promise<Result<unknown, Error>> {
+        return Promise.resolve(Result.Error(new Error("Not implemented")))
     }
 
-    async generateChatCompletionStream(chat: ChatData): Promise<Result<Error, Observable<string>>> {
+    async generateChatCompletionStream(chat: ChatData): Promise<Result<Observable<string>, Error>> {
         const messages = chat.content
         const apiKey = await configManager.getConfig("apiKey")
 
+        if (apiKey.isNone()) {
+            return Result.Error(new Error("API key is not set"))
+        }
+
         const stream = await getChatCompletionStream(
-            apiKey.unwrap(),
+            apiKey.get(),
             messages,
             this.options,
             {},
             this.abortController.signal,
         )
 
-        if (stream.isErr()) {
-            return Result.Err(stream.unwrapErr())
+        if (stream.isError()) {
+            return Result.Error(stream.getError())
         }
 
-        const reader = stream.unwrap()?.getReader()
+        const reader = stream.get()?.getReader()
 
         if (!reader) {
-            return Result.Err(new Error("Failed to get reader"))
+            return Result.Error(new Error("Failed to get reader"))
         }
 
         const observable = readerToObservable(reader)

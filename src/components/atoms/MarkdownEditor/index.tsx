@@ -1,10 +1,10 @@
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { languages } from "@codemirror/language-data"
 import { EditorView } from "@codemirror/view"
+import { Option as O } from "@swan-io/boxed"
 import type { BasicSetupOptions } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
 import { basicLight } from "cm6-theme-basic-light"
-import { Option as O } from "ftld"
 import { memo, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -82,7 +82,7 @@ const MarkdownEditor = memo(
                 evt.preventDefault()
                 onComplete?.(content)
                 if (shouldResetEditor(content)) {
-                    editorRef.current.tap(resetEditor)
+                    editorRef.current.map(resetEditor)
                 }
             },
             {

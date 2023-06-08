@@ -64,7 +64,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const isGenerating = chatCompletionTask.isSome() && chatCompletionTask.unwrap().type === "pending"
+    const isGenerating = chatCompletionTask.isSome() && chatCompletionTask.get().type === "pending"
 
     const onAddChatClick = useEvent(() => {
         const newChat = defaultBot.initChat()

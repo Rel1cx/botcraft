@@ -43,7 +43,6 @@ export default defineConfig({
     envPrefix: ["VITE_"],
     build: {
         target: "es2021",
-        minify: "esbuild",
         rollupOptions: {
             output: {
                 manualChunks: {
