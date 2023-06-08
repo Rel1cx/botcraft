@@ -35,6 +35,9 @@ export const ChatMessageEditor = ({
     })
 
     const tokens = useMemo(() => {
+        if (debouncedContent === "") {
+            return 0
+        }
         const message: MessageData = { id, content: debouncedContent, role: "user", updatedAt: Date.now() }
         return defaultBot.estimateTokenCount([message])
     }, [debouncedContent, id])
