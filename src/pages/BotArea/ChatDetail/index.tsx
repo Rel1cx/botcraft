@@ -1,5 +1,3 @@
-import "/public/fonts/font.css"
-
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { lazy, Suspense, useCallback, useMemo, useRef } from "react"
