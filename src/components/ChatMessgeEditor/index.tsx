@@ -48,17 +48,13 @@ export const ChatMessageEditor = ({
     return (
         <div className={css.container}>
             <div
-                className={css.info}
+                className={css.toolbar}
                 style={{
                     opacity: focused ? 1 : 0,
                 }}
             >
-                <span>
-                    Words: <span className={css.number}>{content.length}</span>
-                </span>
-                <span>
-                    Tokens: <span className={css.number}>{tokens}</span>
-                </span>
+                <span className={css.info}>Words: {content.length}</span>
+                <span className={css.info}>Tokens: {tokens}</span>
             </div>
 
             {useMemo(
