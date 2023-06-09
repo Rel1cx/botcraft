@@ -1,6 +1,5 @@
 import { useDebouncedState } from "@react-hookz/web"
-import { startTransition, useMemo, useState } from "react"
-import useEvent from "react-use-event-hook"
+import { startTransition, useCallback, useMemo, useState } from "react"
 
 import { defaultBot } from "@/bots"
 import type { MessageData } from "@/bots/builtins/types"
@@ -28,12 +27,15 @@ export const ChatMessageEditor = ({
 
     const [debouncedContent, setDebouncedContent] = useDebouncedState(content, 500)
 
-    const onContentChange = useEvent((value: string) => {
-        startTransition(() => {
-            setContent(value)
-            setDebouncedContent(value)
-        })
-    })
+    const onContentChange = useCallback(
+        (value: string) => {
+            startTransition(() => {
+                setContent(value)
+                setDebouncedContent(value)
+            })
+        },
+        [setDebouncedContent],
+    )
 
     const tokens = useMemo(() => {
         if (debouncedContent === "") {

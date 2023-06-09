@@ -2,8 +2,7 @@ import "/public/fonts/font.css"
 
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { lazy, Suspense, useMemo, useRef } from "react"
-import useEvent from "react-use-event-hook"
+import { lazy, Suspense, useCallback, useMemo, useRef } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { defaultBot } from "@/bots/index"
@@ -68,12 +67,12 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const isGenerating = chatCompletionTask.isSome() && chatCompletionTask.get().type === "pending"
 
-    const onAddChatClick = useEvent(() => {
+    const onAddChatClick = useCallback(() => {
         const newChat = defaultBot.initChat()
         addChat(newChat)
-    })
+    }, [addChat])
 
-    const onChatRemoveClick = useEvent(() => {
+    const onChatRemoveClick = useCallback(() => {
         const chats = getChats()
         const isLast = chats.size === 1
         // TODO: Allow safe removal of last chat
@@ -82,22 +81,25 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         }
         Router.push("BotNewChat", { botName })
         removeChat(chatID)
-    })
+    }, [botName, chatID, getChats, removeChat])
 
-    const onMessageCreate = useEvent(async (content: string) => {
-        const message: MessageData = {
-            id: makeID(),
-            content,
-            role: "user",
-            updatedAt: Date.now(),
-        }
-        addMessage(message)
-        updateChat(chatID, (draft) => {
-            draft.messages.push(message.id)
-        })
+    const onMessageCreate = useCallback(
+        async (content: string) => {
+            const message: MessageData = {
+                id: makeID(),
+                content,
+                role: "user",
+                updatedAt: Date.now(),
+            }
+            addMessage(message)
+            updateChat(chatID, (draft) => {
+                draft.messages.push(message.id)
+            })
 
-        await requestChatCompletion(chatID)
-    })
+            await requestChatCompletion(chatID)
+        },
+        [addMessage, chatID, requestChatCompletion, updateChat],
+    )
 
     const aside = useMemo(
         () => (

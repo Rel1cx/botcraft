@@ -1,1 +1,0 @@
-import{o as t,__tla as l}from"./index-d36343bc.js";import"https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js";import"./react-7029a116.js";let r,a=Promise.all([(()=>{try{return l}catch{}})()]).then(async()=>{r=()=>t.jsx("div",{children:t.jsx("h1",{children:"404"})})});export{a as __tla,r as default};

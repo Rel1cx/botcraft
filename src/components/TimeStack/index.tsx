@@ -3,9 +3,8 @@ import { BiMap } from "@rizzzse/bimap"
 import { Link } from "@swan-io/chicane"
 import { formatDistanceToNow } from "date-fns"
 import { PlusIcon } from "lucide-react"
-import { memo, useMemo } from "react"
+import { memo, useCallback, useMemo } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import useEvent from "react-use-event-hook"
 
 import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols"
 
@@ -74,9 +73,9 @@ const TimeStack = memo(
             return markers
         }, [items])
 
-        const handleItemAdd = useEvent(() => onItemAdd?.())
+        const handleItemAdd = useCallback(() => onItemAdd?.(), [onItemAdd])
 
-        const handleItemRemove = useEvent((id: string) => onItemRemove?.(id))
+        const handleItemRemove = useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
 
         useHotkeys("del", () => {
             if (!selected) {
