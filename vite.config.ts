@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { defineConfig } from "vite"
 import { imagetools } from "vite-imagetools"
-import forgetti from "vite-plugin-forgetti"
+// import forgetti from "vite-plugin-forgetti"
 import preload from "vite-plugin-preload"
 import topLevelAwait from "vite-plugin-top-level-await"
 import wasm from "vite-plugin-wasm"
@@ -14,13 +14,13 @@ const isDev = process.env.NODE_ENV === "development"
 export default defineConfig({
     plugins: [
         react(),
-        forgetti({
-            preset: "react",
-            filter: {
-                include: "src/components/**/*.{ts,js,tsx,jsx}",
-                exclude: "node_modules/**/*.{ts,js,tsx,jsx}",
-            },
-        }),
+        // forgetti({
+        //     preset: "react",
+        //     filter: {
+        //         include: "src/components/**/*.{ts,js,tsx,jsx}",
+        //         exclude: "node_modules/**/*.{ts,js,tsx,jsx}",
+        //     },
+        // }),
         vanillaExtractPlugin(),
         wasm(),
         topLevelAwait(),

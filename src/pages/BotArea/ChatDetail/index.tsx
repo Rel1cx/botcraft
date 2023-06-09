@@ -32,14 +32,13 @@ import { Layout } from "../Layout"
 import * as css from "./styles.css"
 
 const TimeStack = lazy(() => import("@/components/TimeStack"))
-const MarkdownEditor = lazy(() => import("@/components/atoms/MarkdownEditor"))
+
+const Message = lazy(() => import("@/components/atoms/Message"))
 
 type ChatDetailProps = {
     botName: string
     chatID: StampID
 }
-
-const Message = lazy(() => import("@/components/atoms/Message"))
 
 export type ChatProps = {
     data: ChatItem

@@ -14,6 +14,8 @@ import * as css from "./styles.css"
 type MarkdownEditorProps = {
     defaultValue?: string
     placeholder?: string
+    onFocus?: () => void
+    onBlur?: () => void
     onChange?: (value: string) => void
     onComplete?: (value: string) => void
     shouldComplete?: (value: string) => boolean
@@ -63,8 +65,10 @@ const resetEditor = (editor: EditorView) => {
 const MarkdownEditor = memo(
     ({
         defaultValue = "",
+        onBlur,
         onChange,
         onComplete,
+        onFocus,
         placeholder = defaultPlaceholder,
         shouldComplete = defaultShouldComplete,
         shouldResetEditor = defaultShouldResetEditor,
@@ -103,6 +107,8 @@ const MarkdownEditor = memo(
                         onCreateEditor={(editor) => {
                             editorRef.current = O.Some(editor)
                         }}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
                         onChange={(value) => {
                             contentRef.current = value
                             onChange?.(value)

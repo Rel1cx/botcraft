@@ -23,6 +23,7 @@ export const ChatMessageEditor = ({
     onComplete = noop,
     shouldSend = false,
 }: ChatMessageEditorProps) => {
+    const [focused, setFocused] = useState(false)
     const [content, setContent] = useState(defaultContent)
 
     const [debouncedContent, setDebouncedContent] = useDebouncedState(content, 500)
@@ -43,19 +44,13 @@ export const ChatMessageEditor = ({
     }, [debouncedContent, id])
 
     return (
-        <div>
-            {useMemo(
-                () => (
-                    <MarkdownEditor
-                        defaultValue={defaultContent}
-                        onComplete={onComplete}
-                        onChange={onContentChange}
-                        shouldComplete={(value) => value.trim() !== "" && shouldSend}
-                    />
-                ),
-                [defaultContent, onComplete, onContentChange, shouldSend],
-            )}
-            <div className={css.footer}>
+        <div className={css.container}>
+            <div
+                className={css.info}
+                style={{
+                    opacity: focused ? 1 : 0,
+                }}
+            >
                 <span>
                     Words: <span className={css.number}>{content.length}</span>
                 </span>
@@ -63,6 +58,20 @@ export const ChatMessageEditor = ({
                     Tokens: <span className={css.number}>{tokens}</span>
                 </span>
             </div>
+
+            {useMemo(
+                () => (
+                    <MarkdownEditor
+                        defaultValue={defaultContent}
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
+                        onChange={onContentChange}
+                        onComplete={onComplete}
+                        shouldComplete={(value) => value.trim() !== "" && shouldSend}
+                    />
+                ),
+                [defaultContent, onComplete, onContentChange, shouldSend],
+            )}
         </div>
     )
 }
