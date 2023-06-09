@@ -82,7 +82,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     }, [botName, chatID, getChats, removeChat])
 
     const onMessageCreate = useCallback(
-        async (content: string) => {
+        (content: string) => {
             const message: MessageData = {
                 id: makeID(),
                 content,
@@ -94,7 +94,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 draft.messages.push(message.id)
             })
 
-            await requestChatCompletion(chatID)
+            void requestChatCompletion(chatID)
         },
         [addMessage, chatID, requestChatCompletion, updateChat],
     )
