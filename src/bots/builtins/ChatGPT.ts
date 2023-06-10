@@ -11,11 +11,10 @@ import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/const
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
 import { makeID } from "@/lib/uuid"
-import type { BotProtocol, CreatableProtocol, IconProtocol, NameProtocol } from "@/protocols"
 
-import type { ChatData, MessageData } from "./types"
+import type { Bot, ChatData, MessageData } from "./types"
 
-export class ChatGPT implements BotProtocol, NameProtocol, IconProtocol, CreatableProtocol {
+export class ChatGPT implements Bot {
     name = "ChatGPT-3.5"
 
     icon = chatgpt

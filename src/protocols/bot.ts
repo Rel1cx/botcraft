@@ -19,16 +19,4 @@ export type BotProtocol = {
     intro: string
 
     options: Record<string, unknown>
-
-    // tokenEncode: (text: string) => Uint32Array
-
-    // tokenDecode: (tokens: Uint32Array) => string
-
-    initChat: () => ChatProtocol
-
-    estimateTokenCount: (content: ChatProtocol["content"]) => number
-
-    generateChatCompletion: (chat: ChatProtocol) => Promise<unknown>
-
-    generateChatCompletionStream: (chat: ChatProtocol) => Promise<unknown>
 }
