@@ -11,11 +11,11 @@ export const toolbar = style({
     alignItems: "center",
     height: "1.25rem",
     gap: "1rem",
-    margin: "1rem 0",
+    marginBottom: "1rem",
     color: "#555",
     fontSize: "12px",
     opacity: "0",
-    transition: "opacity 100ms ease-out",
+    transition: "opacity 120ms ease-out",
 })
 
 export const info = style({

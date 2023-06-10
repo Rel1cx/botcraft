@@ -19,7 +19,7 @@ export const item = style({
     cursor: "pointer",
     borderRadius: "0.25rem",
     background: vars.colors.background,
-    transition: "filter 100ms ease-out",
+    transition: "filter 120ms ease-out",
     selectors: {
         "&[data-selected='true']": {
             color: "#fff",
@@ -49,7 +49,7 @@ export const newChatButton = style({
     color: vars.colors.secondary,
     border: `1px solid ${vars.colors.secondary}`,
     borderRadius: "0.25rem",
-    transition: "background 100ms ease-out",
+    transition: "background 120ms ease-out",
 
     ":hover": {
         background: vars.colors.hover,

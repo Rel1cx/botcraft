@@ -21,7 +21,7 @@ export const plus = style({
     cursor: "pointer",
     color: vars.colors.overlay,
     outline: `1.5px dashed ${vars.colors.overlay}`,
-    transition: "filter 100ms ease-out",
+    transition: "filter 120ms ease-out",
 
     ":hover": {
         filter: "brightness(0.96)",

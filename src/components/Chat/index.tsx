@@ -1,10 +1,16 @@
 import { useResizeObserver } from "@react-hookz/web"
-import { useRef } from "react"
+import { AnimatePresence, m } from "framer-motion"
+import { lazy, useMemo, useRef } from "react"
 
-import type { StampID } from "@/lib/uuid"
+import type { MessageData } from "@/bots/builtins/types"
+import { makeID, type StampID } from "@/lib/uuid"
 import type { ChatItem } from "@/stores"
 
 import * as css from "./styles.css"
+
+const Message = lazy(() => import("@/components/atoms/Message"))
+
+const Animation = lazy(() => import("@/components/atoms/Animation"))
 
 export type ChatProps = {
     data: ChatItem
@@ -18,6 +24,16 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
 
     const contentRef = useRef<HTMLDivElement>(null)
 
+    const introMessage = useMemo<MessageData>(
+        () => ({
+            id: makeID(),
+            role: "assistant",
+            content: intro,
+            updatedAt: Date.now(),
+        }),
+        [intro],
+    )
+
     useResizeObserver(
         contentRef,
         (entry) => {
@@ -29,9 +45,18 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
     return (
         <div className={css.container}>
             <div className={css.content} ref={contentRef}>
-                {messages.map((id) => (
-                    <MessageRenderer key={id} id={id} />
-                ))}
+                <Animation>
+                    <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <Message className={css.intro} data={introMessage} />
+                    </m.div>
+                    <AnimatePresence>
+                        {messages.map((id) => (
+                            <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                <MessageRenderer id={id} />
+                            </m.div>
+                        ))}
+                    </AnimatePresence>
+                </Animation>
             </div>
         </div>
     )

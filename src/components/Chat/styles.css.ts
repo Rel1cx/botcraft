@@ -12,4 +12,6 @@ export const content = style({
     padding: "0 1rem",
 })
 
+export const intro = style({})
+
 export const message = style({})

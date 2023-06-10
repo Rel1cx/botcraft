@@ -24,7 +24,7 @@ globalStyle(`${content} .cm-editor`, {
     padding: "0.5rem",
     outline: "none",
     backgroundColor: "transparent",
-    transition: "background-color 100ms ease-out",
+    transition: "background-color 120ms ease-out",
 })
 
 globalStyle(`${content} .cm-editor.cm-focused`, {

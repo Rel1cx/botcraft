@@ -77,7 +77,7 @@ const TimeStack = memo(
 
         const handleItemRemove = useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
 
-        useHotkeys("del", () => {
+        useHotkeys("Delete", () => {
             if (!selected) {
                 return
             }
