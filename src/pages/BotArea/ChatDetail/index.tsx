@@ -77,7 +77,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         if (isLast) {
             return
         }
-        Router.push("BotNewChat", { botName })
+        Router.replace("BotNewChat", { botName })
         removeChat(chatID)
     }, [botName, chatID, getChats, removeChat])
 
