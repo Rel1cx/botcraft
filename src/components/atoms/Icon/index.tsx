@@ -11,8 +11,8 @@ type IconProps = Remap<
     }
 >
 
-const Icon = memo(({ as: Component, color = vars.colors.text, size = 18, strokeWidth = 1.5, ...rest }: IconProps) => {
-    return <Component {...rest} size={size} color={color} strokeWidth={strokeWidth} />
+const Icon = memo(({ as: Comp, color = vars.colors.text, size = 18, strokeWidth = 1.5, ...rest }: IconProps) => {
+    return <Comp {...rest} size={size} color={color} strokeWidth={strokeWidth} />
 })
 
 export default Icon

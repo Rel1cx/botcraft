@@ -86,7 +86,7 @@ export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: 
     set(chatsAtom, (draft) => {
         const chat = draft.get(id)
         invariant(chat, "Chat not found")
-        void mutator(chat)
+        mutator(chat)
     })
 })
 

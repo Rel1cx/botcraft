@@ -14,6 +14,7 @@ import * as css from "./styles.css"
 
 type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
     selected?: string
+    itemIcon?: (id: string) => React.ReactNode
     newItemName?: string
     disableMutation?: boolean
     onItemAdd?: () => void
@@ -49,6 +50,7 @@ const NewItemButton = ({
 const TimeStack = memo(
     ({
         disableMutation = false,
+        itemIcon,
         items,
         newItemName = "New item",
         onItemAdd,
@@ -58,7 +60,7 @@ const TimeStack = memo(
         selected,
     }: TimeStackProps) => {
         const markers = useMemo(() => {
-            const markers: BiMap<string, number> = new BiMap()
+            const markers = new BiMap<string, number>()
 
             for (const [index, chat] of items.entries()) {
                 const dateAgo = formatDistanceToNow(chat.updatedAt, { addSuffix: true })
@@ -102,6 +104,7 @@ const TimeStack = memo(
                             ) : null}
                             <ListItem asChild data-id={item.id} data-selected={selected}>
                                 <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
+                                    {itemIcon?.(item.id)}
                                     {item.title}
                                 </Link>
                             </ListItem>

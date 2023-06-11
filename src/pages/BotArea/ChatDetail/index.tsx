@@ -1,9 +1,11 @@
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
+import { MessageSquare } from "lucide-react"
 import { lazy, Suspense, useCallback, useMemo, useRef } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { defaultBot } from "@/bots/index"
+import Icon from "@/components/atoms/Icon"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
 import Chat from "@/components/Chat"
@@ -24,6 +26,7 @@ import {
     useChat,
     useMessage,
 } from "@/stores"
+import { vars } from "@/theme/vars.css"
 
 import { Layout } from "../Layout"
 import * as css from "./styles.css"
@@ -63,7 +66,15 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const isGenerating = chatCompletionTask.isSome() && chatCompletionTask.get().type === "pending"
+    const isGenerating = useMemo(() => {
+        if (chatCompletionTask.isNone()) {
+            return false
+        }
+
+        const task = chatCompletionTask.get()
+
+        return task.type === "pending" && task.chatID === chatID
+    }, [chatCompletionTask, chatID])
 
     const onAddChatClick = useCallback(() => {
         const newChat = defaultBot.initChat()
@@ -103,6 +114,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         () => (
             <TimeStack
                 items={sortedChats}
+                itemIcon={(id) => <Icon as={MessageSquare} color={chatID === id ? "#fff" : vars.colors.text} />}
                 newItemName="New chat"
                 selected={chatID}
                 disableMutation={isGenerating}

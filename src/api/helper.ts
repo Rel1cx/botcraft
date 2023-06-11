@@ -1,4 +1,4 @@
-/* eslint-disable functional/no-throw-statements */
+ 
 import { parse, stringify } from "telejson"
 
 import { isChatCompletionChunk } from "@/zod"
