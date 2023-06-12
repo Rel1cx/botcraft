@@ -1,8 +1,8 @@
-export type Remap<T> =
-    // eslint-disable-next-line @typescript-eslint/ban-types, functional/readonly-type
-    {} & {
-        [P in keyof T]: T[P]
-    }
+/* eslint-disable functional/readonly-type */
+
+export type Remap<T> = {
+    [P in keyof T]: T[P]
+} & {}
 
 export type UnionFromTuple<T> = T extends (infer U)[] ? U : never
 

@@ -5,6 +5,7 @@
         "new-cap": "off",
         "camelcase": "off",
         "unicorn/prefer-spread": "off",
+        "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-redeclare": "off"
     },
     "overrides": [

@@ -48,7 +48,7 @@ const setupOptions: BasicSetupOptions = {
     tabSize: 2,
 }
 
-const defaultPlaceholder = "Shift+Enter to send, Enter to add new line"
+const defaultPlaceholder = "Ctrl+Enter to send, Enter to add new line"
 
 const extensions = [markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]
 
@@ -77,7 +77,7 @@ const MarkdownEditor = memo(
         const editorRef = useRef<O<EditorView>>(O.None())
 
         useHotkeys(
-            "shift+enter",
+            "ctrl+enter",
             (evt) => {
                 const content = contentRef.current.trim()
                 if (!shouldComplete(content)) {

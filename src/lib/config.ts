@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 import { Option as O, Result as R } from "@swan-io/boxed"
 import type { UseStore } from "idb-keyval"

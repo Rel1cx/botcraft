@@ -12,10 +12,10 @@ const isDev = process.env.NODE_ENV === "development"
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
+        topLevelAwait(),
         react(),
         vanillaExtractPlugin(),
         wasm(),
-        topLevelAwait(),
         imagetools(),
         !isDev &&
             preload({
