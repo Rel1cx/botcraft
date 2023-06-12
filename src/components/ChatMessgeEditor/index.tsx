@@ -3,6 +3,7 @@ import { startTransition, useCallback, useMemo, useState } from "react"
 
 import { defaultBot } from "@/bots"
 import type { MessageData } from "@/bots/builtins/types"
+import { useChatTokens } from "@/hooks/useChatTokens"
 import { noop } from "@/lib/helper"
 import type { StampID } from "@/lib/uuid"
 
@@ -22,6 +23,7 @@ export const ChatMessageEditor = ({
     onComplete = noop,
     shouldSend = false,
 }: ChatMessageEditorProps) => {
+    const totalTokens = useChatTokens(id)
     const [focused, setFocused] = useState(false)
     const [content, setContent] = useState(defaultContent)
 
@@ -55,6 +57,7 @@ export const ChatMessageEditor = ({
             >
                 <span className={css.info}>Words: {content.length}</span>
                 <span className={css.info}>Tokens: {tokens}</span>
+                <span className={css.info}>Total Tokens: {totalTokens}</span>
             </div>
 
             {useMemo(
