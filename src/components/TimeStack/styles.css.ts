@@ -18,7 +18,7 @@ export const item = style({
     padding: "0.5rem",
     cursor: "pointer",
     borderRadius: "0.25rem",
-    background: vars.colors.background,
+    background: vars.colors.lightGray,
     transition: "filter 120ms ease-out",
     selectors: {
         "&[data-selected='true']": {
@@ -46,8 +46,8 @@ export const newChatButton = style({
     alignItems: "center",
     gap: "0.5rem",
     cursor: "pointer",
-    color: vars.colors.secondary,
-    border: `1px solid ${vars.colors.secondary}`,
+    color: vars.colors.text,
+    border: `1px solid ${vars.colors.border}`,
     borderRadius: "0.25rem",
     transition: "background 120ms ease-out",
 

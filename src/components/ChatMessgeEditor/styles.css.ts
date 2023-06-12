@@ -24,6 +24,6 @@ export const info = style({
     textAlign: "center",
     color: vars.colors.text,
     borderRadius: "0.25rem",
-    background: vars.colors.background,
+    background: vars.colors.lightGray,
     fontFamily: "iosevka, monospace",
 })

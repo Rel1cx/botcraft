@@ -16,6 +16,9 @@
         "preview": "vite preview",
         "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
+    "browserslist": [
+        "defaults and supports es6-module"
+    ],
     "dependencies": {
         "@ariakit/react": "0.2.9",
         "@codemirror/lang-markdown": "6.1.1",

@@ -48,7 +48,7 @@ export const content = styleVariants({
     assistant: [
         baseContent,
         {
-            background: vars.colors.background,
+            background: vars.colors.lightGray,
             color: vars.colors.text,
         },
     ],

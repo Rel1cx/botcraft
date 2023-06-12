@@ -6,7 +6,7 @@ export const container = style({
     display: "flex",
     fontSize: "16px",
     borderRadius: "0.5rem",
-    backgroundColor: vars.colors.background,
+    backgroundColor: vars.colors.lightGray,
     overflow: "hidden",
 
     "@media": {
@@ -28,7 +28,7 @@ globalStyle(`${content} .cm-editor`, {
 })
 
 globalStyle(`${content} .cm-editor.cm-focused`, {
-    backgroundColor: vars.colors.background,
+    backgroundColor: vars.colors.lightGray,
 })
 
 globalStyle(`${content} .cm-editor .cm-scroller`, {

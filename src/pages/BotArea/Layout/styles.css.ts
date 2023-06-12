@@ -23,7 +23,7 @@ export const aside = style({
     flexShrink: 0,
     display: "flex",
     flexDirection: "column",
-    borderRight: `1px solid ${vars.colors.overlay}`,
+    borderRight: `1px solid ${vars.colors.border}`,
 
     "@media": {
         "screen and (max-width: 768px)": {
@@ -38,7 +38,7 @@ export const header = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderBottom: `1px solid ${vars.colors.overlay}`,
+    borderBottom: `1px solid ${vars.colors.border}`,
 })
 
 export const asideHeader = style([header, {}])

@@ -21,7 +21,7 @@ export const navContainer = style({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRight: `1px solid ${vars.colors.overlay}`,
+    borderRight: `1px solid ${vars.colors.border}`,
 
     "@media": {
         "screen and (max-width: 768px)": {
@@ -37,7 +37,7 @@ export const navHeader = style({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderBottom: `1px solid ${vars.colors.overlay}`,
+    borderBottom: `1px solid ${vars.colors.border}`,
 })
 
 export const navContent = style({
