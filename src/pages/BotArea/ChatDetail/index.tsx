@@ -114,7 +114,15 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         () => (
             <TimeStack
                 items={sortedChats}
-                itemIcon={(id) => <Icon as={MessageSquare} color={chatID === id ? "#fff" : vars.colors.text} />}
+                itemIcon={(id) => (
+                    <Icon
+                        style={{
+                            flexShrink: 0,
+                        }}
+                        as={MessageSquare}
+                        color={chatID === id ? "#fff" : vars.colors.text}
+                    />
+                )}
                 newItemName="New chat"
                 selected={chatID}
                 disableMutation={isGenerating}

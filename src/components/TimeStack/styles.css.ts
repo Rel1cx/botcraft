@@ -31,6 +31,13 @@ export const item = style({
     },
 })
 
+export const itemTitle = style({
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    textTransform: "capitalize",
+})
+
 export const actionArea = style({
     marginBottom: "0.5rem",
     padding: "0 0.5rem",

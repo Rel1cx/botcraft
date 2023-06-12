@@ -103,7 +103,7 @@ const TimeStack = memo(
                             <ListItem asChild data-id={item.id} data-selected={selected}>
                                 <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
                                     {itemIcon?.(item.id)}
-                                    {item.title}
+                                    <span className={css.itemTitle}>{item.title}</span>
                                 </Link>
                             </ListItem>
                         </>
