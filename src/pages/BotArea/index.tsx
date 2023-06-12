@@ -9,7 +9,7 @@ import Redirect from "@/components/atoms/Redirect"
 import { AvatarList } from "@/components/AvatarList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, addMessageAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
+import { addChatAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout"
 import ChatDetail from "./ChatDetail"
@@ -28,7 +28,6 @@ type BotProps = {
 }
 
 const RedirectChat = ({ botName }: { botName: string }) => {
-    const addMessage = useSetAtom(addMessageAtom)
     const addChat = useSetAtom(addChatAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
 
