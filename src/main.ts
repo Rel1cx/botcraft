@@ -1,6 +1,6 @@
 import "@/styles/base.css"
-import "@/styles/global.scss"
-import "@/styles/overrides.scss"
+import "@/styles/global.css"
+import "@/styles/overrides.css"
 
 import { enableMapSet, setAutoFreeze, setUseStrictShallowCopy } from "immer"
 import { createElement } from "react"

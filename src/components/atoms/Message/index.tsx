@@ -1,4 +1,4 @@
-import "highlight.js/scss/nord.scss"
+import "highlight.js/styles/nord.css"
 import "katex/dist/katex.min.css"
 
 import { clsx } from "clsx"
