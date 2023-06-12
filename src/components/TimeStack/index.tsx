@@ -99,9 +99,7 @@ const TimeStack = memo(
                     selectedID={selected}
                     renderItem={(item, selected, index) => (
                         <>
-                            {markers.inverse.has(index) ? (
-                                <SectionTitle title={markers.inverse.get(index) ?? ""} />
-                            ) : null}
+                            {!!markers.inverse.has(index) && <SectionTitle title={markers.inverse.get(index) ?? ""} />}
                             <ListItem asChild data-id={item.id} data-selected={selected}>
                                 <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
                                     {itemIcon?.(item.id)}
