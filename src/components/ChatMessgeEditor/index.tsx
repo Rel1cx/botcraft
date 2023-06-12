@@ -57,7 +57,7 @@ export const ChatMessageEditor = ({
             >
                 <span className={css.info}>Words: {content.length}</span>
                 <span className={css.info}>Tokens: {tokens}</span>
-                <span className={css.info}>Total Tokens: {totalTokens}</span>
+                <span className={css.info}>Total Tokens: {totalTokens + tokens}</span>
             </div>
 
             {useMemo(
