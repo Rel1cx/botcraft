@@ -3,9 +3,9 @@ import { startTransition, useCallback, useMemo, useState } from "react"
 
 import { defaultBot } from "@/bots"
 import type { MessageData } from "@/bots/builtins/types"
-import { useChatTokens } from "@/hooks/useChatTokens"
 import { noop } from "@/lib/helper"
 import type { StampID } from "@/lib/uuid"
+import { useChatTokens } from "@/stores"
 
 import MarkdownEditor from "../atoms/MarkdownEditor"
 import * as css from "./styles.css"
