@@ -59,7 +59,7 @@ globalStyle(`${baseContent} pre`, {
     whiteSpace: "pre-wrap",
     wordWrap: "break-word",
     fontSize: "1rem",
-    fontFamily: "iosevka, 'Iosevka Web', monospace",
+    fontFamily: "iosevka, monospace",
 })
 
 globalStyle(`${baseContent} code.hljs`, {
