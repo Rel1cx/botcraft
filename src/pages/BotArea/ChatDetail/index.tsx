@@ -6,7 +6,6 @@ import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { defaultBot } from "@/bots/index"
-import ConfirmDialog from "@/components/atoms/ConformDialog"
 import Icon from "@/components/atoms/Icon"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
@@ -36,6 +35,8 @@ import * as css from "./styles.css"
 const TimeStack = lazy(() => import("@/components/TimeStack"))
 
 const Message = lazy(() => import("@/components/atoms/Message"))
+
+const ConfirmDialog = lazy(() => import("@/components/atoms/ConfirmDialog"))
 
 type ChatDetailProps = {
     botName: string
