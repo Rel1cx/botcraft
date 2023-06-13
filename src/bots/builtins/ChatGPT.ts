@@ -1,3 +1,4 @@
+import { randDrinks } from "@ngneat/falso"
 import { Result } from "@swan-io/boxed"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
@@ -42,7 +43,7 @@ export class ChatGPT implements Bot {
 
         return {
             id: makeID(),
-            title: generate(),
+            title: randDrinks(),
             intro: this.intro,
             content: [firstMessage],
             updatedAt: Date.now(),
