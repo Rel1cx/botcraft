@@ -1,4 +1,3 @@
-import { randDrinks } from "@ngneat/falso"
 import { Result } from "@swan-io/boxed"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
@@ -9,12 +8,14 @@ import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { configManager } from "@/config"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
-import { generate } from "@/lib/mnemonic"
+import { makeNameGenerator } from "@/lib/name"
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
 import { makeID } from "@/lib/uuid"
 
 import type { Bot, ChatData, MessageData } from "./types"
+
+const generateName = makeNameGenerator()
 
 export class ChatGPT implements Bot {
     name = "ChatGPT-3.5"
@@ -43,7 +44,7 @@ export class ChatGPT implements Bot {
 
         return {
             id: makeID(),
-            title: randDrinks(),
+            title: generateName(),
             intro: this.intro,
             content: [firstMessage],
             updatedAt: Date.now(),
