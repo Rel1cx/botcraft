@@ -37,10 +37,6 @@ const main = async () => {
     root.render(createElement(App, { locale }))
 
     autoBlur(document)
-
-    await waitDOMContentLoaded()
-
-    window.progress.end()
 }
 
 void main()
