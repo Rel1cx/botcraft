@@ -45,6 +45,7 @@ export class ConfigManager<T> {
     }
 
     loadConfig() {
+        // eslint-disable-next-line unicorn/consistent-function-scoping
         const load = async () => {
             const keyList = await keys<string>(this.#store)
             const valList = await getMany<T[keyof T]>(keyList, this.#store)

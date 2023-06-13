@@ -16,7 +16,7 @@ export const item = style({
     alignItems: "center",
     gap: "0.5rem",
     padding: "0.5rem",
-    cursor: "pointer",
+    cursor: "default",
     borderRadius: "0.25rem",
     background: vars.colors.lightGray,
     transition: "filter 120ms ease-out",
@@ -32,10 +32,19 @@ export const item = style({
 })
 
 export const itemTitle = style({
+    width: "100%",
+    display: "block",
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     textTransform: "capitalize",
+})
+
+export const itemActions = style({
+    display: "flex",
+    flexFlow: "row nowrap",
+    alignItems: "center",
+    gap: "0.25rem",
 })
 
 export const actionArea = style({

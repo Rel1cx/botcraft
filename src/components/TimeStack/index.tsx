@@ -2,10 +2,10 @@ import { Button } from "@ariakit/react"
 import { BiMap } from "@rizzzse/bimap"
 import { Link } from "@swan-io/chicane"
 import { formatDistanceToNow } from "date-fns"
-import { PlusIcon } from "lucide-react"
+import { Edit, PlusIcon, Trash } from "lucide-react"
 import { memo, useCallback, useMemo } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
+// import { useHotkeys } from "react-hotkeys-hook"
 import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols"
 
 import Icon from "../atoms/Icon"
@@ -79,13 +79,13 @@ const TimeStack = memo(
 
         const handleItemRemove = useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
 
-        useHotkeys("Delete", () => {
-            if (!selected) {
-                return
-            }
+        // useHotkeys("Delete", () => {
+        //     if (!selected) {
+        //         return
+        //     }
 
-            handleItemRemove(selected)
-        })
+        //     handleItemRemove(selected)
+        // })
 
         return (
             <div className={css.container}>
@@ -104,6 +104,17 @@ const TimeStack = memo(
                                 <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
                                     {itemIcon?.(item.id)}
                                     <span className={css.itemTitle}>{item.title}</span>
+                                    {!!selected && (
+                                        <div className={css.itemActions}>
+                                            <Icon color="#fff" cursor="pointer" as={Edit} />
+                                            <Icon
+                                                color="#fff"
+                                                cursor="pointer"
+                                                as={Trash}
+                                                onClick={() => handleItemRemove(item.id)}
+                                            />
+                                        </div>
+                                    )}
                                 </Link>
                             </ListItem>
                         </>
