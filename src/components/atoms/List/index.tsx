@@ -1,12 +1,9 @@
 import { Slot } from "@radix-ui/react-slot"
-import { AnimatePresence, m } from "framer-motion"
-import { forwardRef, lazy, memo, useRef } from "react"
+import { forwardRef, memo, useRef } from "react"
 
 import type { ListItemProtocol } from "@/protocols"
 
 import * as css from "./styles.css"
-
-const Animation = lazy(() => import("@/components/atoms/Animation"))
 
 type ListProps = {
     gap?: number
@@ -46,17 +43,9 @@ const List = memo(
                                 gap,
                             }}
                         >
-                            <Animation>
-                                <AnimatePresence>
-                                    {data.map((item, index) => {
-                                        return (
-                                            <m.div key={item.id} initial={{ opacity: 0.95 }} animate={{ opacity: 1 }}>
-                                                {renderItem?.(item, item.id === selectedID, index)}
-                                            </m.div>
-                                        )
-                                    })}
-                                </AnimatePresence>
-                            </Animation>
+                            {data.map((item, index) => {
+                                return <div key={item.id}>{renderItem?.(item, item.id === selectedID, index)}</div>
+                            })}
                         </div>
                     </div>
                 </div>

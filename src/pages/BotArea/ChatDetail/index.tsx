@@ -1,17 +1,19 @@
+import { Option as O } from "@swan-io/boxed"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { MessageSquare } from "lucide-react"
-import { lazy, Suspense, useCallback, useMemo, useRef } from "react"
+import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { defaultBot } from "@/bots/index"
+import ConfirmDialog from "@/components/atoms/ConformDialog"
 import Icon from "@/components/atoms/Icon"
 import Redirect from "@/components/atoms/Redirect"
 import TitleInput from "@/components/atoms/TitleInput"
 import Chat from "@/components/Chat"
 import { ChatMessageEditor } from "@/components/ChatMessgeEditor"
 import type { StampID } from "@/lib/uuid"
-import { makeID } from "@/lib/uuid"
+import { isStampID, makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import type { ChatItem } from "@/stores"
 import {
@@ -55,6 +57,7 @@ const ChatMessageRenderer = ({ id }: { id: StampID }) => {
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
     const [chat] = useChat(chatID)
+    const [removing, setRemoving] = useState(O.None<StampID>())
     const [getChats] = useTransientAtom(chatsAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
     const addMessage = useSetAtom(addMessageAtom)
@@ -81,16 +84,19 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         addChat(newChat)
     }, [addChat])
 
-    const onChatRemoveClick = useCallback(() => {
-        const chats = getChats()
-        const isLast = chats.size === 1
-        // TODO: Allow safe removal of last chat
-        if (isLast) {
-            return
-        }
-        Router.replace("BotNewChat", { botName })
-        removeChat(chatID)
-    }, [botName, chatID, getChats, removeChat])
+    const onChatRemoveClick = useCallback(
+        (chatID: string) => {
+            const chats = getChats()
+            const isLast = chats.size === 1
+            // TODO: Allow safe removal of last chat
+            if (isLast || !isStampID(chatID)) {
+                return
+            }
+            Router.replace("BotNewChat", { botName })
+            removeChat(chatID)
+        },
+        [botName, getChats, removeChat],
+    )
 
     const onMessageCreate = useCallback(
         (content: string) => {
@@ -127,10 +133,14 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 selected={chatID}
                 disableMutation={isGenerating}
                 onItemAdd={onAddChatClick}
-                onItemRemove={onChatRemoveClick}
+                onItemRemove={(id) => {
+                    if (isStampID(id)) {
+                        setRemoving(O.Some(id))
+                    }
+                }}
             />
         ),
-        [chatID, isGenerating, onAddChatClick, onChatRemoveClick, sortedChats],
+        [chatID, isGenerating, onAddChatClick, sortedChats],
     )
 
     if (!chat) {
@@ -169,6 +179,21 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
             <div className={css.bottom}>
                 <ChatMessageEditor id={chatID} onComplete={onMessageCreate} shouldSend={!isGenerating} />
             </div>
+            <ConfirmDialog
+                title="Remove chat"
+                description="Are you sure you want to remove this chat?"
+                confirmLabel="Remove"
+                danger
+                open={removing.isSome()}
+                onClose={() => setRemoving(O.None())}
+                onConfirm={() => {
+                    if (removing.isNone()) {
+                        return
+                    }
+                    onChatRemoveClick(removing.get())
+                    setRemoving(O.None())
+                }}
+            />
         </Layout>
     )
 }
