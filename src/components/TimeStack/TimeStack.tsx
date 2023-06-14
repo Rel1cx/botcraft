@@ -2,7 +2,7 @@ import { Button } from "@ariakit/react"
 import { BiMap } from "@rizzzse/bimap"
 import { Link } from "@swan-io/chicane"
 import { formatDistanceToNow } from "date-fns"
-import { Edit, PlusIcon, Trash } from "lucide-react"
+import { Plus, Star, Trash } from "lucide-react"
 import { memo, useCallback, useMemo } from "react"
 
 // import { useHotkeys } from "react-hotkeys-hook"
@@ -41,7 +41,7 @@ const NewItemButton = ({
             disabled={disabled}
             onClick={onClick}
         >
-            <Icon as={PlusIcon} />
+            <Icon as={Plus} />
             <span>{title}</span>
         </Button>
     )
@@ -106,7 +106,7 @@ const TimeStack = memo(
                                     <span className={css.itemTitle}>{item.title}</span>
                                     {!!selected && (
                                         <div className={css.itemActions}>
-                                            <Icon color="#fff" cursor="pointer" as={Edit} />
+                                            <Icon color="#fff" cursor="pointer" as={Star} />
                                             <Icon
                                                 color="#fff"
                                                 cursor="pointer"
