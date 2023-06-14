@@ -3,17 +3,17 @@ import { lazy, StrictMode, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
 import { defaultBot } from "@/bots"
-import Redirect from "@/components/atoms/Redirect"
+import Redirect from "@/components/atoms/Redirect/Redirect"
 import TypesafeI18n from "@/i18n/i18n-react"
 import type { Locales } from "@/i18n/i18n-types"
-import RootLayout from "@/pages/RootLayout"
+import RootLayout from "@/pages/RootLayout/RootLayout"
 import { Router } from "@/router"
 import { mantineTheme } from "@/theme/mantine.config"
 
 import * as css from "./App.css"
 
-const Bot = lazy(() => import("@/pages/BotArea"))
-const NotFound = lazy(() => import("@/pages/NotFound"))
+const Bot = lazy(() => import("@/pages/BotArea/BotArea"))
+const NotFound = lazy(() => import("@/pages/NotFound/NotFound"))
 
 const App = ({ locale }: { locale: Locales }) => {
     const route = Router.useRoute(["Home", "BotArea"])
