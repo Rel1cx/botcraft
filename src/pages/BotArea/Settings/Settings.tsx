@@ -96,7 +96,7 @@ const Settings = ({ botName }: SettingsProps) => {
                     </Input.Wrapper>
                     <Input.Wrapper label="Frequency Penalty">
                         <Slider
-                            labelAlwaysOn
+                            labelAlwaysOn={bot.options.frequency_penalty !== 0}
                             value={bot.options.frequency_penalty}
                             onChange={(value) => {
                                 setBot((draft) => {
@@ -110,7 +110,7 @@ const Settings = ({ botName }: SettingsProps) => {
                     </Input.Wrapper>
                     <Input.Wrapper label="Presence Penalty">
                         <Slider
-                            labelAlwaysOn
+                            labelAlwaysOn={bot.options.presence_penalty !== 0}
                             value={bot.options.presence_penalty}
                             onChange={(value) => {
                                 setBot((draft) => {
