@@ -1,8 +1,12 @@
+import { Button } from "@ariakit/react"
 import { Input, Select, Slider, TextInput } from "@mantine/core"
 import { useAtom } from "jotai"
+import { ArrowLeft } from "lucide-react"
 import type { ChangeEvent } from "react"
 
 import type { Model } from "@/api/types"
+import Icon from "@/components/atoms/Icon/Icon"
+import { Router } from "@/router"
 import { apiKeyAtom, defaultBotAtom } from "@/stores"
 
 import { Layout } from "../Layout/Layout"
@@ -30,6 +34,21 @@ const Settings = ({ botName }: SettingsProps) => {
     return (
         <Layout
             header={`${botName} Settings`}
+            asideHeader={
+                <div className={css.asideHeader}>
+                    <Button
+                        className={css.button}
+                        as="button"
+                        clickOnEnter
+                        clickOnSpace
+                        onClick={() => {
+                            Router.push("BotRoot", { botName })
+                        }}
+                    >
+                        <Icon as={ArrowLeft} />
+                    </Button>
+                </div>
+            }
             aside={
                 <div className={css.content}>
                     <TextInput

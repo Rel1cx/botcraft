@@ -21,7 +21,7 @@ export const mantineTheme: MantineThemeOverride = {
     fontFamily: vars.font.family.fontFamilyBody,
     colors,
     primaryColor: "blue",
-    primaryShade: 0,
+    // primaryShade: 0,
     radius: {
         xs: "4px",
         sm: "6px",

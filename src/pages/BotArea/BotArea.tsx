@@ -5,7 +5,7 @@ import { match } from "ts-pattern"
 
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import Redirect from "@/components/atoms/Redirect/Redirect"
-import { AvatarList } from "@/components/AvatarList/AvatarList"
+import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { addChatAtom, apiKeyAtom, defaultBotAtom, sortedChatsAtom } from "@/stores"
@@ -78,7 +78,7 @@ const BotArea = ({ botName }: BotProps) => {
     )
 
     return (
-        <RootLayout nav={<AvatarList items={bots} selected={botName} />}>
+        <RootLayout nav={<BotList items={bots} selected={botName} />}>
             <Suspense>{contentView}</Suspense>
         </RootLayout>
     )
