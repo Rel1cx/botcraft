@@ -22,6 +22,8 @@ const TitleInput = memo(({ id, onChange, placeholder = "Untitled", value, ...res
                 autoComplete="off"
                 value={deferredValue}
                 onChange={onChange}
+                autoCorrect="off"
+                aria-autocomplete="none"
                 {...rest}
             />
         </div>

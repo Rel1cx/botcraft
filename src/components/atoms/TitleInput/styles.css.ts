@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css"
 
 export const container = style({
-    width: "fit-content",
+    width: "100%",
     maxWidth: "75%",
     display: "flex",
     justifyContent: "center",
@@ -20,6 +20,5 @@ export const input = style({
         outline: "none",
         boxShadow: "none",
         borderColor: "transparent",
-        // border: "1px solid #6b7280",
     },
 })
