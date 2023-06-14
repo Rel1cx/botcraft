@@ -62,18 +62,19 @@ export const backdrop = style({
 export const dialog = style({
     position: "fixed",
     inset: "0.75rem",
-    zIndex: 1000,
-    margin: "auto",
-    display: "flex",
-    height: "fit-content",
+    padding: "1rem",
+    overflow: "auto",
     maxHeight: "calc(100vh - 2 * 0.75rem)",
+    margin: "auto",
+    height: "fit-content",
+    display: "flex",
     flexDirection: "column",
     gap: "1rem",
-    overflow: "auto",
-    borderRadius: "0.75rem",
-    backgroundColor: "hsl(204 20% 100%)",
-    padding: "1rem",
     color: "hsl(204 10% 10%)",
+    borderRadius: "0.75rem",
+    backgroundColor: vars.colors.lightGray,
+    outline: `2px solid ${vars.colors.overlay}`,
+    zIndex: 1000,
 
     "@media": {
         "(min-width: 640px)": {
