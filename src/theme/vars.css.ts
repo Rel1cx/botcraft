@@ -34,7 +34,7 @@ export const vars = createGlobalTheme(":root", {
         primary: "#2563eb",
         secondary: "#3dbdd8",
         hover: "rgba(0, 0, 0, 0.05)",
-        overlay: "rgba(0, 0, 0, 0.15)",
+        overlay: "#00000015",
         selected: "#2563eb",
         text: "#1a1a1a",
         border: "#cccccc",

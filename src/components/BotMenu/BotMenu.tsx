@@ -1,11 +1,11 @@
 import { Menu } from "@mantine/core"
-import { Link } from "@swan-io/chicane"
 import { Delete, FileDown, FileUp, Settings } from "lucide-react"
 import { memo } from "react"
 
 import { Router } from "@/router"
 
 import Icon from "../atoms/Icon/Icon"
+import * as css from "./styles.css"
 
 type BotMenuProps = {
     botName: string
@@ -16,7 +16,7 @@ const BotMenu = memo(({ botName, children }: BotMenuProps) => {
     return (
         <Menu shadow="md" width={200} position="bottom-start">
             <Menu.Target>{children}</Menu.Target>
-            <Menu.Dropdown>
+            <Menu.Dropdown className={css.container}>
                 <Menu.Label>Preferences</Menu.Label>
                 <Menu.Item
                     icon={<Icon as={Settings} />}
