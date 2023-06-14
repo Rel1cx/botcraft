@@ -18,7 +18,7 @@ export const encoder = new Tiktoken(
 
 // https://github.com/dqbd/tiktoken/issues/23#issuecomment-1483317174
 export const getChatGPTEncoding = (messages: ChatMessage[], model: Model) => {
-    const isGpt3 = model === "gpt-3.5-turbo"
+    const isGpt3 = model.startsWith("gpt-3.5-turbo")
 
     const msgSep = isGpt3 ? "\n" : ""
     const roleSep = isGpt3 ? "\n" : "<|im_sep|>"
