@@ -5,8 +5,6 @@ export type EventSourceData = ChatCompletionChunk | "[DONE]"
 export type Role = "user" | "assistant" | "system"
 
 export type Model =
-    | "gpt-4"
-    | "gpt-4-32k"
     | "gpt-3.5-turbo"
     | "gpt-3.5-turbo-16k"
     | "gpt-3.5-turbo-0613"
