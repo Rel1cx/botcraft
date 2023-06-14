@@ -6,7 +6,7 @@ import { omit, pick, sortBy } from "rambda"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { defaultBot } from "@/bots"
+import { ChatGPT } from "@/bots/builtins/ChatGPT"
 import type { ChatData, MessageData } from "@/bots/builtins/types"
 import { configManager } from "@/config"
 import type { Remap } from "@/lib/utilityTypes"
@@ -25,6 +25,8 @@ export const apiKeyAtom = atom("", (_, set, payload: string) => {
 })
 
 export const botsAtom = atomWithImmer<Map<string, BotProtocol>>(new Map())
+
+export const defaultBotAtom = atomWithImmer(new ChatGPT())
 
 export const chatsAtom = atomWithImmer<Map<StampID, ChatItem>>(new Map())
 
@@ -131,6 +133,7 @@ export type ChatCompletionTask =
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
 export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID) => {
+    const bot = get(defaultBotAtom)
     const chat = get(chatsAtom).get(id)
 
     if (!chat) {
@@ -184,7 +187,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         )
     }
 
-    const stream = await defaultBot.generateChatCompletionStream({ ...omit(["messages"], chat), content })
+    const stream = await bot.generateChatCompletionStream({ ...omit(["messages"], chat), content })
 
     if (!stream.isOk()) {
         const error = stream.getError()

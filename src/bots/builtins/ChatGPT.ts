@@ -1,4 +1,5 @@
 import { Result } from "@swan-io/boxed"
+import { immerable } from "immer"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
 
@@ -18,6 +19,8 @@ import type { Bot, ChatData, MessageData } from "./types"
 const generateName = makeNameGenerator()
 
 export class ChatGPT implements Bot {
+    [immerable] = true
+
     name = "ChatGPT-3.5"
 
     icon = chatgpt

@@ -1,3 +1,5 @@
-import { ChatGPT } from "./builtins/ChatGPT"
+// import { ChatGPT } from "./builtins/ChatGPT"
 
-export const defaultBot = new ChatGPT()
+// export const defaultBot = new ChatGPT()
+
+export {}

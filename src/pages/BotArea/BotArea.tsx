@@ -4,12 +4,11 @@ import { lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
-import { defaultBot } from "@/bots"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { AvatarList } from "@/components/AvatarList/AvatarList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, apiKeyAtom, sortedChatsAtom } from "@/stores"
+import { addChatAtom, apiKeyAtom, defaultBotAtom, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout/RootLayout"
 
@@ -30,6 +29,7 @@ type BotProps = {
 }
 
 const RedirectChat = ({ botName }: { botName: string }) => {
+    const bot = useAtomValue(defaultBotAtom)
     const addChat = useSetAtom(addChatAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
 
@@ -42,7 +42,7 @@ const RedirectChat = ({ botName }: { botName: string }) => {
             return
         }
 
-        const newChat = defaultBot.initChat()
+        const newChat = bot.initChat()
 
         addChat(newChat)
 

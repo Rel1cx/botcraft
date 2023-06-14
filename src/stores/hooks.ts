@@ -1,13 +1,12 @@
-import { atom, useAtom } from "jotai"
+import { atom, useAtom, useAtomValue } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { useMemo } from "react"
 
-import { defaultBot } from "@/bots"
 import type { MessageData } from "@/bots/builtins/types"
 import type { StampID } from "@/lib/uuid"
 import { messagesAtom } from "@/stores"
 
-import { chatsAtom } from "./bot/atoms"
+import { chatsAtom, defaultBotAtom } from "./bot/atoms"
 
 export const useChat = (id: StampID) => {
     return useAtom(useMemo(() => atom((get) => get(chatsAtom).get(id)), [id]))
@@ -18,6 +17,7 @@ export const useMessage = (id: StampID) => {
 }
 
 export const useChatTokens = (chatID: StampID) => {
+    const bot = useAtomValue(defaultBotAtom)
     const [chat] = useChat(chatID)
     const [getMessages] = useTransientAtom(messagesAtom)
 
@@ -31,6 +31,6 @@ export const useChatTokens = (chatID: StampID) => {
                 return acc
             }, []) ?? []
 
-        return defaultBot.estimateTokenCount(messageList)
-    }, [chat?.messages, getMessages])
+        return bot.estimateTokenCount(messageList)
+    }, [bot, chat?.messages, getMessages])
 }

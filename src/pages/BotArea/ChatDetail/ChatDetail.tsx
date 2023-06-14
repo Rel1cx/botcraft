@@ -5,7 +5,6 @@ import { MessageSquare } from "lucide-react"
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
-import { defaultBot } from "@/bots/index"
 import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
@@ -19,6 +18,7 @@ import {
     addMessageAtom,
     chatCompletionTaskAtom,
     chatsAtom,
+    defaultBotAtom,
     removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
@@ -58,6 +58,7 @@ const ChatMessageRenderer = ({ id }: { id: StampID }) => {
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
+    const bot = useAtomValue(defaultBotAtom)
     const [chat] = useChat(chatID)
     const [removing, setRemoving] = useState(O.None<StampID>())
     const [getChats] = useTransientAtom(chatsAtom)
@@ -82,9 +83,9 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     }, [chatCompletionTask, chatID])
 
     const onAddChatClick = useCallback(() => {
-        const newChat = defaultBot.initChat()
+        const newChat = bot.initChat()
         addChat(newChat)
-    }, [addChat])
+    }, [addChat, bot])
 
     const onChatRemoveClick = useCallback(
         (chatID: string) => {
