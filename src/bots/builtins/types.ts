@@ -3,8 +3,6 @@ import type {
     ChatProtocol,
     ContentProtocol,
     CreatableProtocol,
-    IconProtocol,
-    NameProtocol,
     RoleProtocol,
     StampIDProtocol,
     TitleProtocol,
@@ -17,7 +15,7 @@ export type ChatData = (StampIDProtocol & TitleProtocol & CreatableProtocol & Co
     intro: string
 }
 
-export type Bot = (BotProtocol & NameProtocol & IconProtocol & CreatableProtocol) & {
+export type Bot = BotProtocol & {
     // tokenEncode: (text: string) => Uint32Array
 
     // tokenDecode: (tokens: Uint32Array) => string
