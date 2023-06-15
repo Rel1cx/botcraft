@@ -3,26 +3,17 @@ import { useAtomValue, useSetAtom } from "jotai"
 import { lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
-import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, apiKeyAtom, defaultBotAtom, sortedChatsAtom } from "@/stores"
+import { addChatAtom, apiKeyAtom, botsAtom, defaultBotAtom, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout/RootLayout"
 
 const ChatDetail = lazy(() => import("./ChatDetail/ChatDetail"))
 
 const Settings = lazy(() => import("./Settings/Settings"))
-
-const bots = [
-    {
-        id: "ChatGPT",
-        title: "ChatGPT",
-        icon: chatgpt,
-    },
-]
 
 type BotProps = {
     botName: string
@@ -55,6 +46,7 @@ const RedirectChat = ({ botName }: { botName: string }) => {
 const BotArea = ({ botName }: BotProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
     const hasApiKey = !!useAtomValue(apiKeyAtom)
+    const bots = useAtomValue(botsAtom)
 
     const contentView = useMemo(
         () =>

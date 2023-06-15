@@ -1,6 +1,5 @@
 import { Button } from "@ariakit/react"
 import { BiMap } from "@rizzzse/bimap"
-import { Link } from "@swan-io/chicane"
 import { formatDistanceToNow } from "date-fns"
 import { Plus, Star, Trash } from "lucide-react"
 import { memo, useCallback, useMemo } from "react"
@@ -14,13 +13,14 @@ import * as css from "./styles.css"
 
 type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
     selected?: string
-    itemIcon?: (id: string) => React.ReactNode
     newItemName?: string
     disableMutation?: boolean
+    onItemClick?: (id: string) => void
     onItemAdd?: () => void
     onItemRemove?: (id: string) => void
     onItemPin?: (id: string) => void
     onItemUnpin?: (id: string) => void
+    renderItemIcon?: (id: string) => React.ReactNode
 }
 
 const SectionTitle = ({ title }: TitleProtocol) => {
@@ -50,13 +50,14 @@ const NewItemButton = ({
 const TimeStack = memo(
     ({
         disableMutation = false,
-        itemIcon,
         items,
         newItemName = "New item",
         onItemAdd,
+        onItemClick,
         onItemPin,
         onItemRemove,
         onItemUnpin,
+        renderItemIcon,
         selected,
     }: TimeStackProps) => {
         const markers = useMemo(() => {
@@ -101,8 +102,8 @@ const TimeStack = memo(
                         <>
                             {!!markers.inverse.has(index) && <SectionTitle title={markers.inverse.get(index) ?? ""} />}
                             <ListItem asChild data-id={item.id} data-selected={selected}>
-                                <Link className={css.item} to={`/bots/ChatGPT/${item.id}`}>
-                                    {itemIcon?.(item.id)}
+                                <div className={css.item} onClick={() => onItemClick?.(item.id)}>
+                                    {renderItemIcon?.(item.id)}
                                     <span className={css.itemTitle}>{item.title}</span>
                                     {!!selected && (
                                         <div className={css.itemActions}>
@@ -115,7 +116,7 @@ const TimeStack = memo(
                                             />
                                         </div>
                                     )}
-                                </Link>
+                                </div>
                             </ListItem>
                         </>
                     )}

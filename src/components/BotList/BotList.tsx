@@ -30,7 +30,7 @@ export const BotList = ({ items, selected }: BotListProps) => {
                     )
                 }
                 return (
-                    <Link key={item.id} to={`/bots/${item.id}`}>
+                    <Link key={item.id} to={`/bots/${item.title}`}>
                         {avatar}
                     </Link>
                 )

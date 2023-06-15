@@ -123,7 +123,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         () => (
             <TimeStack
                 items={sortedChats}
-                itemIcon={(id) => (
+                renderItemIcon={(id) => (
                     <Icon
                         style={{
                             flexShrink: 0,
@@ -135,6 +135,9 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 newItemName="New chat"
                 selected={chatID}
                 disableMutation={isGenerating}
+                onItemClick={(id) => {
+                    Router.push("BotChat", { botName, chatID: id })
+                }}
                 onItemAdd={onAddChatClick}
                 onItemRemove={(id) => {
                     if (isStampID(id)) {
@@ -143,7 +146,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 }}
             />
         ),
-        [chatID, isGenerating, onAddChatClick, sortedChats],
+        [botName, chatID, isGenerating, onAddChatClick, sortedChats],
     )
 
     if (!chat) {
