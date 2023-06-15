@@ -23,7 +23,7 @@ export const BotList = ({ items, selected }: BotListProps) => {
                 if (selected === item.id) {
                     return (
                         <BotMenu key={item.id} botName={item.title}>
-                            <Button clickOnEnter clickOnSpace>
+                            <Button as="button" clickOnEnter clickOnSpace aria-label="bot-button">
                                 {avatar}
                             </Button>
                         </BotMenu>

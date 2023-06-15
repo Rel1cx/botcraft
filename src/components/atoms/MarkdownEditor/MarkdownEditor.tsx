@@ -100,6 +100,7 @@ const MarkdownEditor = memo(
                     <CodeMirror
                         id="markdown-editor"
                         className={css.content}
+                        aria-label="markdown-editor"
                         width="100%"
                         maxHeight="320px"
                         defaultValue={defaultValue}
