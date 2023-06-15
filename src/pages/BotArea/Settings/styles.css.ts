@@ -9,6 +9,7 @@ export const content = style({
     display: "flex",
     flexFlow: "column nowrap",
     gap: "1rem",
+    overflowY: "auto",
 })
 
 export const asideHeader = style({
