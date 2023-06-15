@@ -1,5 +1,5 @@
 import { Button } from "@ariakit/react"
-import { Input, Select, Slider, TextInput } from "@mantine/core"
+import { Input, Select, Slider, Textarea, TextInput } from "@mantine/core"
 import { useAtom } from "jotai"
 import { ArrowLeft } from "lucide-react"
 import type { ChangeEvent } from "react"
@@ -141,6 +141,34 @@ const Settings = ({ botName }: SettingsProps) => {
                             step={0.1}
                         />
                     </Input.Wrapper>
+                    <Textarea
+                        className={css.textarea}
+                        label="Intro Message"
+                        placeholder="Hello! How can I assist you today?"
+                        autosize
+                        minRows={2}
+                        maxRows={5}
+                        value={bot.intro}
+                        onChange={(evt: ChangeEvent<HTMLTextAreaElement>) => {
+                            setBot((draft) => {
+                                draft.intro = evt.target.value
+                            })
+                        }}
+                    />
+                    <Textarea
+                        className={css.textarea}
+                        label="System Message"
+                        placeholder="I have expertise in multiple fields and can assist users in solving problems."
+                        autosize
+                        minRows={2}
+                        maxRows={5}
+                        value={bot.systemMessage}
+                        onChange={(evt: ChangeEvent<HTMLTextAreaElement>) => {
+                            setBot((draft) => {
+                                draft.systemMessage = evt.target.value
+                            })
+                        }}
+                    />
                 </div>
             }
         >

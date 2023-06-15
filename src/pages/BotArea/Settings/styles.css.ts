@@ -36,3 +36,5 @@ export const button = style({
         filter: "brightness(0.9)",
     },
 })
+
+export const textarea = style({})

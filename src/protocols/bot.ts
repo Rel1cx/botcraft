@@ -20,9 +20,11 @@ export type ChatProtocol = Remap<
 
 export type BotProtocol = Remap<
     (NameProtocol & IconProtocol & CreatableProtocol) & {
+        intro: string
+
         prompt: string
 
-        intro: string
+        systemMessage: string
 
         options: Record<string, unknown>
     }

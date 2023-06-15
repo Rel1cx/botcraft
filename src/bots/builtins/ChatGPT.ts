@@ -29,9 +29,11 @@ export class ChatGPT implements Bot {
 
     updatedAt = Date.now()
 
+    intro = "Hello! How can I assist you today?"
+
     prompt = ""
 
-    intro = "Hello! How can I assist you today?"
+    systemMessage = DEFAULT_SYSTEM_MESSAGE
 
     abortController = new AbortController()
 
@@ -41,7 +43,7 @@ export class ChatGPT implements Bot {
         const firstMessage: MessageData = {
             id: makeID(),
             role: "system",
-            content: DEFAULT_SYSTEM_MESSAGE,
+            content: this.systemMessage,
             updatedAt: Date.now(),
         }
 
