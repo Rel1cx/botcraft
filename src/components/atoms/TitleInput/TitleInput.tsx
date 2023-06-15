@@ -1,5 +1,4 @@
 import { memo, useDeferredValue } from "react"
-import { Input } from "react-daisyui"
 
 import * as css from "./styles.css"
 
@@ -15,16 +14,16 @@ const TitleInput = memo(({ id, onChange, placeholder = "Untitled", value, ...res
 
     return (
         <div id={id} className={css.container}>
-            <Input
+            <input
                 className={css.input}
                 type="text"
                 placeholder={placeholder}
-                autoComplete="off"
                 value={deferredValue}
                 onChange={onChange}
                 translate="no"
                 spellCheck="false"
                 autoCorrect="off"
+                autoComplete="off"
                 aria-autocomplete="none"
                 {...rest}
             />
