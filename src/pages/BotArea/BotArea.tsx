@@ -1,13 +1,12 @@
-import { useMountEffect } from "@react-hookz/web"
-import { useAtomValue, useSetAtom } from "jotai"
-import { lazy, Suspense, useMemo } from "react"
+import { useAtomValue } from "jotai"
+import { Component, lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, apiKeyAtom, botsAtom, defaultBotAtom, sortedChatsAtom } from "@/stores"
+import { addChatAtom, apiKeyAtom, botsAtom, defaultBotAtom, sortedChatsAtom, store } from "@/stores"
 
 import RootLayout from "../RootLayout/RootLayout"
 
@@ -19,13 +18,12 @@ type BotProps = {
     botName: string
 }
 
-const RedirectChat = ({ botName }: { botName: string }) => {
-    const bot = useAtomValue(defaultBotAtom)
-    const addChat = useSetAtom(addChatAtom)
-    const sortedChats = useAtomValue(sortedChatsAtom)
+class RedirectChat extends Component<{ botName: string }> {
+    override componentDidMount() {
+        const { botName } = this.props
+        const bot = store.get(defaultBotAtom)
+        const sortedChats = store.get(sortedChatsAtom)
 
-    // Not recommended to use this hook, but it's okay for this case
-    useMountEffect(() => {
         const firstChat = sortedChats[0]
 
         if (firstChat) {
@@ -35,12 +33,14 @@ const RedirectChat = ({ botName }: { botName: string }) => {
 
         const newChat = bot.initChat()
 
-        addChat(newChat)
+        store.set(addChatAtom, newChat)
 
         Router.push("BotChat", { botName, chatID: newChat.id })
-    })
+    }
 
-    return null
+    override render() {
+        return null
+    }
 }
 
 const BotArea = ({ botName }: BotProps) => {

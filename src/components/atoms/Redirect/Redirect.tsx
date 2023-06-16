@@ -1,17 +1,19 @@
-import { replaceUnsafe, useLocation } from "@swan-io/chicane"
-import * as React from "react"
+import { replaceUnsafe } from "@swan-io/chicane"
+import { Component } from "react"
 
-// https://github.com/swan-io/chicane/blob/main/example/src/Redirect.tsx
-const Redirect = ({ to }: { to: string }) => {
-    const location = useLocation().toString()
+type RedirectProps = {
+    to: string
+}
 
-    React.useLayoutEffect(() => {
-        if (to !== location) {
-            replaceUnsafe(to)
-        }
-    }, [location, to])
+class Redirect extends Component<RedirectProps> {
+    override componentDidMount() {
+        const { to } = this.props
+        replaceUnsafe(to)
+    }
 
-    return null
+    override render() {
+        return null
+    }
 }
 
 export default Redirect
