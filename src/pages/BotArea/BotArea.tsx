@@ -45,15 +45,16 @@ class RedirectChat extends Component<{ botName: string }> {
 
 const BotArea = ({ botName }: BotProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
-    const hasApiKey = !!useAtomValue(apiKeyAtom)
+    // const hasApiKey = !!useAtomValue(apiKeyAtom)
     const bots = useAtomValue(botsAtom)
 
     const contentView = useMemo(
         () =>
             match(route)
-                .with({ name: "BotRoot" }, ({ params }) => (
-                    <Redirect to={`/bots/${params.botName}/${hasApiKey ? "new" : "settings"}`} />
-                ))
+                // .with({ name: "BotRoot" }, ({ params }) => (
+                //     <Redirect to={`/bots/${params.botName}/${hasApiKey ? "new" : "settings"}`} />
+                // ))
+                .with({ name: "BotRoot" }, ({ params }) => <Redirect to={`/bots/${params.botName}/new`} />)
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
                 .with({ name: "BotChat" }, ({ params }) => {
@@ -66,7 +67,7 @@ const BotArea = ({ botName }: BotProps) => {
                     return <ChatDetail botName={params.botName} chatID={chatID} />
                 })
                 .otherwise(() => null),
-        [hasApiKey, route],
+        [route],
     )
 
     return (
