@@ -10,6 +10,7 @@ import Icon from "@/components/atoms/Icon/Icon"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { apiKeyAtom, defaultBotAtom } from "@/stores"
+import { isModel } from "@/zod"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
@@ -104,12 +105,12 @@ const Settings = ({ botName }: SettingsProps) => {
                         data={models}
                         value={bot.options.model}
                         onChange={(value) => {
-                            if (!value) {
+                            if (!value || !isModel(value)) {
                                 return
                             }
 
                             setBot((draft) => {
-                                draft.options.model = value as Model
+                                draft.options.model = value
                             })
                         }}
                     />

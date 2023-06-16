@@ -9,20 +9,37 @@ export type Env = z.infer<typeof Env>
 
 export const Config = z.object({
     apiKey: z.string().describe("OpenAI api key"),
-    // model: z.string().describe("OpenAI model"),
-    // temperature: z.number().min(0).max(1).describe("OpenAI temperature"),
-    // max_tokens: z.number().min(1).max(4097).describe("OpenAI max tokens"),
-    // top_p: z.number().min(0).max(1).describe("OpenAI top p"),
-    // best_of: z.number().min(1).max(16).describe("OpenAI best of"),
-    // n: z.number().min(1).max(16).describe("OpenAI n"),
-    // frequency_penalty: z.number().min(0).max(1).describe("OpenAI presence penalty"),
-    // presence_penalty: z.number().min(0).max(1).describe("OpenAI frequency penalty"),
 })
 
 export type Config = z.infer<typeof Config>
 
+export const Role = z.union([z.literal("user"), z.literal("assistant"), z.literal("system")])
+
+export type Role = z.infer<typeof Role>
+
+export const isRole = (value: unknown): value is Role => {
+    return Role.safeParse(value).success
+}
+
+export const Model = z.union([
+    z.literal("gpt-3.5-turbo"),
+    z.literal("gpt-3.5-turbo-16k"),
+    z.literal("gpt-3.5-turbo-0613"),
+    z.literal("gpt-3.5-turbo-16k-0613"),
+    z.literal("gpt-4"),
+    z.literal("gpt-4-0613"),
+    z.literal("gpt-4-32k"),
+    z.literal("gpt-4-32k-0613"),
+])
+
+export type Model = z.infer<typeof Model>
+
+export const isModel = (value: unknown): value is Model => {
+    return Model.safeParse(value).success
+}
+
 export const ChatMessage = z.object({
-    role: z.string(),
+    role: Role,
     content: z.string(),
 })
 
@@ -36,11 +53,11 @@ export const ChatCompletionChunk = z.object({
     id: z.string(),
     object: z.literal("chat.completion.chunk"),
     created: z.number(),
-    model: z.string(),
+    model: Model,
     choices: z.array(
         z.object({
             delta: z.object({
-                role: z.optional(z.string()),
+                role: z.optional(Role),
                 content: z.optional(z.string()),
             }),
             index: z.number(),
