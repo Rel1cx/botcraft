@@ -2,15 +2,19 @@ import { Button } from "@ariakit/react"
 import { Input, Select, Slider, Textarea, TextInput } from "@mantine/core"
 import { useAtom } from "jotai"
 import { ArrowLeft } from "lucide-react"
-import type { ChangeEvent } from "react"
+import { type ChangeEvent, lazy, Suspense, useMemo } from "react"
 
 import type { Model } from "@/api/types"
+import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
+import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { apiKeyAtom, defaultBotAtom } from "@/stores"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
+
+const Message = lazy(() => import("@/components/atoms/Message/Message"))
 
 type SettingsProps = {
     botName: string
@@ -27,9 +31,33 @@ const models: { value: Model; label: Model }[] = [
     { value: "gpt-4-32k-0613", label: "gpt-4-32k-0613" },
 ]
 
+const dummySystemMessageID = makeID()
+
+const dummyIntroMessageID = makeID()
+
 const Settings = ({ botName }: SettingsProps) => {
     const [bot, setBot] = useAtom(defaultBotAtom)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+
+    const systemMessage = useMemo<MessageData>(
+        () => ({
+            id: dummySystemMessageID,
+            role: "system",
+            content: bot.systemMessage,
+            updatedAt: Date.now(),
+        }),
+        [bot.systemMessage],
+    )
+
+    const introMessage = useMemo<MessageData>(
+        () => ({
+            id: dummyIntroMessageID,
+            role: "assistant",
+            content: bot.intro,
+            updatedAt: Date.now(),
+        }),
+        [bot.intro],
+    )
 
     return (
         <Layout
@@ -50,7 +78,7 @@ const Settings = ({ botName }: SettingsProps) => {
                 </div>
             }
             aside={
-                <div className={css.content}>
+                <div className={css.asideContent}>
                     <TextInput
                         name="botName"
                         label="Bot Name"
@@ -143,20 +171,6 @@ const Settings = ({ botName }: SettingsProps) => {
                     </Input.Wrapper>
                     <Textarea
                         className={css.textarea}
-                        label="Intro Message"
-                        placeholder="Hello! How can I assist you today?"
-                        autosize
-                        minRows={2}
-                        maxRows={5}
-                        value={bot.intro}
-                        onChange={(evt: ChangeEvent<HTMLTextAreaElement>) => {
-                            setBot((draft) => {
-                                draft.intro = evt.target.value
-                            })
-                        }}
-                    />
-                    <Textarea
-                        className={css.textarea}
                         label="System Message"
                         placeholder="I have expertise in multiple fields and can assist users in solving problems."
                         autosize
@@ -169,10 +183,29 @@ const Settings = ({ botName }: SettingsProps) => {
                             })
                         }}
                     />
+                    <Textarea
+                        className={css.textarea}
+                        label="Intro Message"
+                        placeholder="Hello! How can I assist you today?"
+                        autosize
+                        minRows={2}
+                        maxRows={5}
+                        value={bot.intro}
+                        onChange={(evt: ChangeEvent<HTMLTextAreaElement>) => {
+                            setBot((draft) => {
+                                draft.intro = evt.target.value
+                            })
+                        }}
+                    />
                 </div>
             }
         >
-            TODO: Context and Prompt settings
+            <div className={css.content}>
+                <Suspense>
+                    <Message data={systemMessage} />
+                    <Message data={introMessage} />
+                </Suspense>
+            </div>
         </Layout>
     )
 }

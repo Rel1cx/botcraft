@@ -11,14 +11,14 @@ export const baseContainer = style({
 export const baseContent = style({
     padding: "0.5rem 1rem",
     borderRadius: "1rem",
-    maxWidth: "80%",
+    maxWidth: "75%",
     lineHeight: "1.5",
     overflow: "hidden",
     background: "#f1f2f2",
 })
 
 export const container = styleVariants({
-    system: [baseContainer, { display: "none", justifyContent: "center" }],
+    system: [baseContainer, { justifyContent: "center" }],
     user: [baseContainer, { justifyContent: "flex-end" }],
     assistant: [baseContainer, { justifyContent: "flex-start" }],
 })
@@ -27,9 +27,10 @@ export const content = styleVariants({
     system: [
         baseContent,
         {
-            background: vars.colors.secondary,
-            color: vars.colors.white,
-            maxWidth: "80%",
+            background: vars.colors.lightGray,
+            color: vars.colors.text,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
 
             "@media": {
                 "screen and (max-width: 768px)": {

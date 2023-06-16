@@ -53,7 +53,7 @@ export type ChatProps = {
 const ChatMessageRenderer = ({ id }: { id: StampID }) => {
     const [data] = useMessage(id)
 
-    return <Suspense>{!!data?.content && <Message data={data} />}</Suspense>
+    return <Suspense>{!!data?.content && data.role !== "system" && <Message data={data} />}</Suspense>
 }
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {

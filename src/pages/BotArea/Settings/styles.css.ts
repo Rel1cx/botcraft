@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
-export const content = style({
+export const asideContent = style({
     width: "100%",
     height: "100%",
     padding: "0.5rem 1rem",
@@ -39,3 +39,7 @@ export const button = style({
 })
 
 export const textarea = style({})
+
+export const content = style({
+    padding: "0 1rem",
+})
