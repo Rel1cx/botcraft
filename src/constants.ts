@@ -8,5 +8,3 @@ export const DEFAULT_CHAT_COMPLETION_OPTIONS: ChatCompletionOptions = {
     presence_penalty: 0,
     frequency_penalty: 0,
 }
-
-export const DEFAULT_SYSTEM_MESSAGE = "I have expertise in multiple fields and can assist users in solving problems."

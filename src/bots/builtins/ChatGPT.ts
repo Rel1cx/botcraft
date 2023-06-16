@@ -8,7 +8,7 @@ import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { configManager } from "@/config"
-import { DEFAULT_CHAT_COMPLETION_OPTIONS, DEFAULT_SYSTEM_MESSAGE } from "@/constants"
+import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
 import { makeNameGenerator } from "@/lib/name"
 import { readerToObservable } from "@/lib/stream"
 import { countTokens } from "@/lib/tokenizer"
@@ -33,7 +33,7 @@ export class ChatGPT implements Bot {
 
     prompt = ""
 
-    systemMessage = DEFAULT_SYSTEM_MESSAGE
+    systemMessage = "I have expertise in multiple fields and can assist users in solving problems."
 
     abortController = new AbortController()
 

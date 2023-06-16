@@ -10,11 +10,13 @@ export const baseContainer = style({
 
 export const baseContent = style({
     padding: "0.5rem 1rem",
-    borderRadius: "1rem",
     maxWidth: "75%",
     lineHeight: "1.5",
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-word",
     overflow: "hidden",
-    background: "#f1f2f2",
+    background: vars.colors.lightGray,
+    borderRadius: "1rem",
 })
 
 export const container = styleVariants({
@@ -29,8 +31,6 @@ export const content = styleVariants({
         {
             background: vars.colors.lightGray,
             color: vars.colors.text,
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word",
 
             "@media": {
                 "screen and (max-width: 768px)": {
