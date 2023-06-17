@@ -35,6 +35,7 @@ export default defineConfig({
     envPrefix: ["VITE_"],
     build: {
         target: ["es2021", "firefox90", "chrome113", "safari14"],
+        chunkSizeWarningLimit: 600,
         rollupOptions: {
             output: {
                 manualChunks: {
