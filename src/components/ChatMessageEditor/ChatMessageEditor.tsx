@@ -2,10 +2,10 @@ import { useDebouncedState } from "@react-hookz/web"
 import { useAtomValue, useStore } from "jotai"
 import { memo, startTransition, useCallback, useMemo, useState } from "react"
 
+import { botAtom, useChatTokens } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import { noop } from "@/lib/helper"
 import type { StampID } from "@/lib/uuid"
-import { botAtom, useChatTokens } from "@/stores"
 
 import MarkdownEditor from "../atoms/MarkdownEditor/MarkdownEditor"
 import * as css from "./styles.css"

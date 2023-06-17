@@ -4,15 +4,7 @@ import { useTransientAtom } from "jotai-game"
 import { MessageSquare } from "lucide-react"
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
-import type { MessageData } from "@/bots/builtins/types"
-import Icon from "@/components/atoms/Icon/Icon"
-import Redirect from "@/components/atoms/Redirect/Redirect"
-import TitleInput from "@/components/atoms/TitleInput/TitleInput"
-import Chat from "@/components/Chat/Chat"
-import type { StampID } from "@/lib/uuid"
-import { isStampID, makeID } from "@/lib/uuid"
-import { Router } from "@/router"
-import type { ChatItem } from "@/stores"
+import type { ChatItem } from "@/atoms"
 import {
     addChatAtom,
     addMessageAtom,
@@ -25,7 +17,15 @@ import {
     useBot,
     useChat,
     useMessage,
-} from "@/stores"
+} from "@/atoms"
+import type { MessageData } from "@/bots/builtins/types"
+import Icon from "@/components/atoms/Icon/Icon"
+import Redirect from "@/components/atoms/Redirect/Redirect"
+import TitleInput from "@/components/atoms/TitleInput/TitleInput"
+import Chat from "@/components/Chat/Chat"
+import type { StampID } from "@/lib/uuid"
+import { isStampID, makeID } from "@/lib/uuid"
+import { Router } from "@/router"
 import { vars } from "@/theme/vars.css"
 
 import { Layout } from "../Layout/Layout"

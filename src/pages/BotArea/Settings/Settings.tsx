@@ -5,11 +5,11 @@ import { ArrowLeft } from "lucide-react"
 import { type ChangeEvent, lazy, Suspense, useMemo } from "react"
 
 import type { Model } from "@/api/types"
+import { apiKeyAtom, useBot } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { apiKeyAtom, useBot } from "@/stores"
 import { isModel } from "@/zod"
 
 import { Layout } from "../Layout/Layout"
@@ -80,7 +80,7 @@ const Settings = ({ botName }: SettingsProps) => {
             }
             aside={
                 <div className={css.asideContent}>
-                    <TextInput
+                    {/* <TextInput
                         name="botName"
                         label="Bot Name"
                         value={bot.name}
@@ -89,7 +89,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 draft.name = evt.target.value
                             })
                         }}
-                    />
+                    /> */}
                     <TextInput name="endpoint" label="Endpoint" value="" disabled />
                     <TextInput
                         name="apiKey"

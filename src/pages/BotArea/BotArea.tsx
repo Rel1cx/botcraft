@@ -2,11 +2,11 @@ import { useAtomValue } from "jotai"
 import { Component, lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
+import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout/RootLayout"
 
