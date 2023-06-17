@@ -6,14 +6,10 @@ import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { ChatItem } from "@/atoms"
 import {
-    addChatAtom,
-    addMessageAtom,
     chatCompletionTaskAtom,
     chatsAtom,
-    removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
-    updateChatAtom,
     useBot,
     useChat,
     useMessage,
@@ -59,13 +55,10 @@ const ChatMessageRenderer = ({ id }: { id: StampID }) => {
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
     const [bot] = useBot()
-    const [chat] = useChat(chatID)
+    const [chat, { addChat, removeChat, updateChat }] = useChat(chatID)
+    const [, { addMessage }] = useMessage(chatID)
     const [getChats] = useTransientAtom(chatsAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
-    const addMessage = useSetAtom(addMessageAtom)
-    const addChat = useSetAtom(addChatAtom)
-    const updateChat = useSetAtom(updateChatAtom)
-    const removeChat = useSetAtom(removeChatAtom)
     const [removing, setRemoving] = useState(O.None<StampID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
