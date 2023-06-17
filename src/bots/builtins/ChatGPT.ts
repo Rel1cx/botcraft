@@ -21,7 +21,7 @@ const generateName = makeNameGenerator()
 export class ChatGPT implements Bot {
     [immerable] = true
 
-    name = "ChatGPT-3.5"
+    name = "ChatGPT"
 
     icon = chatgpt
 
@@ -33,7 +33,8 @@ export class ChatGPT implements Bot {
 
     prompt = ""
 
-    systemMessage = "I have expertise in multiple fields and can assist users in solving problems."
+    systemMessage = `You have expertise in multiple fields and can assist users in solving problems.
+Try to answer user's questions as accurately as possible.`
 
     abortController = new AbortController()
 

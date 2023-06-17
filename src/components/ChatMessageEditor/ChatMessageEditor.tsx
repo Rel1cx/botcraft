@@ -63,6 +63,7 @@ const ChatMessageEditor = memo(
                 {useMemo(
                     () => (
                         <MarkdownEditor
+                            className={css.content}
                             defaultValue={defaultContent}
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}

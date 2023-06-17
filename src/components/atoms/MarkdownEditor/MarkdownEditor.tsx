@@ -4,6 +4,7 @@ import { EditorView } from "@codemirror/view"
 import { Option as O } from "@swan-io/boxed"
 import type { BasicSetupOptions } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
+import clsx from "clsx"
 import { basicLight } from "cm6-theme-basic-light"
 import { memo, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
@@ -12,6 +13,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import * as css from "./styles.css"
 
 type MarkdownEditorProps = {
+    className?: string
     defaultValue?: string
     placeholder?: string
     onFocus?: () => void
@@ -64,6 +66,7 @@ const resetEditor = (editor: EditorView) => {
 
 const MarkdownEditor = memo(
     ({
+        className,
         defaultValue = "",
         onBlur,
         onChange,
@@ -95,7 +98,7 @@ const MarkdownEditor = memo(
         )
 
         return (
-            <div className={css.container}>
+            <div className={clsx(css.container, className)}>
                 <ErrorBoundary fallback={<div>Something went wrong</div>}>
                     <CodeMirror
                         id="markdown-editor"
@@ -103,6 +106,7 @@ const MarkdownEditor = memo(
                         aria-label="markdown-editor"
                         width="100%"
                         maxHeight="320px"
+                        value={defaultValue}
                         defaultValue={defaultValue}
                         placeholder={placeholder}
                         onCreateEditor={(editor) => {

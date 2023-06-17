@@ -28,7 +28,7 @@ const App = ({ locale }: { locale: Locales }) => {
                             {useMemo(
                                 () =>
                                     match(route)
-                                        .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT-3.5" />)
+                                        .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
                                         .with({ name: "BotArea" }, ({ params }) => (
                                             <BotAtomProvider store={botsStore.get(params.botName) ?? createStore()}>
                                                 <Bot botName={params.botName} />

@@ -7,6 +7,16 @@
     font-size: 10px;
 }
 
+.cm-editor {
+    border: none;
+    outline: none;
+}
+
+.cm-editor.cm-focused {
+    border: none;
+    outline: none;
+}
+
 .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
     color: #fff;
     background: #2653eb

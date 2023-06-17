@@ -1,1 +1,0 @@
-import{j as t,__tla as a}from"./index-fae41337.js";import"https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js";import"https://cdn.jsdelivr.net/npm/web-vitals@3.3.2/+esm";import"./react-aeb67c7a.js";let r,e=Promise.all([(()=>{try{return a}catch{}})()]).then(async()=>{r=()=>t.jsx("div",{children:t.jsx("h1",{children:"404"})})});export{e as __tla,r as default};
