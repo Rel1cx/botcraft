@@ -1,11 +1,11 @@
 import { useDebouncedState } from "@react-hookz/web"
-import { useAtomValue } from "jotai"
+import { useAtomValue, useStore } from "jotai"
 import { memo, startTransition, useCallback, useMemo, useState } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import { noop } from "@/lib/helper"
 import type { StampID } from "@/lib/uuid"
-import { defaultBotAtom, useChatTokens } from "@/stores"
+import { botAtom, useChatTokens } from "@/stores"
 
 import MarkdownEditor from "../atoms/MarkdownEditor/MarkdownEditor"
 import * as css from "./styles.css"
@@ -19,7 +19,10 @@ type ChatMessageEditorProps = {
 
 const ChatMessageEditor = memo(
     ({ defaultContent = "", id, onComplete = noop, shouldSend = false }: ChatMessageEditorProps) => {
-        const bot = useAtomValue(defaultBotAtom)
+        const botStore = useStore()
+        const bot = useAtomValue(botAtom, {
+            store: botStore,
+        })
         const totalTokens = useChatTokens(id)
         const [focused, setFocused] = useState(false)
         const [content, setContent] = useState(defaultContent)

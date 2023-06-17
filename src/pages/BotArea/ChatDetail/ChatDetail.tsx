@@ -18,11 +18,11 @@ import {
     addMessageAtom,
     chatCompletionTaskAtom,
     chatsAtom,
-    defaultBotAtom,
     removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
     updateChatAtom,
+    useBot,
     useChat,
     useMessage,
 } from "@/stores"
@@ -58,16 +58,15 @@ const ChatMessageRenderer = ({ id }: { id: StampID }) => {
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
-    const bot = useAtomValue(defaultBotAtom)
+    const [bot] = useBot()
     const [chat] = useChat(chatID)
-    const [removing, setRemoving] = useState(O.None<StampID>())
     const [getChats] = useTransientAtom(chatsAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
     const addMessage = useSetAtom(addMessageAtom)
     const addChat = useSetAtom(addChatAtom)
     const updateChat = useSetAtom(updateChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
-    // const toggleChat = useSetAtom(toggleChatAtom)
+    const [removing, setRemoving] = useState(O.None<StampID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)

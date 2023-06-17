@@ -1,6 +1,6 @@
 import { Option as O } from "@swan-io/boxed"
 import { set } from "idb-keyval"
-import { atom, getDefaultStore } from "jotai"
+import { atom } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 import { omit, pick, sortBy } from "rambda"
 import { stringify } from "telejson"
@@ -8,42 +8,25 @@ import invariant from "tiny-invariant"
 
 import { ChatGPT } from "@/bots/builtins/ChatGPT"
 import type { ChatData, MessageData } from "@/bots/builtins/types"
-import { configManager } from "@/config"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 
 import type { ChatItem, ChatMeta } from "./types"
 
-const store = getDefaultStore()
-
-export const apiKeyAtom = atom("", (_, set, payload: string) => {
-    const val = payload.trim()
-    set(apiKeyAtom, val)
-    void configManager.setConfig("apiKey", val)
-})
-
-export const defaultBotAtom = atomWithImmer(new ChatGPT())
-
-export const botsAtom = atom((get) => {
-    return [get(defaultBotAtom)].map((bot) => ({
-        id: bot.name,
-        title: bot.name,
-        icon: bot.icon,
-    }))
-})
+export const botAtom = atomWithImmer(new ChatGPT())
 
 export const chatsAtom = atomWithImmer<Map<StampID, ChatItem>>(new Map())
 
-store.sub(chatsAtom, () => {
-    void set("chats", store.get(chatsAtom))
-})
+// store.sub(chatsAtom, () => {
+//     void set("chats", store.get(chatsAtom))
+// })
 
 export const messagesAtom = atomWithImmer<Map<StampID, MessageData>>(new Map())
 
-store.sub(messagesAtom, () => {
-    void set("messages", store.get(messagesAtom))
-})
+// store.sub(messagesAtom, () => {
+//     void set("messages", store.get(messagesAtom))
+// })
 
 export const chatMetaAtom = atom((get) => {
     return Array.from(get(chatsAtom).values()).reduceRight<ChatMeta[]>((acc, item) => {
@@ -138,7 +121,7 @@ export type ChatCompletionTask =
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
 export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID) => {
-    const bot = get(defaultBotAtom)
+    const bot = get(botAtom)
     const chat = get(chatsAtom).get(id)
 
     if (!chat) {

@@ -6,7 +6,7 @@ import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { addChatAtom, apiKeyAtom, botsAtom, defaultBotAtom, sortedChatsAtom, store } from "@/stores"
+import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/stores"
 
 import RootLayout from "../RootLayout/RootLayout"
 
@@ -21,8 +21,15 @@ type BotProps = {
 class RedirectChat extends Component<{ botName: string }> {
     override componentDidMount() {
         const { botName } = this.props
-        const bot = store.get(defaultBotAtom)
-        const sortedChats = store.get(sortedChatsAtom)
+        const botStore = botsStore.get(botName)
+
+        if (!botStore) {
+            window.history.replaceState({}, "", "/")
+            return
+        }
+
+        const bot = botStore.get(botAtom)
+        const sortedChats = botStore.get(sortedChatsAtom)
 
         const firstChat = sortedChats[0]
 
@@ -33,7 +40,7 @@ class RedirectChat extends Component<{ botName: string }> {
 
         const newChat = bot.initChat()
 
-        store.set(addChatAtom, newChat)
+        botStore.set(addChatAtom, newChat)
 
         Router.push("BotChat", { botName, chatID: newChat.id })
     }

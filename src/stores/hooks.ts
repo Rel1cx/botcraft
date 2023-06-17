@@ -1,23 +1,48 @@
-import { atom, useAtom, useAtomValue } from "jotai"
+import { atom, useAtom, useAtomValue, useSetAtom, useStore } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { useMemo } from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import type { StampID } from "@/lib/uuid"
-import { messagesAtom } from "@/stores"
+import { botAtom, messagesAtom } from "@/stores"
 
-import { chatsAtom, defaultBotAtom } from "./bot/atoms"
+import { addChatAtom, addMessageAtom, chatsAtom, removeChatAtom, updateChatAtom } from "./bot/atoms"
+
+export const useBot = () => {
+    const store = useStore()
+    return useAtom(botAtom, { store })
+}
 
 export const useChat = (id: StampID) => {
-    return useAtom(useMemo(() => atom((get) => get(chatsAtom).get(id)), [id]))
+    const store = useStore()
+    const chatAtom = useMemo(() => atom((get) => get(chatsAtom).get(id)), [id])
+    const chat = useAtomValue(chatAtom, { store })
+    const addChat = useSetAtom(addChatAtom, { store })
+    const updateChat = useSetAtom(updateChatAtom, { store })
+    const removeChat = useSetAtom(removeChatAtom, { store })
+
+    return [
+        chat,
+        {
+            addChat,
+            updateChat,
+            removeChat,
+        },
+    ] as const
 }
 
 export const useMessage = (id: StampID) => {
-    return useAtom(useMemo(() => atom((get) => get(messagesAtom).get(id)), [id]))
+    const store = useStore()
+    const messageAtom = useMemo(() => atom((get) => get(messagesAtom).get(id)), [id])
+
+    const [message, setMessage] = useAtom(messageAtom, { store })
+    const addMessage = useSetAtom(addMessageAtom, { store })
+
+    return [message, { setMessage, addMessage }] as const
 }
 
 export const useChatTokens = (chatID: StampID) => {
-    const bot = useAtomValue(defaultBotAtom)
+    const [bot] = useBot()
     const [chat] = useChat(chatID)
     const [getMessages] = useTransientAtom(messagesAtom)
 

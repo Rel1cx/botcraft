@@ -9,7 +9,7 @@ import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
-import { apiKeyAtom, defaultBotAtom } from "@/stores"
+import { apiKeyAtom, useBot } from "@/stores"
 import { isModel } from "@/zod"
 
 import { Layout } from "../Layout/Layout"
@@ -37,7 +37,7 @@ const dummySystemMessageID = makeID()
 const dummyIntroMessageID = makeID()
 
 const Settings = ({ botName }: SettingsProps) => {
-    const [bot, setBot] = useAtom(defaultBotAtom)
+    const [bot, setBot] = useBot()
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
 
     const systemMessage = useMemo<MessageData>(
