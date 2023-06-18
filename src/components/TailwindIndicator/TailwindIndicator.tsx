@@ -1,5 +1,9 @@
-const TailwindIndicator = () => {
-    if (import.meta.env.NODE_ENV === "production") {
+import * as React from "react"
+
+import { PROD } from "@/env"
+
+const TailwindIndicator = React.memo(() => {
+    if (PROD) {
         return null
     }
 
@@ -14,6 +18,6 @@ const TailwindIndicator = () => {
             <div className="hidden 2xl:block">2xl</div>
         </div>
     )
-}
+})
 
 export default TailwindIndicator
