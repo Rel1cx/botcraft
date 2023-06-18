@@ -1,4 +1,4 @@
-import { globalStyle, style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
@@ -38,18 +38,16 @@ export const button = style({
     },
 })
 
-export const textarea = style({})
-
-globalStyle(`${textarea} .cm-editor`, {
+export const textarea = style({
     padding: "0.25rem 0.5rem",
     fontSize: "14px",
     borderRadius: "0.5rem",
     border: `1px solid ${vars.colors.black20}`,
     transition: "border 120ms ease-out",
-})
 
-globalStyle(`${textarea} .cm-editor.cm-focused`, {
-    border: `1px solid ${vars.colors.black40}`,
+    ":focus-within": {
+        border: `1px solid ${vars.colors.black40}`,
+    },
 })
 
 export const content = style({
