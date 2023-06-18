@@ -2,7 +2,7 @@ import { Option as O } from "@swan-io/boxed"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
 import { MessageSquare } from "lucide-react"
-import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
+import { lazy, memo, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { ChatItem } from "@/atoms"
 import {
@@ -46,11 +46,19 @@ export type ChatProps = {
     onHeightChange?: (height: number) => void
 }
 
-const ChatMessageRenderer = ({ id }: { id: StampID }) => {
+const ChatMessageRenderer = memo(({ id }: { id: StampID }) => {
     const [data] = useMessage(id)
 
-    return <Suspense>{!!data?.content && data.role !== "system" && <Message data={data} />}</Suspense>
-}
+    const content = useMemo(() => {
+        if (!data?.content || data.role !== "system") {
+            return null
+        }
+
+        return <Message data={data} />
+    }, [data])
+
+    return <Suspense>{content}</Suspense>
+})
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
