@@ -4,7 +4,6 @@ import "katex/dist/katex.min.css"
 import { clsx } from "clsx"
 import { forwardRef, memo, useDeferredValue } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import ReactMarkdown from "react-markdown"
 import type { PluggableList } from "react-markdown/lib/react-markdown"
 import rehypeHighlight from "rehype-highlight"
 import rehypeKatex from "rehype-katex"
@@ -14,6 +13,7 @@ import remarkMath from "remark-math"
 
 import type { MessageData } from "@/bots/builtins/types"
 
+import MemoizedReactMarkdown from "../Markdown/MemoizedReactMarkdown"
 import * as css from "./styles.css"
 
 export type MessageProps = {
@@ -34,13 +34,15 @@ const Message = memo(
 
         return (
             <div className={clsx(css.container[role], className)} ref={ref} {...rest}>
-                <article className={`${css.content[role]} prose`}>
-                    <ErrorBoundary fallback={<div>{content}</div>}>
-                        <ReactMarkdown remarkPlugins={remarkExtensions} rehypePlugins={rehypeExtensions}>
-                            {deferredContent}
-                        </ReactMarkdown>
-                    </ErrorBoundary>
-                </article>
+                <ErrorBoundary fallback={<div>{content}</div>}>
+                    <MemoizedReactMarkdown
+                        className={`${css.content[role]} prose dark:prose-invert`}
+                        remarkPlugins={remarkExtensions}
+                        rehypePlugins={rehypeExtensions}
+                    >
+                        {deferredContent}
+                    </MemoizedReactMarkdown>
+                </ErrorBoundary>
             </div>
         )
     }),
