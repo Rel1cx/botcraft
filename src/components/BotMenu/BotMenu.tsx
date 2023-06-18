@@ -1,5 +1,5 @@
 import { Menu } from "@mantine/core"
-import { Delete, FileDown, FileUp, Settings } from "lucide-react"
+import { FileArrowDown, FileArrowUp, Gear, Trash } from "@phosphor-icons/react"
 import { memo } from "react"
 
 import { Router } from "@/router"
@@ -19,7 +19,7 @@ const BotMenu = memo(({ botName, children }: BotMenuProps) => {
             <Menu.Dropdown className={css.container}>
                 <Menu.Label>Preferences</Menu.Label>
                 <Menu.Item
-                    icon={<Icon as={Settings} />}
+                    icon={<Icon as={Gear} />}
                     onClick={() => {
                         Router.push("BotSettings", { botName })
                     }}
@@ -28,9 +28,9 @@ const BotMenu = memo(({ botName, children }: BotMenuProps) => {
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Label>Danger zone</Menu.Label>
-                <Menu.Item icon={<Icon as={FileUp} />}>Import data from file</Menu.Item>
-                <Menu.Item icon={<Icon as={FileDown} />}>Export data to file</Menu.Item>
-                <Menu.Item color="red" icon={<Icon as={Delete} />} disabled>
+                <Menu.Item icon={<Icon as={FileArrowUp} />}>Import data from file</Menu.Item>
+                <Menu.Item icon={<Icon as={FileArrowDown} />}>Export data to file</Menu.Item>
+                <Menu.Item color="red" icon={<Icon as={Trash} />} disabled>
                     Delete bot
                 </Menu.Item>
             </Menu.Dropdown>

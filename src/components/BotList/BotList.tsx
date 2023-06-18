@@ -1,7 +1,7 @@
 import { Button } from "@ariakit/react"
 import { Indicator } from "@mantine/core"
+import { Plus } from "@phosphor-icons/react"
 import { Link } from "@swan-io/chicane"
-import { Plus } from "lucide-react"
 
 import type { IconProtocol, ListItemProtocol, ListProtocol } from "@/protocols"
 import { vars } from "@/theme/vars.css"

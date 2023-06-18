@@ -1,12 +1,12 @@
-import type { LucideProps } from "lucide-react"
+import type { IconProps as PhosphorProps } from "@phosphor-icons/react"
 import { memo } from "react"
 
 import type { Remap } from "@/lib/utilityTypes"
 import { vars } from "@/theme/vars.css"
 
 type IconProps = Remap<
-    LucideProps & {
-        as: React.ComponentType<LucideProps>
+    PhosphorProps & {
+        as: React.ComponentType<PhosphorProps>
         strokeWidth?: number
     }
 >

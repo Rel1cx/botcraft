@@ -1,7 +1,7 @@
 import { ActionIcon } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { Gear } from "@phosphor-icons/react"
 import { useAtomValue } from "jotai"
-import { Settings as SettingsIcon } from "lucide-react"
 import { Component, lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
@@ -87,7 +87,7 @@ const BotArea = ({ botName }: BotProps) => {
             nav={<BotList items={bots} selected={botName} />}
             navFooter={
                 <ActionIcon onClick={open} aria-label="Settings" title="Settings">
-                    <Icon as={SettingsIcon} />
+                    <Icon as={Gear} />
                 </ActionIcon>
             }
         >

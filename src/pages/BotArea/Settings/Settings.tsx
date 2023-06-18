@@ -1,7 +1,7 @@
 import { Button } from "@ariakit/react"
-import { Input, Select, Slider, TextInput, Title } from "@mantine/core"
+import { Input, Select, Slider, TextInput } from "@mantine/core"
+import { ArrowLeft } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
-import { ArrowLeft } from "lucide-react"
 import { type ChangeEvent, lazy, Suspense, useMemo } from "react"
 
 import type { Model } from "@/api/types"
@@ -84,7 +84,12 @@ const Settings = ({ botName }: SettingsProps) => {
                 <div className={css.asideContent}>
                     <h3 className={css.title}>General Settings</h3>
                     <section className={css.section}>
-                        <TextInput name="endpoint" label="Endpoint" value="" disabled />
+                        <TextInput
+                            name="endpoint"
+                            label="Endpoint"
+                            value="https://api.openai.com/v1/chat/completions"
+                            disabled
+                        />
                         <TextInput
                             name="apiKey"
                             label="API Key"

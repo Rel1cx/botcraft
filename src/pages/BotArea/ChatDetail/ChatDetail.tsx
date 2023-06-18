@@ -1,7 +1,7 @@
+import { Chat as ChatIcon } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { MessageSquare } from "lucide-react"
 import { lazy, memo, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
 import type { ChatItem } from "@/atoms"
@@ -128,7 +128,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                         style={{
                             flexShrink: 0,
                         }}
-                        as={MessageSquare}
+                        as={ChatIcon}
                         color={chatID === id ? "#fff" : vars.colors.text}
                     />
                 )}

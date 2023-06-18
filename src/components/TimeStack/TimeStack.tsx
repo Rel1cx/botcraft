@@ -1,7 +1,7 @@
 import { Button } from "@ariakit/react"
+import { Plus, Star, Trash } from "@phosphor-icons/react"
 import { BiMap } from "@rizzzse/bimap"
 import { formatDistanceToNow } from "date-fns"
-import { Plus, Star, Trash } from "lucide-react"
 import { memo, useCallback, useMemo } from "react"
 
 // import { useHotkeys } from "react-hotkeys-hook"
