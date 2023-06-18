@@ -1,0 +1,5 @@
+@font-face {
+    font-family: 'iosevka';
+    font-display: swap;
+    src: url('./iosevka.woff2') format('woff2');
+}

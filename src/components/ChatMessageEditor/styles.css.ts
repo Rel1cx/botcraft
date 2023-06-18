@@ -1,9 +1,17 @@
-import { style } from "@vanilla-extract/css"
+import { globalStyle, style } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
 export const container = style({
     marginBottom: "1rem",
+})
+
+export const content = style({})
+
+globalStyle(`${content} .cm-editor`, {
+    padding: "0.5rem",
+    outline: "none",
+    backgroundColor: vars.colors.lightGray,
 })
 
 export const toolbar = style({

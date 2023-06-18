@@ -4,6 +4,16 @@ import { useTransientAtom } from "jotai-game"
 import { MessageSquare } from "lucide-react"
 import { lazy, Suspense, useCallback, useMemo, useRef, useState } from "react"
 
+import type { ChatItem } from "@/atoms"
+import {
+    chatCompletionTaskAtom,
+    chatsAtom,
+    requestChatCompletionAtom,
+    sortedChatsAtom,
+    useBot,
+    useChat,
+    useMessage,
+} from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
@@ -12,20 +22,6 @@ import Chat from "@/components/Chat/Chat"
 import type { StampID } from "@/lib/uuid"
 import { isStampID, makeID } from "@/lib/uuid"
 import { Router } from "@/router"
-import type { ChatItem } from "@/stores"
-import {
-    addChatAtom,
-    addMessageAtom,
-    chatCompletionTaskAtom,
-    chatsAtom,
-    defaultBotAtom,
-    removeChatAtom,
-    requestChatCompletionAtom,
-    sortedChatsAtom,
-    updateChatAtom,
-    useChat,
-    useMessage,
-} from "@/stores"
 import { vars } from "@/theme/vars.css"
 
 import { Layout } from "../Layout/Layout"
@@ -58,16 +54,12 @@ const ChatMessageRenderer = ({ id }: { id: StampID }) => {
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = useRef<HTMLDivElement>(null)
-    const bot = useAtomValue(defaultBotAtom)
-    const [chat] = useChat(chatID)
-    const [removing, setRemoving] = useState(O.None<StampID>())
+    const [bot] = useBot()
+    const [chat, { addChat, removeChat, updateChat }] = useChat(chatID)
+    const [, { addMessage }] = useMessage(chatID)
     const [getChats] = useTransientAtom(chatsAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
-    const addMessage = useSetAtom(addMessageAtom)
-    const addChat = useSetAtom(addChatAtom)
-    const updateChat = useSetAtom(updateChatAtom)
-    const removeChat = useSetAtom(removeChatAtom)
-    // const toggleChat = useSetAtom(toggleChatAtom)
+    const [removing, setRemoving] = useState(O.None<StampID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)

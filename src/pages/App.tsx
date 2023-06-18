@@ -1,14 +1,14 @@
 import { MantineProvider } from "@mantine/core"
-import { useAtomValue } from "jotai"
+import { createStore, Provider as BotAtomProvider } from "jotai"
 import { lazy, StrictMode, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
+import { botsStore } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import TypesafeI18n from "@/i18n/i18n-react"
 import type { Locales } from "@/i18n/i18n-types"
 import RootLayout from "@/pages/RootLayout/RootLayout"
 import { Router } from "@/router"
-import { defaultBotAtom } from "@/stores"
 import { mantineTheme } from "@/theme/mantine.config"
 
 import * as css from "./App.css"
@@ -17,7 +17,6 @@ const Bot = lazy(() => import("@/pages/BotArea/BotArea"))
 const NotFound = lazy(() => import("@/pages/NotFound/NotFound"))
 
 const App = ({ locale }: { locale: Locales }) => {
-    const bot = useAtomValue(defaultBotAtom)
     const route = Router.useRoute(["Home", "BotArea"])
 
     return (
@@ -29,10 +28,14 @@ const App = ({ locale }: { locale: Locales }) => {
                             {useMemo(
                                 () =>
                                     match(route)
-                                        .with({ name: "Home" }, () => <Redirect to={`/bots/${bot.name}`} />)
-                                        .with({ name: "BotArea" }, ({ params }) => <Bot botName={params.botName} />)
+                                        .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
+                                        .with({ name: "BotArea" }, ({ params }) => (
+                                            <BotAtomProvider store={botsStore.get(params.botName) ?? createStore()}>
+                                                <Bot botName={params.botName} />
+                                            </BotAtomProvider>
+                                        ))
                                         .otherwise(() => <NotFound />),
-                                [bot.name, route],
+                                [route],
                             )}
                         </Suspense>
                     </div>

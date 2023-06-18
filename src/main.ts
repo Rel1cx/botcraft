@@ -7,11 +7,11 @@ import { createElement } from "react"
 import { createRoot } from "react-dom/client"
 import { navigatorDetector } from "typesafe-i18n/detectors"
 
+import { loadConfigToAtom, loadDBToAtom } from "./atoms"
 import { detectLocale } from "./i18n/i18n-util"
 import { loadLocaleAsync } from "./i18n/i18n-util.async"
 import { autoBlur } from "./lib/browser"
 import App from "./pages/App"
-import { loadConfigToAtom, loadDBToAtom } from "./stores"
 
 enableMapSet()
 setAutoFreeze(true)

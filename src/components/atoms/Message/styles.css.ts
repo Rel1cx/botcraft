@@ -12,7 +12,6 @@ export const baseContent = style({
     padding: "0.5rem 1rem",
     maxWidth: "75%",
     lineHeight: "1.5",
-    whiteSpace: "pre-wrap",
     wordBreak: "break-word",
     overflow: "hidden",
     background: vars.colors.lightGray,
