@@ -50,7 +50,7 @@ const ChatMessageRenderer = memo(({ id }: { id: StampID }) => {
     const [data] = useMessage(id)
 
     const content = useMemo(() => {
-        if (!data?.content || data.role !== "system") {
+        if (!data?.content || data.role === "system") {
             return null
         }
 
