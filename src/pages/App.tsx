@@ -1,7 +1,6 @@
 import { MantineProvider } from "@mantine/core"
 import { createStore, Provider as AtomProvider } from "jotai"
 import * as React from "react"
-import { Toaster } from "react-hot-toast"
 import { match } from "ts-pattern"
 
 import { appStore, botsStore } from "@/atoms"
@@ -25,7 +24,6 @@ const App = ({ locale }: { locale: Locales }) => {
             <TypesafeI18n locale={locale}>
                 <MantineProvider theme={{ ...mantineTheme, colorScheme: "light" }}>
                     <AtomProvider store={appStore}>
-                        <Toaster />
                         <div className={css.container}>
                             <React.Suspense fallback={<RootLayout navHeader={<small>Loading...</small>} />}>
                                 {React.useMemo(

@@ -166,7 +166,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
             O.Some<ChatCompletionTask>({
                 ...taskMeta,
                 type: "error",
-                error: error instanceof Error ? error : new Error(stringify(error)),
+                error,
             }),
         )
     }

@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react"
+import { Toaster } from "react-hot-toast"
 
 import TailwindIndicator from "@/components/TailwindIndicator/TailwindIndicator"
 
@@ -19,6 +20,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, nav, navFooter, navHe
                 <div className={css.navFooter}>{navFooter}</div>
             </nav>
             <main className={css.main}>{children}</main>
+            <Toaster position="bottom-right" />
             <TailwindIndicator />
         </div>
     )
