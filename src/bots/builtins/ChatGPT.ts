@@ -11,6 +11,7 @@ import { configManager } from "@/config"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
 import { makeNameGenerator } from "@/lib/name"
 import { readerToObservable } from "@/lib/stream"
+import { stripIndentTrim } from "@/lib/strip-indent"
 import { countTokens } from "@/lib/tokenizer"
 import { makeID } from "@/lib/uuid"
 
@@ -33,8 +34,10 @@ export class ChatGPT implements Bot {
 
     prompt = ""
 
-    systemMessage = `You have expertise in multiple fields and can assist users in solving problems.
-Try to answer user's questions as accurately as possible.`
+    systemMessage = stripIndentTrim(`
+      You have expertise in multiple fields and can assist users in solving problems.
+      Try to answer user's questions as accurately as possible.
+    `)
 
     abortController = new AbortController()
 
