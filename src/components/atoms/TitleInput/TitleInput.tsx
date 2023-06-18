@@ -1,4 +1,4 @@
-import { memo, useDeferredValue } from "react"
+import * as React from "react"
 
 import * as css from "./styles.css"
 
@@ -9,8 +9,8 @@ type TitleInputProps = {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const TitleInput = memo(({ id, onChange, placeholder = "Untitled", value, ...rest }: TitleInputProps) => {
-    const deferredValue = useDeferredValue(value)
+const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, ...rest }: TitleInputProps) => {
+    const deferredValue = React.useDeferredValue(value)
 
     return (
         <div id={id} className={css.container}>

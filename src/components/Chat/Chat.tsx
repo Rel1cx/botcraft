@@ -1,6 +1,6 @@
 import { useResizeObserver } from "@react-hookz/web"
 import { AnimatePresence, m } from "framer-motion"
-import { lazy, useMemo, useRef } from "react"
+import * as React from "react"
 
 import type { ChatItem } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
@@ -8,9 +8,9 @@ import { makeID, type StampID } from "@/lib/uuid"
 
 import * as css from "./styles.css"
 
-const Message = lazy(() => import("@/components/atoms/Message/Message"))
+const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
 
-const Animation = lazy(() => import("@/components/atoms/Animation/Animation"))
+const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
 
 export type ChatProps = {
     data: ChatItem
@@ -22,9 +22,9 @@ export type ChatProps = {
 const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps) => {
     const { id, intro, messages } = data
 
-    const contentRef = useRef<HTMLDivElement>(null)
+    const contentRef = React.useRef<HTMLDivElement>(null)
 
-    const introMessage = useMemo<MessageData>(
+    const introMessage = React.useMemo<MessageData>(
         () => ({
             id: makeID(),
             role: "assistant",

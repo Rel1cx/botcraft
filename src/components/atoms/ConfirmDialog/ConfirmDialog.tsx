@@ -1,14 +1,14 @@
 import { Dialog, DialogDescription, DialogDismiss, DialogHeading, useDialogStore } from "@ariakit/react"
 import clsx from "clsx"
-import { memo, type ReactNode } from "react"
+import * as React from "react"
 
 import * as css from "./styles.css"
 
 type ConfirmDialogProps = {
-    title?: ReactNode
-    description?: ReactNode
-    cancelLabel?: ReactNode
-    confirmLabel?: ReactNode
+    title?: React.ReactNode
+    description?: React.ReactNode
+    cancelLabel?: React.ReactNode
+    confirmLabel?: React.ReactNode
     danger?: boolean
     open?: boolean
     onClose?: () => void
@@ -16,7 +16,7 @@ type ConfirmDialogProps = {
     onCancel?: () => void
 }
 
-const ConfirmDialog = memo(
+const ConfirmDialog = React.memo(
     ({
         cancelLabel = "Cancel",
         confirmLabel = "OK",

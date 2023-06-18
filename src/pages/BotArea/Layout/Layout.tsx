@@ -1,8 +1,8 @@
-import type { PropsWithChildren } from "react"
+import * as React from "react"
 
 import * as css from "./styles.css"
 
-type LayoutProps = PropsWithChildren<{
+type LayoutProps = React.PropsWithChildren<{
     header?: React.ReactNode
     aside?: React.ReactNode
     asideHeader?: React.ReactNode

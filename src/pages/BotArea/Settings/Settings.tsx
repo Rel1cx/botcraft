@@ -2,7 +2,7 @@ import { Button } from "@ariakit/react"
 import { Input, Select, Slider, TextInput } from "@mantine/core"
 import { ArrowLeft } from "@phosphor-icons/react"
 import { useAtom } from "jotai"
-import { type ChangeEvent, lazy, Suspense, useMemo } from "react"
+import * as React from "react"
 
 import type { Model } from "@/api/types"
 import { apiKeyAtom, appStore, useBot } from "@/atoms"
@@ -15,9 +15,9 @@ import { isModel } from "@/zod"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
-const Message = lazy(() => import("@/components/atoms/Message/Message"))
+const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
 
-const MarkdownEditor = lazy(() => import("@/components/atoms/MarkdownEditor/MarkdownEditor"))
+const MarkdownEditor = React.lazy(() => import("@/components/atoms/MarkdownEditor/MarkdownEditor"))
 
 type SettingsProps = {
     botName: string
@@ -42,7 +42,7 @@ const Settings = ({ botName }: SettingsProps) => {
     const [bot, setBot] = useBot()
     const [apiKey, setApiKey] = useAtom(apiKeyAtom, { store: appStore })
 
-    const systemMessage = useMemo<MessageData>(
+    const systemMessage = React.useMemo<MessageData>(
         () => ({
             id: dummySystemMessageID,
             role: "system",
@@ -52,7 +52,7 @@ const Settings = ({ botName }: SettingsProps) => {
         [bot.systemMessage],
     )
 
-    const introMessage = useMemo<MessageData>(
+    const introMessage = React.useMemo<MessageData>(
         () => ({
             id: dummyIntroMessageID,
             role: "assistant",
@@ -94,7 +94,7 @@ const Settings = ({ botName }: SettingsProps) => {
                             name="apiKey"
                             label="API Key"
                             value={apiKey}
-                            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                                 setApiKey(evt.target.value)
                             }}
                         />
@@ -211,10 +211,10 @@ const Settings = ({ botName }: SettingsProps) => {
             }
         >
             <div className={css.content}>
-                <Suspense>
+                <React.Suspense>
                     <Message data={systemMessage} />
                     <Message data={introMessage} />
-                </Suspense>
+                </React.Suspense>
             </div>
         </Layout>
     )

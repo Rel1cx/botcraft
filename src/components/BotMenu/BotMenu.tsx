@@ -1,6 +1,6 @@
 import { Menu } from "@mantine/core"
 import { FileArrowDown, FileArrowUp, Gear, Trash } from "@phosphor-icons/react"
-import { memo } from "react"
+import * as React from "react"
 
 import { Router } from "@/router"
 
@@ -12,7 +12,7 @@ type BotMenuProps = {
     children: React.ReactNode
 }
 
-const BotMenu = memo(({ botName, children }: BotMenuProps) => {
+const BotMenu = React.memo(({ botName, children }: BotMenuProps) => {
     return (
         <Menu shadow="md" width={200} position="bottom-start">
             <Menu.Target>{children}</Menu.Target>

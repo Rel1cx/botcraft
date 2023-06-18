@@ -2,7 +2,7 @@ import { Button } from "@ariakit/react"
 import { Plus, Star, X } from "@phosphor-icons/react"
 import { BiMap } from "@rizzzse/bimap"
 import { formatDistanceToNow } from "date-fns"
-import { memo, useCallback, useMemo } from "react"
+import * as React from "react"
 
 // import { useHotkeys } from "react-hotkeys-hook"
 import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols"
@@ -47,7 +47,7 @@ const NewItemButton = ({
     )
 }
 
-const TimeStack = memo(
+const TimeStack = React.memo(
     ({
         disableMutation = false,
         items,
@@ -60,7 +60,7 @@ const TimeStack = memo(
         renderItemIcon,
         selected,
     }: TimeStackProps) => {
-        const markers = useMemo(() => {
+        const markers = React.useMemo(() => {
             const markers = new BiMap<string, number>()
 
             for (const [index, chat] of items.entries()) {
@@ -76,9 +76,9 @@ const TimeStack = memo(
             return markers
         }, [items])
 
-        const handleItemAdd = useCallback(() => onItemAdd?.(), [onItemAdd])
+        const handleItemAdd = React.useCallback(() => onItemAdd?.(), [onItemAdd])
 
-        const handleItemRemove = useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
+        const handleItemRemove = React.useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
 
         // useHotkeys("Delete", () => {
         //     if (!selected) {

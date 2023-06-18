@@ -1,16 +1,16 @@
-import { forwardRef, memo, type PropsWithChildren } from "react"
+import * as React from "react"
 
 import * as css from "./styles.css"
 
-type AvatarProps = PropsWithChildren<{
+type AvatarProps = React.PropsWithChildren<{
     title?: string
     bg?: string
     size?: number
     radius?: string | number
 }>
 
-const Avatar = memo(
-    forwardRef<HTMLDivElement, AvatarProps>(({ bg, children, radius = "0.5rem", size = 44 }, ref) => {
+const Avatar = React.memo(
+    React.forwardRef<HTMLDivElement, AvatarProps>(({ bg, children, radius = "0.5rem", size = 44 }, ref) => {
         return (
             <div
                 ref={ref}

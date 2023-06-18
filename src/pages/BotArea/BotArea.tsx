@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai"
-import { Component, lazy, Suspense, useMemo } from "react"
+import * as React from "react"
 import { match } from "ts-pattern"
 
 import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/atoms"
@@ -10,15 +10,15 @@ import { Router } from "@/router"
 
 import RootLayout from "../RootLayout/RootLayout"
 
-const ChatDetail = lazy(() => import("./ChatDetail/ChatDetail"))
+const ChatDetail = React.lazy(() => import("./ChatDetail/ChatDetail"))
 
-const Settings = lazy(() => import("./Settings/Settings"))
+const Settings = React.lazy(() => import("./Settings/Settings"))
 
 type BotProps = {
     botName: string
 }
 
-class RedirectChat extends Component<{ botName: string }> {
+class RedirectChat extends React.Component<{ botName: string }> {
     override componentDidMount() {
         const { botName } = this.props
         const botStore = botsStore.get(botName)
@@ -55,7 +55,7 @@ const BotArea = ({ botName }: BotProps) => {
     // const hasApiKey = !!useAtomValue(apiKeyAtom)
     const bots = useAtomValue(botsAtom)
 
-    const contentView = useMemo(
+    const contentView = React.useMemo(
         () =>
             match(route)
                 // .with({ name: "BotRoot" }, ({ params }) => (
@@ -79,7 +79,7 @@ const BotArea = ({ botName }: BotProps) => {
 
     return (
         <RootLayout nav={<BotList items={bots} selected={botName} />}>
-            <Suspense>{contentView}</Suspense>
+            <React.Suspense>{contentView}</React.Suspense>
         </RootLayout>
     )
 }

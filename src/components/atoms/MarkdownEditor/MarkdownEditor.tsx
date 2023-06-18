@@ -6,7 +6,7 @@ import type { BasicSetupOptions } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
 import clsx from "clsx"
 import { basicLight } from "cm6-theme-basic-light"
-import { memo, useRef } from "react"
+import * as React from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useHotkeys } from "react-hotkeys-hook"
 
@@ -64,7 +64,7 @@ const resetEditor = (editor: EditorView) => {
     })
 }
 
-const MarkdownEditor = memo(
+const MarkdownEditor = React.memo(
     ({
         className,
         defaultValue = "",
@@ -76,8 +76,8 @@ const MarkdownEditor = memo(
         shouldComplete = defaultShouldComplete,
         shouldResetEditor = defaultShouldResetEditor,
     }: MarkdownEditorProps) => {
-        const contentRef = useRef(defaultValue)
-        const editorRef = useRef<O<EditorView>>(O.None())
+        const contentRef = React.useRef(defaultValue)
+        const editorRef = React.useRef<O<EditorView>>(O.None())
 
         useHotkeys(
             "ctrl+enter",

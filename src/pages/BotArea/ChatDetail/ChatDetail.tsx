@@ -2,7 +2,7 @@ import { Chat as ChatIcon } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { lazy, memo, Suspense, useCallback, useMemo, useRef, useState } from "react"
+import * as React from "react"
 
 import type { ChatItem } from "@/atoms"
 import {
@@ -27,13 +27,13 @@ import { vars } from "@/theme/vars.css"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
-const TimeStack = lazy(() => import("@/components/TimeStack/TimeStack"))
+const TimeStack = React.lazy(() => import("@/components/TimeStack/TimeStack"))
 
-const Message = lazy(() => import("@/components/atoms/Message/Message"))
+const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
 
-const ConfirmDialog = lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"))
+const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"))
 
-const ChatMessageEditor = lazy(() => import("@/components/ChatMessageEditor/ChatMessageEditor"))
+const ChatMessageEditor = React.lazy(() => import("@/components/ChatMessageEditor/ChatMessageEditor"))
 
 type ChatDetailProps = {
     botName: string
@@ -46,10 +46,10 @@ export type ChatProps = {
     onHeightChange?: (height: number) => void
 }
 
-const ChatMessageRenderer = memo(({ id }: { id: StampID }) => {
+const ChatMessageRenderer = React.memo(({ id }: { id: StampID }) => {
     const [data] = useMessage(id)
 
-    const content = useMemo(() => {
+    const content = React.useMemo(() => {
         if (!data?.content || data.role === "system") {
             return null
         }
@@ -57,22 +57,22 @@ const ChatMessageRenderer = memo(({ id }: { id: StampID }) => {
         return <Message data={data} />
     }, [data])
 
-    return <Suspense>{content}</Suspense>
+    return <React.Suspense>{content}</React.Suspense>
 })
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
-    const contentRef = useRef<HTMLDivElement>(null)
+    const contentRef = React.useRef<HTMLDivElement>(null)
     const [bot] = useBot()
     const [chat, { addChat, removeChat, updateChat }] = useChat(chatID)
     const [, { addMessage }] = useMessage(chatID)
     const [getChats] = useTransientAtom(chatsAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
-    const [removing, setRemoving] = useState(O.None<StampID>())
+    const [removing, setRemoving] = React.useState(O.None<StampID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const isGenerating = useMemo(() => {
+    const isGenerating = React.useMemo(() => {
         if (chatCompletionTask.isNone()) {
             return false
         }
@@ -82,12 +82,12 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         return task.type === "pending" && task.chatID === chatID
     }, [chatCompletionTask, chatID])
 
-    const onAddChatClick = useCallback(() => {
+    const onAddChatClick = React.useCallback(() => {
         const newChat = bot.initChat()
         addChat(newChat)
     }, [addChat, bot])
 
-    const onChatRemoveClick = useCallback(
+    const onChatRemoveClick = React.useCallback(
         (chatID: string) => {
             const chats = getChats()
             const isLast = chats.size === 1
@@ -101,7 +101,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         [botName, getChats, removeChat],
     )
 
-    const onMessageCreate = useCallback(
+    const onMessageCreate = React.useCallback(
         (content: string) => {
             const message: MessageData = {
                 id: makeID(),
@@ -119,7 +119,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
         [addMessage, chatID, requestChatCompletion, updateChat],
     )
 
-    const aside = useMemo(
+    const aside = React.useMemo(
         () => (
             <TimeStack
                 items={sortedChats}

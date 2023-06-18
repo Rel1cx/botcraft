@@ -1,6 +1,6 @@
 import { useDebouncedState } from "@react-hookz/web"
 import { useAtomValue, useStore } from "jotai"
-import { memo, startTransition, useCallback, useMemo, useState } from "react"
+import * as React from "react"
 
 import { botAtom, useChatTokens } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
@@ -17,21 +17,21 @@ type ChatMessageEditorProps = {
     onComplete?: (content: string) => void
 }
 
-const ChatMessageEditor = memo(
+const ChatMessageEditor = React.memo(
     ({ defaultContent = "", id, onComplete = noop, shouldSend = false }: ChatMessageEditorProps) => {
         const botStore = useStore()
         const bot = useAtomValue(botAtom, {
             store: botStore,
         })
         const totalTokens = useChatTokens(id)
-        const [focused, setFocused] = useState(false)
-        const [content, setContent] = useState(defaultContent)
+        const [focused, setFocused] = React.useState(false)
+        const [content, setContent] = React.useState(defaultContent)
 
         const [debouncedContent, setDebouncedContent] = useDebouncedState(content, 500)
 
-        const onContentChange = useCallback(
+        const onContentChange = React.useCallback(
             (value: string) => {
-                startTransition(() => {
+                React.startTransition(() => {
                     setContent(value)
                     setDebouncedContent(value)
                 })
@@ -39,7 +39,7 @@ const ChatMessageEditor = memo(
             [setDebouncedContent],
         )
 
-        const tokens = useMemo(() => {
+        const tokens = React.useMemo(() => {
             if (debouncedContent === "") {
                 return 0
             }
@@ -60,7 +60,7 @@ const ChatMessageEditor = memo(
                     <span className={css.info}>Total Tokens: {totalTokens + tokens}</span>
                 </div>
 
-                {useMemo(
+                {React.useMemo(
                     () => (
                         <MarkdownEditor
                             className={css.content}

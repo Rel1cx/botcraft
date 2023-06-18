@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue, useSetAtom, useStore } from "jotai"
 import { useTransientAtom } from "jotai-game"
-import { useMemo } from "react"
+import * as React from "react"
 
 import { botAtom, messagesAtom } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
@@ -15,7 +15,7 @@ export const useBot = () => {
 
 export const useChat = (id: StampID) => {
     const store = useStore()
-    const chatAtom = useMemo(() => atom((get) => get(chatsAtom).get(id)), [id])
+    const chatAtom = React.useMemo(() => atom((get) => get(chatsAtom).get(id)), [id])
     const chat = useAtomValue(chatAtom, { store })
     const addChat = useSetAtom(addChatAtom, { store })
     const updateChat = useSetAtom(updateChatAtom, { store })
@@ -33,7 +33,7 @@ export const useChat = (id: StampID) => {
 
 export const useMessage = (id: StampID) => {
     const store = useStore()
-    const messageAtom = useMemo(() => atom((get) => get(messagesAtom).get(id)), [id])
+    const messageAtom = React.useMemo(() => atom((get) => get(messagesAtom).get(id)), [id])
 
     const [message, setMessage] = useAtom(messageAtom, { store })
     const addMessage = useSetAtom(addMessageAtom, { store })
@@ -46,7 +46,7 @@ export const useChatTokens = (chatID: StampID) => {
     const [chat] = useChat(chatID)
     const [getMessages] = useTransientAtom(messagesAtom)
 
-    return useMemo(() => {
+    return React.useMemo(() => {
         const messageList =
             chat?.messages.reduce<MessageData[]>((acc, id) => {
                 const message = getMessages().get(id)

@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot"
-import { forwardRef, memo, useRef } from "react"
+import * as React from "react"
 
 import type { ListItemProtocol } from "@/protocols"
 
@@ -21,18 +21,18 @@ export type ListItemProps = {
     children: React.ReactNode
 }
 
-export const ListItem = memo(
-    forwardRef<HTMLDivElement, ListItemProps>(({ asChild, ...rest }: ListItemProps, ref) => {
+export const ListItem = React.memo(
+    React.forwardRef<HTMLDivElement, ListItemProps>(({ asChild, ...rest }: ListItemProps, ref) => {
         const Comp = asChild ? Slot : "div"
 
         return <Comp className={css.item} ref={ref} {...rest} />
     }),
 )
 
-const List = memo(
-    forwardRef<HTMLDivElement, ListProps>(
+const List = React.memo(
+    React.forwardRef<HTMLDivElement, ListProps>(
         ({ data = defaultData, gap = 0, renderItem, selectedID, ...rest }: ListProps, ref) => {
-            const scrollContainer = useRef<HTMLDivElement>(null)
+            const scrollContainer = React.useRef<HTMLDivElement>(null)
 
             return (
                 <div ref={ref} className={css.container} {...rest}>

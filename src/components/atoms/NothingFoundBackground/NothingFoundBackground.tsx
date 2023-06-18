@@ -1,5 +1,5 @@
 import { Button, Container, createStyles, Group, rem, Text, Title } from "@mantine/core"
-import { memo } from "react"
+import * as React from "react"
 
 import { Illustration } from "./Illustration"
 
@@ -42,7 +42,7 @@ const useStyles = createStyles((theme) => ({
     },
 }))
 
-const NothingFoundBackground = memo(() => {
+const NothingFoundBackground = React.memo(() => {
     const { classes } = useStyles()
 
     return (
