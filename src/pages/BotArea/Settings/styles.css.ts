@@ -3,13 +3,26 @@ import { style } from "@vanilla-extract/css"
 import { vars } from "@/theme/vars.css"
 
 export const asideContent = style({
+    padding: "0.25rem 0",
     width: "100%",
     height: "100%",
+    overflowY: "auto",
+})
+
+export const title = style({
     padding: "0.5rem 1rem",
+    fontSize: "1rem",
+    fontWeight: "normal",
+    color: vars.colors.black,
+    textTransform: "uppercase",
+})
+
+export const section = style({
+    padding: "0 1rem",
+    paddingBottom: "0.5rem",
     display: "flex",
     flexFlow: "column nowrap",
     gap: "1rem",
-    overflowY: "auto",
 })
 
 export const asideHeader = style({

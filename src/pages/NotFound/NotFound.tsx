@@ -1,15 +1,7 @@
-// import * as css from "./styles.css"
+import NothingFoundBackground from "@/components/atoms/NothingFoundBackground/NothingFoundBackground"
 
-// type NotFoundProps = {
-//     // ...
-// }
-
-const NotFound = () => {
-    return (
-        <div>
-            <h1>404</h1>
-        </div>
-    )
+export const NotFound = () => {
+    return <NothingFoundBackground />
 }
 
 export default NotFound

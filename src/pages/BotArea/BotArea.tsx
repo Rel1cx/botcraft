@@ -1,8 +1,12 @@
+import { ActionIcon } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { useAtomValue } from "jotai"
+import { Settings as SettingsIcon } from "lucide-react"
 import { Component, lazy, Suspense, useMemo } from "react"
 import { match } from "ts-pattern"
 
 import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/atoms"
+import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
@@ -54,6 +58,7 @@ const BotArea = ({ botName }: BotProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
     // const hasApiKey = !!useAtomValue(apiKeyAtom)
     const bots = useAtomValue(botsAtom)
+    const [opened, { close, open }] = useDisclosure(false)
 
     const contentView = useMemo(
         () =>
@@ -78,7 +83,14 @@ const BotArea = ({ botName }: BotProps) => {
     )
 
     return (
-        <RootLayout nav={<BotList items={bots} selected={botName} />}>
+        <RootLayout
+            nav={<BotList items={bots} selected={botName} />}
+            navFooter={
+                <ActionIcon onClick={open} aria-label="Settings" title="Settings">
+                    <Icon as={SettingsIcon} />
+                </ActionIcon>
+            }
+        >
             <Suspense>{contentView}</Suspense>
         </RootLayout>
     )

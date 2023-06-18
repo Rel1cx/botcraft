@@ -2,6 +2,7 @@ import { Option as O } from "@swan-io/boxed"
 import { atom } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 import { omit, pick, sortBy } from "rambda"
+import toast from "react-hot-toast"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
@@ -155,7 +156,11 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         }),
     )
 
-    const handleError = (error: unknown) => {
+    const handleError = (err: unknown) => {
+        const error = err instanceof Error ? err : new Error(stringify(err))
+
+        toast.error(`Failed to generate chat completion:\n${error.name}:\n${error.message}`, { id: taskMeta.id })
+
         set(
             chatCompletionTaskAtom,
             O.Some<ChatCompletionTask>({
