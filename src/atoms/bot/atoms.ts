@@ -1,5 +1,4 @@
 import { Option as O } from "@swan-io/boxed"
-import { set } from "idb-keyval"
 import { atom } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 import { omit, pick, sortBy } from "rambda"
@@ -18,15 +17,7 @@ export const botAtom = atomWithImmer(new ChatGPT())
 
 export const chatsAtom = atomWithImmer<Map<StampID, ChatItem>>(new Map())
 
-// store.sub(chatsAtom, () => {
-//     void set("chats", store.get(chatsAtom))
-// })
-
 export const messagesAtom = atomWithImmer<Map<StampID, MessageData>>(new Map())
-
-// store.sub(messagesAtom, () => {
-//     void set("messages", store.get(messagesAtom))
-// })
 
 export const chatMetaAtom = atom((get) => {
     return Array.from(get(chatsAtom).values()).reduceRight<ChatMeta[]>((acc, item) => {
