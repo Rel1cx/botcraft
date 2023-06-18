@@ -44,7 +44,6 @@ export const itemActions = style({
     display: "flex",
     flexFlow: "row nowrap",
     alignItems: "center",
-    gap: "0.25rem",
 })
 
 export const actionArea = style({
