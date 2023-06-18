@@ -1,5 +1,5 @@
 import { Button } from "@ariakit/react"
-import { Plus, Star, Trash } from "@phosphor-icons/react"
+import { Plus, Star, X } from "@phosphor-icons/react"
 import { BiMap } from "@rizzzse/bimap"
 import { formatDistanceToNow } from "date-fns"
 import { memo, useCallback, useMemo } from "react"
@@ -107,13 +107,16 @@ const TimeStack = memo(
                                     <span className={css.itemTitle}>{item.title}</span>
                                     {!!selected && (
                                         <div className={css.itemActions}>
-                                            <Icon color="#fff" cursor="pointer" as={Star} />
-                                            <Icon
-                                                color="#fff"
-                                                cursor="pointer"
-                                                as={Trash}
+                                            <Button className={css.actionButton} as="button">
+                                                <Icon color="#fff" as={Star} />
+                                            </Button>
+                                            <Button
+                                                className={css.actionButton}
+                                                as="button"
                                                 onClick={() => handleItemRemove(item.id)}
-                                            />
+                                            >
+                                                <Icon as={X} color="#fff" />
+                                            </Button>
                                         </div>
                                     )}
                                 </div>

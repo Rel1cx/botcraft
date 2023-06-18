@@ -1,5 +1,7 @@
 import type { PropsWithChildren } from "react"
 
+import TailwindIndicator from "@/components/TailwindIndicator/TailwindIndicator"
+
 import * as css from "./styles.css"
 
 export type RootLayoutProps = PropsWithChildren<{
@@ -17,6 +19,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, nav, navFooter, navHe
                 <div className={css.navFooter}>{navFooter}</div>
             </nav>
             <main className={css.main}>{children}</main>
+            <TailwindIndicator />
         </div>
     )
 }

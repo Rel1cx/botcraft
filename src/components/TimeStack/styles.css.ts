@@ -52,6 +52,21 @@ export const actionArea = style({
     padding: "0 0.5rem",
 })
 
+export const actionButton = style({
+    padding: "0.25rem",
+    borderRadius: "0.25rem",
+    background: "none",
+    transition: "background 120ms ease-out",
+
+    ":hover": {
+        background: vars.colors.overlay,
+    },
+
+    ":focus-visible": {
+        outline: `1px dashed ${vars.colors.tealLight}`,
+    },
+})
+
 export const newChatButton = style({
     position: "relative",
     padding: "0 0.5rem",
