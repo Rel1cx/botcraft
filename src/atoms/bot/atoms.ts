@@ -6,7 +6,7 @@ import toast from "react-hot-toast"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { ChatGPT } from "@/bots/builtins/ChatGPT"
+import { defaultBot, generateChatCompletionStream } from "@/bots/builtins/ChatGPT"
 import type { ChatData, MessageData } from "@/bots/builtins/types"
 import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
@@ -14,7 +14,7 @@ import { makeID } from "@/lib/uuid"
 
 import type { ChatItem, ChatMeta } from "./types"
 
-export const botAtom = atomWithImmer(new ChatGPT())
+export const botAtom = atomWithImmer(defaultBot)
 
 export const chatsAtom = atomWithImmer<Map<StampID, ChatItem>>(new Map())
 
@@ -171,7 +171,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         )
     }
 
-    const stream = await bot.generateChatCompletionStream({ ...omit(["messages"], chat), content })
+    const stream = await generateChatCompletionStream({ ...omit(["messages"], chat), content })(bot)
 
     if (!stream.isOk()) {
         const error = stream.getError()

@@ -3,6 +3,7 @@ import { useTransientAtom } from "jotai-game"
 import * as React from "react"
 
 import { botAtom, messagesAtom } from "@/atoms"
+import { estimateTokenCount } from "@/bots/builtins/ChatGPT"
 import type { MessageData } from "@/bots/builtins/types"
 import type { StampID } from "@/lib/uuid"
 
@@ -56,6 +57,6 @@ export const useChatTokens = (chatID: StampID) => {
                 return acc
             }, []) ?? []
 
-        return bot.estimateTokenCount(messageList)
+        return estimateTokenCount(messageList)(bot)
     }, [bot, chat?.messages, getMessages])
 }

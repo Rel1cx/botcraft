@@ -3,6 +3,7 @@ import * as React from "react"
 import { match } from "ts-pattern"
 
 import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/atoms"
+import { initChat } from "@/bots/builtins/ChatGPT"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { isStampID } from "@/lib/uuid"
@@ -38,7 +39,7 @@ class RedirectChat extends React.Component<{ botName: string }> {
             return
         }
 
-        const newChat = bot.initChat()
+        const newChat = initChat()(bot)
 
         botStore.set(addChatAtom, newChat)
 

@@ -3,6 +3,7 @@ import { useAtomValue, useStore } from "jotai"
 import * as React from "react"
 
 import { botAtom, useChatTokens } from "@/atoms"
+import { estimateTokenCount } from "@/bots/builtins/ChatGPT"
 import type { MessageData } from "@/bots/builtins/types"
 import { noop } from "@/lib/helper"
 import type { StampID } from "@/lib/uuid"
@@ -44,7 +45,7 @@ const ChatMessageEditor = React.memo(
                 return 0
             }
             const message: MessageData = { id, content: debouncedContent, role: "user", updatedAt: Date.now() }
-            return bot.estimateTokenCount([message])
+            return estimateTokenCount([message])(bot)
         }, [bot, debouncedContent, id])
 
         return (

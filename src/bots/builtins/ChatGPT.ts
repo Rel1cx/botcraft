@@ -1,11 +1,10 @@
 import { Result } from "@swan-io/boxed"
-import { immerable } from "immer"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
+import type { DeepReadonly } from "ts-essentials"
 
 import { getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
-import type { ChatCompletionOptions } from "@/api/types"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { configManager } from "@/config"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
@@ -19,57 +18,45 @@ import type { Bot, ChatData, MessageData } from "./types"
 
 const generateName = makeNameGenerator()
 
-export class ChatGPT implements Bot {
-    [immerable] = true
+const abortController = new AbortController()
 
-    name = "ChatGPT"
-
-    icon = chatgpt
-
-    description = "Default bot"
-
-    updatedAt = Date.now()
-
-    intro = "Hello! How can I assist you today?"
-
-    prompt = ""
-
-    systemMessage = stripIndentTrim(`
+export const defaultBot: DeepReadonly<Bot> = {
+    id: "ChatGPT",
+    name: "ChatGPT",
+    icon: chatgpt,
+    intro: "Hello! How can I assist you today?",
+    prompt: "",
+    systemMessage: stripIndentTrim(`
       You have expertise in multiple fields and can assist users in solving problems.
       Try to answer user's questions as accurately as possible.
-    `)
+    `),
+    options: DEFAULT_CHAT_COMPLETION_OPTIONS,
+}
 
-    abortController = new AbortController()
-
-    options: ChatCompletionOptions = DEFAULT_CHAT_COMPLETION_OPTIONS
-
-    initChat(): ChatData {
-        const firstMessage: MessageData = {
-            id: makeID(),
-            role: "system",
-            content: this.systemMessage,
-            updatedAt: Date.now(),
-        }
-
-        return {
-            id: makeID(),
-            title: generateName(),
-            intro: this.intro,
-            content: [firstMessage],
-            updatedAt: Date.now(),
-        }
+// eslint-disable-next-line unicorn/consistent-function-scoping
+export const initChat = () => (bot: Bot): ChatData => {
+    const firstMessage: MessageData = {
+        id: makeID(),
+        role: "system",
+        content: bot.systemMessage,
+        updatedAt: Date.now(),
     }
 
-    estimateTokenCount(messages: MessageData[]) {
-        return countTokens(messages, this.options.model)
+    return {
+        id: makeID(),
+        title: generateName(),
+        intro: bot.intro,
+        content: [firstMessage],
+        updatedAt: Date.now(),
     }
+}
 
-    // TODO: Implement this
-    generateChatCompletion(chat: ChatData): Promise<Result<unknown, Error>> {
-        return Promise.resolve(Result.Error(new Error("Not implemented")))
-    }
+export const estimateTokenCount = (messages: MessageData[]) => (bot: Bot) => {
+    return countTokens(messages, bot.options.model)
+}
 
-    async generateChatCompletionStream(chat: ChatData): Promise<Result<Observable<string>, Error>> {
+export const generateChatCompletionStream =
+    (chat: ChatData) => async (bot: Bot): Promise<Result<Observable<string>, Error>> => {
         const messages = chat.content
         const apiKey = await configManager.getConfig("apiKey")
 
@@ -77,13 +64,7 @@ export class ChatGPT implements Bot {
             return Result.Error(new Error("API key is not set"))
         }
 
-        const stream = await getChatCompletionStream(
-            apiKey.get(),
-            messages,
-            this.options,
-            {},
-            this.abortController.signal,
-        )
+        const stream = await getChatCompletionStream(apiKey.get(), messages, bot.options, {}, abortController.signal)
 
         if (stream.isError()) {
             return Result.Error(stream.getError())
@@ -109,4 +90,3 @@ export class ChatGPT implements Bot {
             ),
         )
     }
-}

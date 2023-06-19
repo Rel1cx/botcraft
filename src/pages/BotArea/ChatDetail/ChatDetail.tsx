@@ -14,6 +14,7 @@ import {
     useChat,
     useMessage,
 } from "@/atoms"
+import { initChat } from "@/bots/builtins/ChatGPT"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
@@ -83,7 +84,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     }, [chatCompletionTask, chatID])
 
     const onAddChatClick = React.useCallback(() => {
-        const newChat = bot.initChat()
+        const newChat = initChat()(bot)
         addChat(newChat)
     }, [addChat, bot])
 

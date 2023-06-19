@@ -2,9 +2,10 @@ import type { Draft } from "immer"
 import { atom } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 
+import { defaultBot } from "@/bots/builtins/ChatGPT"
 import { configManager } from "@/config"
 
-import { appStore, defaultBot } from "../stores"
+import { appStore } from "../stores"
 import { DEFAULT_APP_LAYOUT } from "./constants"
 import type { AppLayout } from "./types"
 

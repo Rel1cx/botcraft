@@ -1,31 +1,11 @@
 import type { Remap } from "@/lib/utilityTypes"
 
-import type {
-    ContentProtocol,
-    CreatableProtocol,
-    IconProtocol,
-    NameProtocol,
-    RoleProtocol,
-    StampIDProtocol,
-    TitleProtocol,
-} from "./misc"
+import type { ContentProtocol, CreatableProtocol, RoleProtocol, StampIDProtocol, TitleProtocol } from "./misc"
 
 export type MessageProtocol = Remap<StampIDProtocol & RoleProtocol & CreatableProtocol & ContentProtocol<string>>
 
 export type ChatProtocol = Remap<
     (StampIDProtocol & TitleProtocol & CreatableProtocol & ContentProtocol<MessageProtocol[]>) & {
         intro: string
-    }
->
-
-export type BotProtocol = Remap<
-    (NameProtocol & IconProtocol & CreatableProtocol) & {
-        intro: string
-
-        prompt: string
-
-        systemMessage: string
-
-        options: Record<string, unknown>
     }
 >

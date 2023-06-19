@@ -23,7 +23,6 @@ export type IconProtocol = {
 
 export type NameProtocol = {
     name: string
-    description: string
 }
 
 export type ContentProtocol<T> = {

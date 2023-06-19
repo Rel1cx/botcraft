@@ -1,8 +1,10 @@
+import type { ChatCompletionOptions } from "@/api/types"
 import type {
-    BotProtocol,
-    ChatProtocol,
     ContentProtocol,
     CreatableProtocol,
+    IconProtocol,
+    IDProtocol,
+    NameProtocol,
     RoleProtocol,
     StampIDProtocol,
     TitleProtocol,
@@ -15,16 +17,12 @@ export type ChatData = (StampIDProtocol & TitleProtocol & CreatableProtocol & Co
     intro: string
 }
 
-export type Bot = BotProtocol & {
-    // tokenEncode: (text: string) => Uint32Array
+export type Bot = (IDProtocol & NameProtocol & IconProtocol) & {
+    intro: string
 
-    // tokenDecode: (tokens: Uint32Array) => string
+    prompt: string
 
-    initChat: () => ChatProtocol
+    systemMessage: string
 
-    estimateTokenCount: (content: ChatProtocol["content"]) => number
-
-    generateChatCompletion: (chat: ChatProtocol) => Promise<unknown>
-
-    generateChatCompletionStream: (chat: ChatProtocol) => Promise<unknown>
+    options: ChatCompletionOptions
 }
