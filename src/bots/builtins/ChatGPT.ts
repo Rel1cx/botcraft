@@ -16,9 +16,7 @@ import { makeID } from "@/lib/uuid"
 
 import type { Bot, ChatData, MessageData } from "./types"
 
-const generateName = makeNameGenerator()
-
-const abortController = new AbortController()
+const botNameGenerator = makeNameGenerator()
 
 export const defaultBot: DeepReadonly<Bot> = {
     id: "ChatGPT",
@@ -44,7 +42,7 @@ export const initChat = () => (bot: Bot): ChatData => {
 
     return {
         id: makeID(),
-        title: generateName(),
+        title: botNameGenerator(),
         intro: bot.intro,
         content: [firstMessage],
         updatedAt: Date.now(),
@@ -56,9 +54,10 @@ export const estimateTokenCount = (messages: MessageData[]) => (bot: Bot) => {
 }
 
 export const generateChatCompletionStream =
-    (chat: ChatData) => async (bot: Bot): Promise<Result<Observable<string>, Error>> => {
+    (chat: ChatData) => async (bot: Bot): Promise<Result<[Observable<string>, AbortController], Error>> => {
         const messages = chat.content
         const apiKey = await configManager.getConfig("apiKey")
+        const abortController = new AbortController()
 
         if (apiKey.isNone()) {
             return Result.Error(new Error("API key is not set"))
@@ -80,13 +79,13 @@ export const generateChatCompletionStream =
 
         const textDecoder = new TextDecoder()
 
-        return Result.Ok(
-            observable.pipe(
-                timeout(8000),
-                map((value) => textDecoder.decode(value)),
-                map(parseEventSource),
-                mergeMap((events) => from(events)),
-                map(getContentFromEventSource),
-            ),
+        const observer = observable.pipe(
+            timeout(8000),
+            map((value) => textDecoder.decode(value)),
+            map(parseEventSource),
+            mergeMap((events) => from(events)),
+            map(getContentFromEventSource),
         )
+
+        return Result.Ok([observer, abortController])
     }

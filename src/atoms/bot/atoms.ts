@@ -171,15 +171,17 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
         )
     }
 
-    const stream = await generateChatCompletionStream({ ...omit(["messages"], chat), content })(bot)
+    const result = await generateChatCompletionStream({ ...omit(["messages"], chat), content })(bot)
 
-    if (!stream.isOk()) {
-        const error = stream.getError()
+    if (!result.isOk()) {
+        const error = result.getError()
         handleError(error)
         return
     }
 
-    stream.get().subscribe({
+    const [stream, abort] = result.get()
+
+    stream.subscribe({
         next(msg) {
             set(messagesAtom, (draft) => {
                 const message = draft.get(taskMeta.generatingMessageID)
@@ -193,7 +195,10 @@ export const requestChatCompletionAtom = atom(null, async (get, set, id: StampID
                 chat.updatedAt = Date.now()
             })
         },
-        error: handleError,
+        error: (err: unknown) => {
+            abort.abort()
+            handleError(err)
+        },
         complete() {
             set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
         },
