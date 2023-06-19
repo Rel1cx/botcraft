@@ -1,13 +1,10 @@
-import type { Draft } from "immer"
 import { atom } from "jotai"
 import { atomWithImmer } from "jotai-immer"
 
 import { defaultBot } from "@/bots/builtins/ChatGPT"
 import { configManager } from "@/config"
 
-import { appStore } from "../stores"
 import { DEFAULT_APP_LAYOUT } from "./constants"
-import type { AppLayout } from "./types"
 
 export const windowSizeAtom = atom<[number, number]>([0, 0])
 
@@ -19,10 +16,6 @@ windowSizeAtom.onMount = (setAtom) => {
 }
 
 export const appLayoutAtom = atomWithImmer(DEFAULT_APP_LAYOUT)
-
-export const setAppLayout = (mutator: (draft: Draft<AppLayout>) => void) => {
-    appStore.set(appLayoutAtom, mutator)
-}
 
 export const apiKeyAtom = atom("", (_, set, payload: string) => {
     const val = payload.trim()

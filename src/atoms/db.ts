@@ -1,21 +1,24 @@
 import { defaultBot } from "@/bots/builtins/ChatGPT"
+import type { MessageData } from "@/bots/builtins/types"
 import { DB } from "@/lib/db"
 
-export const chatsDB = new Map([
+import type { ChatItem } from "./bot/types"
+
+export const chatsDB = new Map<string, DB<ChatItem>>([
     [
-        defaultBot.name,
+        defaultBot.id,
         DB.make({
-            id: defaultBot.name,
+            id: defaultBot.id,
             name: "chats",
         }),
     ],
 ])
 
-export const messagesDB = new Map([
+export const messagesDB = new Map<string, DB<MessageData>>([
     [
-        defaultBot.name,
+        defaultBot.id,
         DB.make({
-            id: defaultBot.name,
+            id: defaultBot.id,
             name: "messages",
         }),
     ],

@@ -8,11 +8,11 @@ import invariant from "tiny-invariant"
 
 import { defaultBot, generateChatCompletionStream } from "@/bots/builtins/ChatGPT"
 import type { ChatData, MessageData } from "@/bots/builtins/types"
-import type { Remap } from "@/lib/utilityTypes"
 import type { StampID } from "@/lib/uuid"
 import { makeID } from "@/lib/uuid"
 
-import type { ChatItem, ChatMeta } from "./types"
+import { chatsDB, messagesDB } from "../db"
+import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem, ChatMeta } from "./types"
 
 export const botAtom = atomWithImmer(defaultBot)
 
@@ -41,8 +41,13 @@ export const sortedChatsAtom = atom((get) => {
     return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
-export const addChatAtom = atom(null, (_, set, payload: ChatData) => {
+export const addChatAtom = atom(null, (get, set, payload: ChatData) => {
+    const botID = get(botAtom).id
     const messages = new Set<StampID>()
+    const chat = {
+        ...omit(["content"], payload),
+        messages: Array.from(messages),
+    }
     set(messagesAtom, (draft) => {
         for (const message of payload.content) {
             draft.set(message.id, message)
@@ -50,65 +55,47 @@ export const addChatAtom = atom(null, (_, set, payload: ChatData) => {
         }
     })
     set(chatsAtom, (draft) => {
-        const chat = {
-            ...omit(["content"], payload),
-            messages: Array.from(messages),
-        }
         draft.set(chat.id, chat)
     })
+    void messagesDB.get(botID)?.setMany(Object.entries(payload.content))
+    void chatsDB.get(botID)?.set(payload.id, chat)
 })
 
-export const removeChatAtom = atom(null, (_, set, id: StampID) => {
+export const removeChatAtom = atom(null, (get, set, id: StampID) => {
+    const botID = get(botAtom).id
     set(chatsAtom, (draft) => {
         draft.delete(id)
     })
+    void chatsDB.get(botID)?.delete(id)
 })
 
-export const updateChatAtom = atom(null, (_, set, id: StampID, mutator: (draft: ChatItem) => void) => {
+export const updateChatAtom = atom(null, (get, set, id: StampID, mutator: (draft: ChatItem) => void) => {
+    const botID = get(botAtom).id
     set(chatsAtom, (draft) => {
         const chat = draft.get(id)
         invariant(chat, "Chat not found")
         mutator(chat)
     })
+    const chat = get(chatsAtom).get(id)
+    invariant(chat, "Chat not found")
+    void chatsDB.get(botID)?.set(id, chat)
 })
 
-export const addMessageAtom = atom(null, (_, set, payload: MessageData) => {
+export const addMessageAtom = atom(null, (get, set, payload: MessageData) => {
+    const botID = get(botAtom).id
     set(messagesAtom, (draft) => {
         draft.set(payload.id, payload)
     })
+    void messagesDB.get(botID)?.set(payload.id, payload)
 })
 
-export const removeMessageAtom = atom(null, (_, set, id: StampID) => {
+export const removeMessageAtom = atom(null, (get, set, id: StampID) => {
+    const botID = get(botAtom).id
     set(messagesAtom, (draft) => {
         Reflect.deleteProperty(draft, id)
     })
+    void messagesDB.get(botID)?.delete(id)
 })
-
-export type ChatCompletionTaskMeta = {
-    id: StampID
-    chatID: StampID
-    generatingMessageID: StampID
-}
-
-export type ChatCompletionTask =
-    | Remap<
-          {
-              type: "pending"
-              abort: () => void
-          } & ChatCompletionTaskMeta
-      >
-    | Remap<
-          {
-              type: "done"
-              content: string
-          } & ChatCompletionTaskMeta
-      >
-    | Remap<
-          {
-              type: "error"
-              error: Error
-          } & ChatCompletionTaskMeta
-      >
 
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
