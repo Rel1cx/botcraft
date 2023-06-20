@@ -27,9 +27,18 @@ export const initialMessages: Record<string, MessageData> = Object.fromEntries(
 
 export const botDb = new MiniDb<Bot>({
     name: "bot",
+    version: 1,
     initialData: initialBots,
 })
 
-export const chatsDb = new MiniDb<ChatItem>({ name: "chats", initialData: initialChats })
+export const chatsDb = new MiniDb<ChatItem>({
+    name: "chats",
+    version: 1,
+    initialData: initialChats,
+})
 
-export const messagesDb = new MiniDb<MessageData>({ name: "messages", initialData: initialMessages })
+export const messagesDb = new MiniDb<MessageData>({
+    name: "messages",
+    version: 1,
+    initialData: initialMessages,
+})
