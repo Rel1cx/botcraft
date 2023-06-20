@@ -35,7 +35,7 @@ export const sortedChatsAtom = atom((get) => {
     return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
-export const addChatAtom = atom(null, async (get, set, payload: ChatData) => {
+export const addChatAtom = atom(null, async (_, set, payload: ChatData) => {
     const chat = {
         ...omit(["content"], payload),
         messages: [],
@@ -49,7 +49,7 @@ export const addChatAtom = atom(null, async (get, set, payload: ChatData) => {
     await set(chatsDb.set, chat.id, chat)
 })
 
-export const removeChatAtom = atom(null, async (get, set, id: ChatID) => {
+export const removeChatAtom = atom(null, async (_, set, id: ChatID) => {
     await set(chatsDb.delete, id)
 })
 
@@ -72,7 +72,7 @@ export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: Mess
     )
 })
 
-export const removeMessageAtom = atom(null, async (get, set, chatID: ChatID, id: MessageID) => {
+export const removeMessageAtom = atom(null, async (_, set, chatID: ChatID, id: MessageID) => {
     await set(messagesDb.delete, id)
 })
 

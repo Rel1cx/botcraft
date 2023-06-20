@@ -5,8 +5,7 @@ import { toast } from "react-hot-toast"
 
 import { defaultBot } from "@/bots/builtins/ChatGPT"
 import type { Bot } from "@/bots/builtins/types"
-
-import { DEFAULT_APP_LAYOUT } from "./constants"
+import { DEFAULT_APP_LAYOUT } from "@/constants"
 
 export const appLayoutAtom = atomWithStorage("APP_LAYOUT", DEFAULT_APP_LAYOUT)
 

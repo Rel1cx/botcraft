@@ -1,12 +1,12 @@
 import { uid } from "@/lib/uuid"
 
-export type ChatID = string
+export type ChatID = `chat-${string}`
 
-export type MessageID = string
+export type MessageID = `msg-${string}`
 
-export const isChatID = (id: string) => id.startsWith("chat-")
+export const isChatID = (id: string): id is ChatID => id.startsWith("chat-")
 
-export const isMessageID = (id: string) => id.startsWith("msg-")
+export const isMessageID = (id: string): id is MessageID => id.startsWith("msg-")
 
 export const makeChatID = (): ChatID => `chat-${uid.randomUUID()}`
 

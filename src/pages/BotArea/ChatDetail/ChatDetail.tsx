@@ -85,7 +85,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     }, [addChat, bot])
 
     const onChatRemoveClick = React.useCallback(
-        (chatID: string) => {
+        (chatID: ChatID) => {
             const { chats } = bot
             const isLast = chats.length === 1
             // TODO: Allow safe removal of last chat
