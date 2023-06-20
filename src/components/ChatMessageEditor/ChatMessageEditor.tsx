@@ -1,18 +1,14 @@
 import { useDebouncedState } from "@react-hookz/web"
-import { useAtomValue, useStore } from "jotai"
 import * as React from "react"
 
-import { botAtom, useChatTokens } from "@/atoms"
-import { estimateTokenCount } from "@/bots/builtins/ChatGPT"
-import type { MessageData } from "@/bots/builtins/types"
 import { noop } from "@/lib/helper"
-import type { StampID } from "@/lib/uuid"
+import type { ChatID } from "@/zod/id"
 
 import MarkdownEditor from "../atoms/MarkdownEditor/MarkdownEditor"
 import * as css from "./styles.css"
 
 type ChatMessageEditorProps = {
-    id: StampID
+    id: ChatID
     defaultContent?: string
     shouldSend?: boolean
     onComplete?: (content: string) => void
@@ -20,11 +16,6 @@ type ChatMessageEditorProps = {
 
 const ChatMessageEditor = React.memo(
     ({ defaultContent = "", id, onComplete = noop, shouldSend = false }: ChatMessageEditorProps) => {
-        const botStore = useStore()
-        const bot = useAtomValue(botAtom, {
-            store: botStore,
-        })
-        const totalTokens = useChatTokens(id)
         const [focused, setFocused] = React.useState(false)
         const [content, setContent] = React.useState(defaultContent)
 
@@ -40,13 +31,13 @@ const ChatMessageEditor = React.memo(
             [setDebouncedContent],
         )
 
-        const tokens = React.useMemo(() => {
-            if (debouncedContent === "") {
-                return 0
-            }
-            const message: MessageData = { id, content: debouncedContent, role: "user", updatedAt: Date.now() }
-            return estimateTokenCount([message])(bot)
-        }, [bot, debouncedContent, id])
+        // const tokens = React.useMemo(() => {
+        //     if (debouncedContent === "") {
+        //         return 0
+        //     }
+        //     const message: Pick<MessageData, "content" | "role"> = { content: debouncedContent, role: "user" }
+        //     return estimateTokenCount([message])(bot)
+        // }, [bot, debouncedContent])
 
         return (
             <div className={css.container}>
@@ -57,8 +48,8 @@ const ChatMessageEditor = React.memo(
                     }}
                 >
                     <span className={css.info}>Words: {content.length}</span>
-                    <span className={css.info}>Tokens: {tokens}</span>
-                    <span className={css.info}>Total Tokens: {totalTokens + tokens}</span>
+                    {/* <span className={css.info}>Tokens: {tokens}</span>
+                    <span className={css.info}>Total Tokens: {totalTokens + tokens}</span> */}
                 </div>
 
                 {React.useMemo(

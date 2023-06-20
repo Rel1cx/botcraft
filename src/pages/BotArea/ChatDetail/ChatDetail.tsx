@@ -1,13 +1,12 @@
 import { Chat as ChatIcon } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
+import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
-import { useTransientAtom } from "jotai-game"
 import * as React from "react"
 
 import type { ChatItem } from "@/atoms"
 import {
     chatCompletionTaskAtom,
-    chatsAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
     useBot,
@@ -20,10 +19,9 @@ import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import Chat from "@/components/Chat/Chat"
-import type { StampID } from "@/lib/uuid"
-import { isStampID, makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { vars } from "@/theme/vars.css"
+import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
@@ -38,7 +36,7 @@ const ChatMessageEditor = React.lazy(() => import("@/components/ChatMessageEdito
 
 type ChatDetailProps = {
     botName: string
-    chatID: StampID
+    chatID: ChatID
 }
 
 export type ChatProps = {
@@ -47,8 +45,8 @@ export type ChatProps = {
     onHeightChange?: (height: number) => void
 }
 
-const ChatMessageRenderer = React.memo(({ id }: { id: StampID }) => {
-    const [data] = useMessage(id)
+const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
+    const data = useMessage(id)
 
     const content = React.useMemo(() => {
         if (!data?.content || data.role === "system") {
@@ -63,12 +61,10 @@ const ChatMessageRenderer = React.memo(({ id }: { id: StampID }) => {
 
 const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const [bot] = useBot()
-    const [chat, { addChat, removeChat, updateChat }] = useChat(chatID)
-    const [, { addMessage }] = useMessage(chatID)
-    const [getChats] = useTransientAtom(chatsAtom)
+    const [bot, { addChat, removeChat, updateChat }] = useBot(botName)
+    const [chat, { addMessage }] = useChat(chatID)
     const sortedChats = useAtomValue(sortedChatsAtom)
-    const [removing, setRemoving] = React.useState(O.None<StampID>())
+    const [removing, setRemoving] = React.useState(O.None<ChatID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
@@ -85,39 +81,36 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
 
     const onAddChatClick = React.useCallback(() => {
         const newChat = initChat()(bot)
-        addChat(newChat)
+        void addChat(newChat)
     }, [addChat, bot])
 
     const onChatRemoveClick = React.useCallback(
         (chatID: string) => {
-            const chats = getChats()
-            const isLast = chats.size === 1
+            const { chats } = bot
+            const isLast = chats.length === 1
             // TODO: Allow safe removal of last chat
-            if (isLast || !isStampID(chatID)) {
+            if (isLast || !isChatID(chatID)) {
                 return
             }
             Router.replace("BotNewChat", { botName })
-            removeChat(chatID)
+            void removeChat(chatID)
         },
-        [botName, getChats, removeChat],
+        [bot, botName, removeChat],
     )
 
     const onMessageCreate = React.useCallback(
-        (content: string) => {
+        async (content: string) => {
             const message: MessageData = {
-                id: makeID(),
+                id: makeMessageID(),
                 content,
                 role: "user",
                 updatedAt: Date.now(),
             }
-            addMessage(message)
-            updateChat(chatID, (draft) => {
-                draft.messages.push(message.id)
-            })
+            await addMessage(chatID, message)
 
-            void requestChatCompletion(chatID)
+            await requestChatCompletion(botName, chatID)
         },
-        [addMessage, chatID, requestChatCompletion, updateChat],
+        [addMessage, botName, chatID, requestChatCompletion],
     )
 
     const aside = React.useMemo(
@@ -141,7 +134,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 }}
                 onItemAdd={onAddChatClick}
                 onItemRemove={(id) => {
-                    if (isStampID(id)) {
+                    if (isChatID(id)) {
                         setRemoving(O.Some(id))
                     }
                 }}
@@ -164,9 +157,12 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                     value={chat.title}
                     placeholder="Untitled"
                     onChange={(evt) => {
-                        updateChat(chatID, (draft) => {
-                            draft.title = evt.currentTarget.value
-                        })
+                        void updateChat(
+                            chatID,
+                            produce((draft) => {
+                                draft.title = evt.currentTarget.value
+                            }),
+                        )
                     }}
                 />
             }

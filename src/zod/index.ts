@@ -9,12 +9,6 @@ export const Env = z.object({
 
 export type Env = z.infer<typeof Env>
 
-export const Config = z.object({
-    apiKey: z.string().describe("OpenAI api key"),
-})
-
-export type Config = z.infer<typeof Config>
-
 export const Role = z.union([z.literal("user"), z.literal("assistant"), z.literal("system")])
 
 export type Role = z.infer<typeof Role>

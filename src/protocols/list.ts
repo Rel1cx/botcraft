@@ -1,4 +1,4 @@
-import type { IDProtocol, TitleProtocol } from "./misc"
+import type { IDProtocol, TitleProtocol } from "./base"
 
 export type ListProtocol<T extends IDProtocol = ListItemProtocol> = {
     items: T[]

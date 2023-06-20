@@ -5,12 +5,12 @@ import { useAtom } from "jotai"
 import * as React from "react"
 
 import type { Model } from "@/api/types"
-import { apiKeyAtom, appStore, useBot } from "@/atoms"
+import { apiKeyAtom, useApp, useBot } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
-import { makeID } from "@/lib/uuid"
 import { Router } from "@/router"
 import { isModel } from "@/zod"
+import { makeMessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
@@ -34,13 +34,14 @@ const models: { value: Model; label: Model }[] = [
     { value: "gpt-4-32k-0613", label: "gpt-4-32k-0613" },
 ]
 
-const dummySystemMessageID = makeID()
+const dummySystemMessageID = makeMessageID()
 
-const dummyIntroMessageID = makeID()
+const dummyIntroMessageID = makeMessageID()
 
 const Settings = ({ botName }: SettingsProps) => {
-    const [bot, setBot] = useBot()
-    const [apiKey, setApiKey] = useAtom(apiKeyAtom, { store: appStore })
+    const [, { updateBot }] = useApp()
+    const [bot] = useBot(botName)
+    const [apiKey, setApiKey] = useAtom(apiKeyAtom)
 
     const systemMessage = React.useMemo<MessageData>(
         () => ({
@@ -121,7 +122,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                     return
                                 }
 
-                                setBot((draft) => {
+                                updateBot(botName, (draft) => {
                                     draft.options.model = value
                                 })
                             }}
@@ -131,7 +132,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn
                                 value={bot.options.temperature}
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.options.temperature = Number.parseFloat(value.toPrecision(2))
                                     })
                                 }}
@@ -145,7 +146,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn
                                 value={bot.options.max_tokens}
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.options.max_tokens = value
                                     })
                                 }}
@@ -159,7 +160,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn={bot.options.frequency_penalty !== 0}
                                 value={bot.options.frequency_penalty}
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.options.frequency_penalty = Number.parseFloat(value.toPrecision(2))
                                     })
                                 }}
@@ -173,7 +174,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn={bot.options.presence_penalty !== 0}
                                 value={bot.options.presence_penalty}
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.options.presence_penalty = Number.parseFloat(value.toPrecision(2))
                                     })
                                 }}
@@ -188,7 +189,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 defaultValue={bot.systemMessage}
                                 placeholder="Write a system message"
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.systemMessage = value
                                     })
                                 }}
@@ -200,7 +201,7 @@ const Settings = ({ botName }: SettingsProps) => {
                                 placeholder="Write an intro message"
                                 defaultValue={bot.intro}
                                 onChange={(value) => {
-                                    setBot((draft) => {
+                                    updateBot(botName, (draft) => {
                                         draft.intro = value
                                     })
                                 }}

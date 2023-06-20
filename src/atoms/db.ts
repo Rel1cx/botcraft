@@ -1,25 +1,35 @@
-import { defaultBot } from "@/bots/builtins/ChatGPT"
-import type { MessageData } from "@/bots/builtins/types"
-import { DB } from "@/lib/db"
+import { MiniDb } from "jotai-minidb"
+
+import { defaultBot, initChat } from "@/bots/builtins/ChatGPT"
+import type { Bot, MessageData } from "@/bots/builtins/types"
 
 import type { ChatItem } from "./bot/types"
 
-export const chatsDB = new Map<string, DB<ChatItem>>([
-    [
-        defaultBot.id,
-        DB.make({
-            id: defaultBot.id,
-            name: "chats",
-        }),
-    ],
-])
+export const initialChat = initChat()(defaultBot)
 
-export const messagesDB = new Map<string, DB<MessageData>>([
-    [
-        defaultBot.id,
-        DB.make({
-            id: defaultBot.id,
-            name: "messages",
-        }),
-    ],
-])
+export const initialBots: Record<string, Bot> = {
+    [defaultBot.name]: {
+        ...defaultBot,
+        chats: [initialChat.id],
+    },
+}
+
+export const initialChats: Record<string, ChatItem> = {
+    [initialChat.id]: {
+        ...initialChat,
+        messages: initialChat.content.map((message) => message.id),
+    },
+}
+
+export const initialMessages: Record<string, MessageData> = Object.fromEntries(
+    initialChat.content.map((message) => [message.id, message]),
+)
+
+export const botDb = new MiniDb<Bot>({
+    name: "bot",
+    initialData: initialBots,
+})
+
+export const chatsDb = new MiniDb<ChatItem>({ name: "chats", initialData: initialChats })
+
+export const messagesDb = new MiniDb<MessageData>({ name: "messages", initialData: initialMessages })

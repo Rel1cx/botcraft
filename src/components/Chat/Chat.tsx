@@ -4,7 +4,7 @@ import * as React from "react"
 
 import type { ChatItem } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
-import { makeID, type StampID } from "@/lib/uuid"
+import { makeMessageID, type MessageID } from "@/zod/id"
 
 import * as css from "./styles.css"
 
@@ -16,7 +16,7 @@ export type ChatProps = {
     data: ChatItem
     isGenerating?: boolean
     onHeightChange?: (height: number) => void
-    MessageRenderer: ({ id }: { id: StampID; className?: string }) => React.ReactNode
+    MessageRenderer: ({ id }: { id: MessageID; className?: string }) => React.ReactNode
 }
 
 const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps) => {
@@ -26,7 +26,7 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
 
     const introMessage = React.useMemo<MessageData>(
         () => ({
-            id: makeID(),
+            id: makeMessageID(),
             role: "assistant",
             content: intro,
             updatedAt: Date.now(),

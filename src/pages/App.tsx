@@ -1,9 +1,7 @@
 import { MantineProvider } from "@mantine/core"
-import { createStore, Provider as AtomProvider } from "jotai"
 import * as React from "react"
 import { match } from "ts-pattern"
 
-import { appStore, botsStore } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import TypesafeI18n from "@/i18n/i18n-react"
 import type { Locales } from "@/i18n/i18n-types"
@@ -16,6 +14,18 @@ import * as css from "./App.css"
 const Bot = React.lazy(() => import("@/pages/BotArea/BotArea"))
 const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 
+// const BotProvider = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
+//     const botStore = React.useMemo(() => botsStore.get(botName) ?? createStore(), [botName])
+
+//     useHydrateAtoms([[botNameAtom, botName]], { store: botStore })
+
+//     return <AtomProvider store={botStore}>{children}</AtomProvider>
+// }
+
+const BotProvider = ({ children }: { botName: string; children: React.ReactNode }) => {
+    return children
+}
+
 const App = ({ locale }: { locale: Locales }) => {
     const route = Router.useRoute(["Home", "BotArea"])
 
@@ -23,24 +33,22 @@ const App = ({ locale }: { locale: Locales }) => {
         <React.StrictMode>
             <TypesafeI18n locale={locale}>
                 <MantineProvider theme={{ ...mantineTheme, colorScheme: "light" }}>
-                    <AtomProvider store={appStore}>
-                        <div className={css.container}>
-                            <React.Suspense fallback={<RootLayout navHeader={<small>Loading...</small>} />}>
-                                {React.useMemo(
-                                    () =>
-                                        match(route)
-                                            .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
-                                            .with({ name: "BotArea" }, ({ params }) => (
-                                                <AtomProvider store={botsStore.get(params.botName) ?? createStore()}>
-                                                    <Bot botName={params.botName} />
-                                                </AtomProvider>
-                                            ))
-                                            .otherwise(() => <NotFound />),
-                                    [route],
-                                )}
-                            </React.Suspense>
-                        </div>
-                    </AtomProvider>
+                    <div className={css.container}>
+                        <React.Suspense fallback={<RootLayout navHeader={<small>Loading...</small>} />}>
+                            {React.useMemo(
+                                () =>
+                                    match(route)
+                                        .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
+                                        .with({ name: "BotArea" }, ({ params }) => (
+                                            <BotProvider botName={params.botName}>
+                                                <Bot botName={params.botName} />
+                                            </BotProvider>
+                                        ))
+                                        .otherwise(() => <NotFound />),
+                                [route],
+                            )}
+                        </React.Suspense>
+                    </div>
                 </MantineProvider>
             </TypesafeI18n>
         </React.StrictMode>

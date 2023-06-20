@@ -1,13 +1,12 @@
-import { useAtomValue } from "jotai"
+import { useAtomValue, useStore } from "jotai"
 import * as React from "react"
 import { match } from "ts-pattern"
 
-import { addChatAtom, botAtom, botsAtom, botsStore, sortedChatsAtom } from "@/atoms"
-import { initChat } from "@/bots/builtins/ChatGPT"
+import { botsMetaAtom, sortedChatsAtom } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
-import { isStampID } from "@/lib/uuid"
 import { Router } from "@/router"
+import { isChatID } from "@/zod/id"
 
 import RootLayout from "../RootLayout/RootLayout"
 
@@ -19,56 +18,31 @@ type BotProps = {
     botName: string
 }
 
-class RedirectChat extends React.Component<{ botName: string }> {
-    override componentDidMount() {
-        const { botName } = this.props
-        const botStore = botsStore.get(botName)
+const RedirectChat = React.memo(({ botName }: { botName: string }) => {
+    const store = useStore()
+    const firstChat = useAtomValue(sortedChatsAtom, { store })[0]
 
-        if (!botStore) {
-            window.history.replaceState({}, "", "/")
-            return
-        }
-
-        const bot = botStore.get(botAtom)
-        const sortedChats = botStore.get(sortedChatsAtom)
-
-        const firstChat = sortedChats[0]
-
-        if (firstChat) {
-            Router.push("BotChat", { botName, chatID: firstChat.id })
-            return
-        }
-
-        const newChat = initChat()(bot)
-
-        botStore.set(addChatAtom, newChat)
-
-        Router.push("BotChat", { botName, chatID: newChat.id })
+    if (firstChat) {
+        return <Redirect to={`/bots/${botName}/${firstChat.id}`} />
     }
 
-    override render() {
-        return null
-    }
-}
+    return null
+})
 
 const BotArea = ({ botName }: BotProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
-    // const hasApiKey = !!useAtomValue(apiKeyAtom)
-    const bots = useAtomValue(botsAtom)
+    const botsMeta = useAtomValue(botsMetaAtom)
 
     const contentView = React.useMemo(
         () =>
             match(route)
-                // .with({ name: "BotRoot" }, ({ params }) => (
-                //     <Redirect to={`/bots/${params.botName}/${hasApiKey ? "new" : "settings"}`} />
-                // ))
-                .with({ name: "BotRoot" }, ({ params }) => <Redirect to={`/bots/${params.botName}/new`} />)
+                .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
                 .with({ name: "BotChat" }, ({ params }) => {
                     const { chatID } = params
 
-                    if (!isStampID(chatID)) {
+                    if (!isChatID(chatID)) {
                         return <Redirect to={`/bots/${params.botName}`} />
                     }
 
@@ -79,7 +53,7 @@ const BotArea = ({ botName }: BotProps) => {
     )
 
     return (
-        <RootLayout nav={<BotList items={bots} selected={botName} />}>
+        <RootLayout nav={<BotList items={botsMeta} selected={botName} />}>
             <React.Suspense>{contentView}</React.Suspense>
         </RootLayout>
     )

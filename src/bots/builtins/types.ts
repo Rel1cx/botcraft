@@ -6,18 +6,24 @@ import type {
     IDProtocol,
     NameProtocol,
     RoleProtocol,
-    StampIDProtocol,
     TitleProtocol,
 } from "@/protocols"
 import type { ChatMessage } from "@/zod"
+import type { ChatID, MessageID } from "@/zod/id"
 
-export type MessageData = StampIDProtocol & CreatableProtocol & RoleProtocol & ChatMessage
+export type MessageData = IDProtocol &
+    CreatableProtocol &
+    RoleProtocol &
+    ChatMessage & {
+        id: MessageID
+    }
 
-export type ChatData = (StampIDProtocol & TitleProtocol & CreatableProtocol & ContentProtocol<MessageData[]>) & {
+export type ChatData = (IDProtocol & TitleProtocol & CreatableProtocol & ContentProtocol<MessageData[]>) & {
+    id: ChatID
     intro: string
 }
 
-export type Bot = (IDProtocol & NameProtocol & IconProtocol) & {
+export type Bot = (NameProtocol & IconProtocol) & {
     intro: string
 
     prompt: string
@@ -25,4 +31,6 @@ export type Bot = (IDProtocol & NameProtocol & IconProtocol) & {
     systemMessage: string
 
     options: ChatCompletionOptions
+
+    chats: ChatID[]
 }
