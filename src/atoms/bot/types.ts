@@ -21,6 +21,7 @@ export type ChatCompletionTask =
     | Remap<
           {
               type: "pending"
+              content: string
               abort: () => void
           } & ChatCompletionTaskMeta
       >
@@ -33,6 +34,7 @@ export type ChatCompletionTask =
     | Remap<
           {
               type: "error"
+              content: string
               error: Error
           } & ChatCompletionTaskMeta
       >

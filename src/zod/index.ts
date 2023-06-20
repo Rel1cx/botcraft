@@ -3,8 +3,8 @@ import { z } from "zod"
 export const Env = z.object({
     DEV: z.optional(z.boolean()).default(false),
     PROD: z.optional(z.boolean()).default(true),
-    VITE_OPENAI_API_ENDPOINT: z.optional(z.string()).default("https://api.openai.com/v1/chat/completions"),
-    VITE_OPENAI_API_KEY: z.optional(z.string()),
+    // VITE_OPENAI_API_ENDPOINT: z.optional(z.string()).default("https://api.openai.com/v1/chat/completions"),
+    // VITE_OPENAI_API_KEY: z.optional(z.string()),
 })
 
 export type Env = z.infer<typeof Env>

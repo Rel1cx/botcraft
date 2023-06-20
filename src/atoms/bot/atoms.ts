@@ -3,16 +3,16 @@ import { produce } from "immer"
 import { atom } from "jotai"
 import { omit, pick, sortBy } from "rambda"
 import toast from "react-hot-toast"
+import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
 import { generateChatCompletionStream } from "@/bots/builtins/ChatGPT"
 import type { ChatData, MessageData } from "@/bots/builtins/types"
-import { stringify } from "@/lib/json"
 import { uid } from "@/lib/uuid"
 import type { ChatID, MessageID } from "@/zod/id"
 import { makeMessageID } from "@/zod/id"
 
-import { botsAtom } from "../app/atoms"
+import { apiKeyAtom, botsAtom, endpointAtom } from "../app/atoms"
 import { chatsDb, messagesDb } from "../db"
 import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem, ChatMeta } from "./types"
 
@@ -35,11 +35,17 @@ export const sortedChatsAtom = atom((get) => {
     return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
-export const addChatAtom = atom(null, async (_, set, payload: ChatData) => {
+export const addChatAtom = atom(null, async (_, set, botName: string, payload: ChatData) => {
     const chat = {
         ...omit(["content"], payload),
         messages: [],
     }
+
+    set(botsAtom, (draft) => {
+        const bot = draft.find((bot) => bot.name === botName)
+        invariant(bot, `Bot ${botName} not found`)
+        bot.chats.push(chat.id)
+    })
 
     await set(
         messagesDb.setMany,
@@ -49,14 +55,13 @@ export const addChatAtom = atom(null, async (_, set, payload: ChatData) => {
     await set(chatsDb.set, chat.id, chat)
 })
 
-export const removeChatAtom = atom(null, async (_, set, id: ChatID) => {
+export const removeChatAtom = atom(null, async (_, set, botName: string, id: ChatID) => {
+    set(botsAtom, (draft) => {
+        const bot = draft.find((bot) => bot.name === botName)
+        invariant(bot, `Bot ${botName} not found`)
+        bot.chats = bot.chats.filter((chatID) => chatID !== id)
+    })
     await set(chatsDb.delete, id)
-})
-
-export const updateChatAtom = atom(null, async (get, set, id: ChatID, updateChat: (data: ChatItem) => ChatItem) => {
-    const chat = get(chatsDb.item(id))
-    invariant(chat, `Chat ${id} not found`)
-    await set(chatsDb.set, id, updateChat(chat))
 })
 
 export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: MessageData) => {
@@ -64,11 +69,12 @@ export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: Mess
     invariant(chat, `Chat ${id} not found`)
     await set(messagesDb.set, data.id, data)
     await set(
-        updateChatAtom,
+        chatsDb.set,
         id,
-        produce((draft) => {
+        produce((draft: ChatItem) => {
             draft.messages.push(data.id)
-        }),
+            draft.updatedAt = Date.now()
+        })(chat),
     )
 })
 
@@ -78,25 +84,29 @@ export const removeMessageAtom = atom(null, async (_, set, chatID: ChatID, id: M
 
 export const updateMessageAtom = atom(
     null,
-    async (get, set, chatID: ChatID, messageID: MessageID, updateMessage: (data: MessageData) => MessageData) => {
+    async (get, set, chatID: ChatID, messageID: MessageID, data: MessageData) => {
         const chat = get(chatsDb.item(chatID))
         invariant(chat, `Chat ${chatID} not found`)
         const message = get(messagesDb.item(messageID))
         invariant(message, `Message ${messageID} not found`)
-        await set(messagesDb.set, messageID, updateMessage(message))
-        await set(
-            updateChatAtom,
-            chatID,
-            produce((draft) => {
-                draft.updatedAt = Date.now()
-            }),
-        )
+        await set(messagesDb.set, messageID, data)
+        // await set(
+        //     updateChatAtom,
+        //     chatID,
+        //     produce((draft) => {
+        //         draft.updatedAt = Date.now()
+        //     }),
+        // )
     },
 )
 
 export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
 
 export const requestChatCompletionAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
+    const apiKey = get(apiKeyAtom)
+
+    const endpoint = get(endpointAtom)
+
     const bots = get(botsAtom)
 
     const bot = bots.find((bot) => bot.name === botName)
@@ -124,6 +134,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
         O.Some<ChatCompletionTask>({
             ...taskMeta,
             type: "pending",
+            content: "",
             abort: () => {
                 abortController.abort()
             },
@@ -133,19 +144,28 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
     const handleError = (err: unknown) => {
         const error = err instanceof Error ? err : new Error(stringify(err))
 
-        toast.error(`Failed to generate chat completion:\n${error.name}:\n${error.message}`, { id: taskMeta.id })
+        toast.error(`Failed to generate chat completion: Error: ${error.name}\nMessage: ${error.message}`)
 
         set(
             chatCompletionTaskAtom,
             O.Some<ChatCompletionTask>({
                 ...taskMeta,
                 type: "error",
+                content: "",
                 error,
             }),
         )
     }
 
-    const result = await generateChatCompletionStream({ ...omit(["messages"], chat), content: messages })(bot)
+    const result = await generateChatCompletionStream(
+        apiKey,
+        endpoint,
+        {
+            ...omit(["messages"], chat),
+            content: messages,
+        },
+        abortController.signal,
+    )(bot)
 
     if (!result.isOk()) {
         const error = result.getError()
@@ -153,7 +173,8 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
         return
     }
 
-    const message: MessageData = {
+    // eslint-disable-next-line functional/no-let
+    let message: MessageData = {
         id: taskMeta.generatingMessageID,
         content: "",
         role: "assistant",
@@ -162,21 +183,16 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
 
     await set(addMessageAtom, id, message)
 
-    const [stream, abort] = result.get()
+    const stream = result.get()
 
     stream.subscribe({
-        async next(msg) {
-            await set(
-                updateMessageAtom,
-                id,
-                taskMeta.generatingMessageID,
-                produce((draft) => {
-                    draft.content += msg
-                }),
-            )
+        next(msg) {
+            message = produce(message, (draft) => {
+                draft.content += msg
+            })
+            void set(updateMessageAtom, id, taskMeta.generatingMessageID, message)
         },
         error: (err: unknown) => {
-            abort.abort()
             handleError(err)
         },
         complete() {

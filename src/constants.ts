@@ -3,10 +3,7 @@ import { type Locales } from "@/i18n/i18n-types"
 
 export const DEFAULT_LOCALE: Locales = "en"
 
-export const DEFAULT_APP_LAYOUT = {
-    hideSidebar: false,
-    hideNavbar: false,
-}
+export const DEFAULT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
 export const DEFAULT_CHAT_COMPLETION_OPTIONS: ChatCompletionOptions = {
     model: "gpt-3.5-turbo-16k-0613",

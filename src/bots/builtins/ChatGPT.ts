@@ -1,6 +1,6 @@
 import { Result } from "@swan-io/boxed"
 import type { Observable } from "rxjs"
-import { from, map, mergeMap, timeout } from "rxjs"
+import { from, map, mergeMap } from "rxjs"
 
 import { getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
@@ -52,16 +52,10 @@ export const estimateTokenCount = (messages: Pick<MessageData, "role" | "content
 }
 
 export const generateChatCompletionStream =
-    (chat: ChatData) => async (bot: Bot): Promise<Result<[Observable<string>, AbortController], Error>> => {
+    (apiKey: string, endpoint: string, chat: ChatData, signal?: AbortSignal) =>
+    async (bot: Bot): Promise<Result<Observable<string>, Error>> => {
         const messages = chat.content
-        const apiKey = localStorage.getItem("API_KEY")
-        const abortController = new AbortController()
-
-        if (!apiKey) {
-            return Result.Error(new Error("API key is not set"))
-        }
-
-        const stream = await getChatCompletionStream(apiKey, messages, bot.options, {}, abortController.signal)
+        const stream = await getChatCompletionStream(apiKey, endpoint, messages, bot.options, {}, signal)
 
         if (stream.isError()) {
             return Result.Error(stream.getError())
@@ -77,13 +71,13 @@ export const generateChatCompletionStream =
 
         const textDecoder = new TextDecoder()
 
-        const observer = observable.pipe(
-            timeout(8000),
-            map((value) => textDecoder.decode(value)),
-            map(parseEventSource),
-            mergeMap((events) => from(events)),
-            map(getContentFromEventSource),
+        return Result.Ok(
+            observable.pipe(
+                // timeout(8000),
+                map((value) => textDecoder.decode(value)),
+                map(parseEventSource),
+                mergeMap((events) => from(events)),
+                map(getContentFromEventSource),
+            ),
         )
-
-        return Result.Ok([observer, abortController])
     }

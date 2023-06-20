@@ -3,18 +3,19 @@ import { atomWithStorage } from "jotai/utils"
 import { withImmer } from "jotai-immer"
 import { toast } from "react-hot-toast"
 
-import { defaultBot } from "@/bots/builtins/ChatGPT"
 import type { Bot } from "@/bots/builtins/types"
-import { DEFAULT_APP_LAYOUT } from "@/constants"
+import { DEFAULT_API_ENDPOINT } from "@/constants"
 
-export const appLayoutAtom = atomWithStorage("APP_LAYOUT", DEFAULT_APP_LAYOUT)
+import { initialBots } from "../db"
 
 export const apiKeyAtom = atomWithStorage("API_KEY", "")
 
-export const botsAtom = atomWithStorage("BOTS", [defaultBot])
+export const endpointAtom = atomWithStorage("ENDPOINT", DEFAULT_API_ENDPOINT)
+
+export const botsAtom = withImmer(atomWithStorage("BOTS", Object.values(initialBots)))
 
 export const updateBotAtom = atom(null, (get, set, name: string, mutator: (draft: Bot) => void) => {
-    set(withImmer(botsAtom), (draft: Bot[]) => {
+    set(botsAtom, (draft: Bot[]) => {
         const bot = draft.find((bot) => bot.name === name)
         if (!bot) {
             toast.error(`Bot ${name} not found`)
@@ -25,7 +26,7 @@ export const updateBotAtom = atom(null, (get, set, name: string, mutator: (draft
 })
 
 export const addBotAtom = atom(null, (get, set, bot: Bot) => {
-    set(withImmer(botsAtom), (draft: Bot[]) => {
+    set(botsAtom, (draft: Bot[]) => {
         if (draft.some((b) => b.name === bot.name)) {
             toast.error(`Bot ${bot.name} already exists`)
             return
@@ -35,7 +36,7 @@ export const addBotAtom = atom(null, (get, set, bot: Bot) => {
 })
 
 export const removeBotAtom = atom(null, (get, set, name: string) => {
-    set(withImmer(botsAtom), (draft: Bot[]) => {
+    set(botsAtom, (draft: Bot[]) => {
         const index = draft.findIndex((bot) => bot.name === name)
         if (index === -1) {
             toast.error(`Bot ${name} not found`)

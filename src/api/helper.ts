@@ -1,4 +1,5 @@
-import { parse, stringify } from "@/lib/json"
+import { parse, stringify } from "telejson"
+
 import { isChatCompletionChunk } from "@/zod"
 
 import type { EventSourceData } from "./types"

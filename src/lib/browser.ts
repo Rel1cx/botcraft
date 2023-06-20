@@ -27,3 +27,13 @@ export const autoBlur = (element: HTMLElement | Document) => {
         },
     })
 }
+
+export const clearIndexDB = async () => {
+    const databases = await window.indexedDB.databases()
+    for (const { name } of databases) {
+        if (!name) {
+            continue
+        }
+        window.indexedDB.deleteDatabase(name)
+    }
+}

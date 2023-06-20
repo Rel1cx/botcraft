@@ -1,4 +1,4 @@
-import { useAtomValue, useStore } from "jotai"
+import { useAtomValue } from "jotai"
 import * as React from "react"
 import { match } from "ts-pattern"
 
@@ -19,8 +19,7 @@ type BotProps = {
 }
 
 const RedirectChat = React.memo(({ botName }: { botName: string }) => {
-    const store = useStore()
-    const firstChat = useAtomValue(sortedChatsAtom, { store })[0]
+    const firstChat = useAtomValue(sortedChatsAtom)[0]
 
     if (firstChat) {
         return <Redirect to={`/bots/${botName}/${firstChat.id}`} />

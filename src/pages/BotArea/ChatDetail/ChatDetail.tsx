@@ -3,10 +3,13 @@ import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
 import * as React from "react"
+import invariant from "tiny-invariant"
 
 import type { ChatItem } from "@/atoms"
 import {
+    addChatAtom,
     chatCompletionTaskAtom,
+    removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
     useBot,
@@ -23,6 +26,7 @@ import { Router } from "@/router"
 import { vars } from "@/theme/vars.css"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
+import { addMessageAtom } from "../../../atoms/bot/atoms"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
@@ -46,7 +50,7 @@ export type ChatProps = {
 }
 
 const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
-    const data = useMessage(id)
+    const [data] = useMessage(id)
 
     const content = React.useMemo(() => {
         if (!data?.content || data.role === "system") {
@@ -59,10 +63,13 @@ const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
     return <React.Suspense>{content}</React.Suspense>
 })
 
-const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
+const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const [bot, { addChat, removeChat, updateChat }] = useBot(botName)
-    const [chat, { addMessage }] = useChat(chatID)
+    const bot = useBot(botName)
+    const [chat, setChat] = useChat(chatID)
+    const addChat = useSetAtom(addChatAtom)
+    const removeChat = useSetAtom(removeChatAtom)
+    const addMessage = useSetAtom(addMessageAtom)
     const sortedChats = useAtomValue(sortedChatsAtom)
     const [removing, setRemoving] = React.useState(O.None<ChatID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
@@ -80,12 +87,14 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
     }, [chatCompletionTask, chatID])
 
     const onAddChatClick = React.useCallback(() => {
+        invariant(bot, "Bot must be defined")
         const newChat = initChat()(bot)
-        void addChat(newChat)
-    }, [addChat, bot])
+        void addChat(botName, newChat)
+    }, [addChat, bot, botName])
 
     const onChatRemoveClick = React.useCallback(
         (chatID: ChatID) => {
+            invariant(bot, "Bot must be defined")
             const { chats } = bot
             const isLast = chats.length === 1
             // TODO: Allow safe removal of last chat
@@ -93,7 +102,7 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                 return
             }
             Router.replace("BotNewChat", { botName })
-            void removeChat(chatID)
+            void removeChat(botName, chatID)
         },
         [bot, botName, removeChat],
     )
@@ -157,10 +166,10 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
                     value={chat.title}
                     placeholder="Untitled"
                     onChange={(evt) => {
-                        void updateChat(
-                            chatID,
+                        void setChat(
                             produce((draft) => {
-                                draft.title = evt.currentTarget.value
+                                invariant(draft, "Chat must be defined")
+                                draft.title = evt.target.value
                             }),
                         )
                     }}
@@ -199,6 +208,6 @@ const ChatDetail = ({ botName, chatID }: ChatDetailProps) => {
             />
         </Layout>
     )
-}
+})
 
 export default ChatDetail

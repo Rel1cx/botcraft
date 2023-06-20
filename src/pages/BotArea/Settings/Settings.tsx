@@ -1,17 +1,18 @@
 import { Button } from "@ariakit/react"
 import { Input, Select, Slider, TextInput } from "@mantine/core"
 import { ArrowLeft } from "@phosphor-icons/react"
-import { useAtom } from "jotai"
+import { useAtom, useSetAtom } from "jotai"
 import * as React from "react"
 
 import type { Model } from "@/api/types"
-import { apiKeyAtom, useApp, useBot } from "@/atoms"
+import { useBot } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import { Router } from "@/router"
 import { isModel } from "@/zod"
 import { makeMessageID } from "@/zod/id"
 
+import { apiKeyAtom, endpointAtom, updateBotAtom } from "../../../atoms/app/atoms"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
@@ -39,29 +40,34 @@ const dummySystemMessageID = makeMessageID()
 const dummyIntroMessageID = makeMessageID()
 
 const Settings = ({ botName }: SettingsProps) => {
-    const [, { updateBot }] = useApp()
-    const [bot] = useBot(botName)
+    const updateBot = useSetAtom(updateBotAtom)
+    const bot = useBot(botName)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
+    const [endpoint, setEndpoint] = useAtom(endpointAtom)
 
     const systemMessage = React.useMemo<MessageData>(
         () => ({
             id: dummySystemMessageID,
             role: "system",
-            content: bot.systemMessage,
+            content: bot?.systemMessage ?? "",
             updatedAt: Date.now(),
         }),
-        [bot.systemMessage],
+        [bot?.systemMessage],
     )
 
     const introMessage = React.useMemo<MessageData>(
         () => ({
             id: dummyIntroMessageID,
             role: "assistant",
-            content: bot.intro,
+            content: bot?.intro ?? "",
             updatedAt: Date.now(),
         }),
-        [bot.intro],
+        [bot?.intro],
     )
+
+    if (!bot) {
+        return null
+    }
 
     return (
         <Layout
@@ -88,8 +94,10 @@ const Settings = ({ botName }: SettingsProps) => {
                         <TextInput
                             name="endpoint"
                             label="Endpoint"
-                            value="https://api.openai.com/v1/chat/completions"
-                            disabled
+                            value={endpoint}
+                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                                setEndpoint(evt.target.value)
+                            }}
                         />
                         <TextInput
                             name="apiKey"

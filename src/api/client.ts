@@ -5,11 +5,11 @@ import { pick } from "rambda"
 
 import type { ChatMessage } from "@/zod"
 
-import { VITE_OPENAI_API_ENDPOINT } from "../env"
 import type { ChatCompletionOptions } from "./types"
 
 export const getChatCompletionStream = async (
     apiKey: string,
+    endpoint: string,
     messages: ChatMessage[],
     options: ChatCompletionOptions,
     customHeaders?: Record<string, string>,
@@ -22,7 +22,7 @@ export const getChatCompletionStream = async (
     }
 
     const result = await R.fromPromise<KyResponse, HTTPError>(
-        ky.post(VITE_OPENAI_API_ENDPOINT, {
+        ky.post(endpoint, {
             signal,
             headers,
             body: JSON.stringify({
