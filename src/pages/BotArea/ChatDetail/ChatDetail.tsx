@@ -12,11 +12,9 @@ import {
     removeChatAtom,
     requestChatCompletionAtom,
     sortedChatsAtom,
-    useBot,
     useChat,
     useMessage,
 } from "@/atoms"
-import { initChat } from "@/bots/builtins/ChatGPT"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
@@ -65,7 +63,6 @@ const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
 
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const bot = useBot(botName)
     const [chat, setChat] = useChat(chatID)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
@@ -87,24 +84,15 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     }, [chatCompletionTask, chatID])
 
     const onAddChatClick = React.useCallback(() => {
-        invariant(bot, "Bot must be defined")
-        const newChat = initChat()(bot)
-        void addChat(botName, newChat)
-    }, [addChat, bot, botName])
+        void addChat(botName)
+    }, [addChat, botName])
 
     const onChatRemoveClick = React.useCallback(
         (chatID: ChatID) => {
-            invariant(bot, "Bot must be defined")
-            const { chats } = bot
-            const isLast = chats.length === 1
-            // TODO: Allow safe removal of last chat
-            if (isLast || !isChatID(chatID)) {
-                return
-            }
             Router.replace("BotNewChat", { botName })
             void removeChat(botName, chatID)
         },
-        [bot, botName, removeChat],
+        [botName, removeChat],
     )
 
     const onMessageCreate = React.useCallback(

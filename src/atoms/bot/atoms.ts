@@ -3,18 +3,28 @@ import { produce } from "immer"
 import { atom } from "jotai"
 import { omit, pick, sortBy } from "rambda"
 import toast from "react-hot-toast"
+import { animationFrameScheduler, concatMap, observeOn } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { generateChatCompletionStream } from "@/bots/builtins/ChatGPT"
-import type { ChatData, MessageData } from "@/bots/builtins/types"
+import { generateChatCompletionStream, initChat } from "@/bots/builtins/ChatGPT"
+import type { MessageData } from "@/bots/builtins/types"
 import { uid } from "@/lib/uuid"
 import type { ChatID, MessageID } from "@/zod/id"
 import { makeMessageID } from "@/zod/id"
 
-import { apiKeyAtom, botsAtom, endpointAtom } from "../app/atoms"
-import { chatsDb, messagesDb } from "../db"
+import { apiKeyAtom, endpointAtom } from "../app/atoms"
+import { botsDb, chatsDb, messagesDb } from "../db"
 import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem, ChatMeta } from "./types"
+
+export const botsMetaAtom = atom((get) => {
+    const bots = get(botsDb.values)
+    return bots.map((bot) => ({
+        id: bot.name,
+        title: bot.name,
+        icon: bot.icon,
+    }))
+})
 
 export const chatMetaAtom = atom((get) => {
     return get(chatsDb.values).reduceRight<ChatMeta[]>((acc, item) => {
@@ -35,31 +45,38 @@ export const sortedChatsAtom = atom((get) => {
     return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
-export const addChatAtom = atom(null, async (_, set, botName: string, payload: ChatData) => {
+export const addChatAtom = atom(null, async (get, set, botName: string) => {
+    const bot = get(botsDb.item(botName))
+    invariant(bot, `Bot ${botName} not found`)
+    const newChat = initChat()(bot)
     const chat = {
-        ...omit(["content"], payload),
+        ...omit(["content"], newChat),
         messages: [],
     }
 
-    set(botsAtom, (draft) => {
-        const bot = draft.find((bot) => bot.name === botName)
-        invariant(bot, `Bot ${botName} not found`)
-        bot.chats.push(chat.id)
+    await set(botsDb.set, botName, (prev) => {
+        invariant(prev, `Bot ${botName} not found`)
+        return {
+            ...prev,
+            chats: [...prev.chats, chat.id],
+        }
     })
 
     await set(
         messagesDb.setMany,
-        payload.content.map<[string, MessageData]>((message) => [message.id, message]),
+        newChat.content.map<[string, MessageData]>((message) => [message.id, message]),
     )
 
     await set(chatsDb.set, chat.id, chat)
 })
 
 export const removeChatAtom = atom(null, async (_, set, botName: string, id: ChatID) => {
-    set(botsAtom, (draft) => {
-        const bot = draft.find((bot) => bot.name === botName)
-        invariant(bot, `Bot ${botName} not found`)
-        bot.chats = bot.chats.filter((chatID) => chatID !== id)
+    await set(botsDb.set, botName, (prev) => {
+        invariant(prev, `Bot ${botName} not found`)
+        return {
+            ...prev,
+            chats: prev.chats.filter((chatID) => chatID !== id),
+        }
     })
     await set(chatsDb.delete, id)
 })
@@ -107,9 +124,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
 
     const endpoint = get(endpointAtom)
 
-    const bots = get(botsAtom)
-
-    const bot = bots.find((bot) => bot.name === botName)
+    const bot = get(botsDb.item(botName))
 
     invariant(bot, `Bot ${botName} not found`)
 
@@ -173,7 +188,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
         return
     }
 
-    let message: MessageData = {
+    const message: MessageData = {
         id: taskMeta.generatingMessageID,
         content: "",
         role: "assistant",
@@ -184,18 +199,28 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
 
     const stream = result.get()
 
-    stream.subscribe({
-        next(msg) {
-            message = produce(message, (draft) => {
-                draft.content += msg
-            })
-            void set(updateMessageAtom, id, taskMeta.generatingMessageID, message)
-        },
-        error: (err: unknown) => {
-            handleError(err)
-        },
-        complete() {
-            set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
-        },
-    })
+    stream
+        .pipe(
+            observeOn(animationFrameScheduler),
+            concatMap(async (msg) => {
+                await set(messagesDb.set, taskMeta.generatingMessageID, (prev) => {
+                    invariant(prev, `Message ${taskMeta.generatingMessageID} not found`)
+                    return {
+                        ...prev,
+                        content: prev.content + msg,
+                    }
+                })
+            }),
+        )
+        .subscribe({
+            next: () => {
+                console.log("next")
+            },
+            error: (err: unknown) => {
+                handleError(err)
+            },
+            complete() {
+                set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
+            },
+        })
 })

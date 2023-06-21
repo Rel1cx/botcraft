@@ -1,18 +1,20 @@
 import { Button } from "@ariakit/react"
 import { Input, Select, Slider, TextInput } from "@mantine/core"
 import { ArrowLeft } from "@phosphor-icons/react"
-import { useAtom, useSetAtom } from "jotai"
+import { produce } from "immer"
+import { useAtom } from "jotai"
 import * as React from "react"
+import invariant from "tiny-invariant"
 
 import type { Model } from "@/api/types"
 import { useBot } from "@/atoms"
+import { apiKeyAtom, endpointAtom } from "@/atoms/app/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import { Router } from "@/router"
 import { isModel } from "@/zod"
 import { makeMessageID } from "@/zod/id"
 
-import { apiKeyAtom, endpointAtom, updateBotAtom } from "../../../atoms/app/atoms"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
@@ -40,8 +42,7 @@ const dummySystemMessageID = makeMessageID()
 const dummyIntroMessageID = makeMessageID()
 
 const Settings = ({ botName }: SettingsProps) => {
-    const updateBot = useSetAtom(updateBotAtom)
-    const bot = useBot(botName)
+    const [bot, setBot] = useBot(botName)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
     const [endpoint, setEndpoint] = useAtom(endpointAtom)
 
@@ -129,10 +130,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 if (!value || !isModel(value)) {
                                     return
                                 }
-
-                                updateBot(botName, (draft) => {
-                                    draft.options.model = value
-                                })
+                                void setBot(
+                                    produce((draft) => {
+                                        invariant(draft, "bot is undefined")
+                                        draft.options.model = value
+                                    }),
+                                )
                             }}
                         />
                         <Input.Wrapper label="Temperature">
@@ -140,9 +143,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn
                                 value={bot.options.temperature}
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.options.temperature = Number.parseFloat(value.toPrecision(2))
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.options.temperature = Number.parseFloat(value.toPrecision(2))
+                                        }),
+                                    )
                                 }}
                                 min={0}
                                 max={2}
@@ -154,9 +160,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn
                                 value={bot.options.max_tokens}
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.options.max_tokens = value
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.options.max_tokens = value
+                                        }),
+                                    )
                                 }}
                                 min={100}
                                 max={16384}
@@ -168,9 +177,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn={bot.options.frequency_penalty !== 0}
                                 value={bot.options.frequency_penalty}
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.options.frequency_penalty = Number.parseFloat(value.toPrecision(2))
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.options.frequency_penalty = Number.parseFloat(value.toPrecision(2))
+                                        }),
+                                    )
                                 }}
                                 min={0}
                                 max={1}
@@ -182,9 +194,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 labelAlwaysOn={bot.options.presence_penalty !== 0}
                                 value={bot.options.presence_penalty}
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.options.presence_penalty = Number.parseFloat(value.toPrecision(2))
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.options.presence_penalty = Number.parseFloat(value.toPrecision(2))
+                                        }),
+                                    )
                                 }}
                                 min={0}
                                 max={1}
@@ -197,9 +212,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 defaultValue={bot.systemMessage}
                                 placeholder="Write a system message"
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.systemMessage = value
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.systemMessage = value
+                                        }),
+                                    )
                                 }}
                             />
                         </Input.Wrapper>
@@ -209,9 +227,12 @@ const Settings = ({ botName }: SettingsProps) => {
                                 placeholder="Write an intro message"
                                 defaultValue={bot.intro}
                                 onChange={(value) => {
-                                    updateBot(botName, (draft) => {
-                                        draft.intro = value
-                                    })
+                                    void setBot(
+                                        produce((draft) => {
+                                            invariant(draft, "bot is undefined")
+                                            draft.intro = value
+                                        }),
+                                    )
                                 }}
                             />
                         </Input.Wrapper>

@@ -1,14 +1,11 @@
-import { useAtom, useAtomValue } from "jotai"
-import * as React from "react"
+import { useAtom } from "jotai"
 
-import { botsAtom } from "@/atoms"
 import type { ChatID, MessageID } from "@/zod/id"
 
-import { chatsDb, messagesDb } from "./db"
+import { botsDb, chatsDb, messagesDb } from "./db"
 
 export const useBot = (name: string) => {
-    const bots = useAtomValue(botsAtom)
-    return React.useMemo(() => bots.find((bot) => bot.name === name), [bots, name])
+    return useAtom(botsDb.item(name))
 }
 
 export const useChat = (id: ChatID) => {

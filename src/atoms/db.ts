@@ -25,8 +25,8 @@ export const initialMessages: Record<string, MessageData> = Object.fromEntries(
     initialChat.content.map((message) => [message.id, message]),
 )
 
-export const botDb = new MiniDb<Bot>({
-    name: "bot",
+export const botsDb = new MiniDb<Bot>({
+    name: "bots",
     version: 0,
     initialData: initialBots,
 })
