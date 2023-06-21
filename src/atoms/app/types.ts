@@ -6,15 +6,3 @@ export type TotalTokenUsed = {
         completionTokens: number
     }
 }
-
-export type API = {
-    apiKey: string
-    endpoint: string
-}
-
-export type Config = {
-    locale: string
-    autoTitle: boolean
-    countTotalTokens: boolean
-    totalTokenUsed: TotalTokenUsed
-}
