@@ -7,6 +7,7 @@ import TypesafeI18n from "@/i18n/i18n-react"
 import type { Locales } from "@/i18n/i18n-types"
 import RootLayout from "@/pages/RootLayout/RootLayout"
 import { Router } from "@/router"
+import { useBot } from "@/stores"
 import { mantineTheme } from "@/theme/mantine.config"
 
 import * as css from "./App.css"
@@ -22,12 +23,18 @@ const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 //     return <AtomProvider store={botStore}>{children}</AtomProvider>
 // }
 
-const BotProvider = ({ children }: { botName: string; children: React.ReactNode }) => {
+const BotProvider = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
+    const [bot] = useBot(botName)
+
+    if (!bot) {
+        return <Redirect to="/404" />
+    }
+
     return children
 }
 
 const App = ({ locale }: { locale: Locales }) => {
-    const route = Router.useRoute(["Home", "BotArea"])
+    const route = Router.useRoute(["Home", "BotArea", "NotFound"])
 
     return (
         <React.StrictMode>

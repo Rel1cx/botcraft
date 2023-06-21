@@ -148,7 +148,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     )
 
     if (!chat) {
-        return <Redirect to={`/bots/${botName}/new`} />
+        return <Redirect to="/404" />
     }
 
     return (

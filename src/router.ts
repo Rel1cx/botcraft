@@ -3,6 +3,7 @@ import { createGroup, createRouter } from "@swan-io/chicane"
 const routes = {
     // bot list
     Home: "/",
+    NotFound: "/404",
     ...createGroup("Bot", "/bots/:botName", {
         // Bot layout
         Area: "/*",

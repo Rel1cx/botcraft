@@ -6,6 +6,14 @@ Local-first, customizable ChatGPT powered chatbot app.
 
 🚧 Work in Progress 🚧
 
+## TODO
+
+- [] Token counting
+- [] Auto title
+- [] Delete message
+- [] Copy message
+- [] Edit message
+
 ## Demo
 
 [botcraft.vercel.app](https://botcraft.vercel.app)
@@ -21,20 +29,20 @@ pnpm install
 ### Dev
 
 ```bash
-pnpm dev
+pnpm run dev
 ```
 
 ### Build
 
 ```bash
-pnpm build
+pnpm run build
 ```
 
-## Credits
+### Generate i18n files
 
-- [vanilla-extract](https://vanilla-extract.style) - for providing an excellent CSS-in-JS solution.
-
-- [ai-chatbot](https://github.com/vercel-labs/ai-chatbot) - for the TailwindIndicator related code.
+```bash
+pnpm run i18n --no-watch
+```
 
 ## License
 
