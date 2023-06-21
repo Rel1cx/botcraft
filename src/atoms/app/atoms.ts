@@ -5,14 +5,15 @@ import { toast } from "react-hot-toast"
 
 import type { Bot } from "@/bots/builtins/types"
 import { DEFAULT_API_ENDPOINT } from "@/constants"
+import { localStorageGetItem } from "@/lib/browser"
 
 import { initialBots } from "../db"
 
-export const apiKeyAtom = atomWithStorage("API_KEY", "")
+export const apiKeyAtom = atomWithStorage("API_KEY", localStorageGetItem("API_KEY", ""))
 
-export const endpointAtom = atomWithStorage("ENDPOINT", DEFAULT_API_ENDPOINT)
+export const endpointAtom = atomWithStorage("ENDPOINT", localStorageGetItem("ENDPOINT", DEFAULT_API_ENDPOINT))
 
-export const botsAtom = withImmer(atomWithStorage("BOTS", Object.values(initialBots)))
+export const botsAtom = withImmer(atomWithStorage("BOTS", localStorageGetItem("BOTS", Object.values(initialBots))))
 
 export const updateBotAtom = atom(null, (get, set, name: string, mutator: (draft: Bot) => void) => {
     set(botsAtom, (draft: Bot[]) => {

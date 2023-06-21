@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-let */
 import { randDrinks } from "@ngneat/falso"
 
 export const makeNameGenerator = (size = 25) => {

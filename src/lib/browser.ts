@@ -1,4 +1,5 @@
 import { bind } from "bind-event-listener"
+import { parse, stringify } from "telejson"
 import { match } from "ts-pattern"
 
 export const isMobile = () => window.location.href.includes("/mobile/")
@@ -26,6 +27,29 @@ export const autoBlur = (element: HTMLElement | Document) => {
             }
         },
     })
+}
+
+export const wait = (ms: number) => {
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export const localStorageGetItem = <T>(key: string, defaultValue: T): T => {
+    const value = localStorage.getItem(key)
+    if (value === null) {
+        return defaultValue
+    }
+    try {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        return parse(value) as T
+    } catch {
+        return defaultValue
+    }
+}
+
+export const localStorageSetItem = (key: string, value: unknown) => {
+    const json = stringify(value, {})
+    localStorage.setItem(key, json)
 }
 
 export const clearIndexDB = async () => {

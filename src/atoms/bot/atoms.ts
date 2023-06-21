@@ -173,7 +173,6 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
         return
     }
 
-    // eslint-disable-next-line functional/no-let
     let message: MessageData = {
         id: taskMeta.generatingMessageID,
         content: "",
