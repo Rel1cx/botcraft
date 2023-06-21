@@ -3,7 +3,7 @@ import { produce } from "immer"
 import { atom } from "jotai"
 import { omit, pick, sortBy } from "rambda"
 import toast from "react-hot-toast"
-import { animationFrameScheduler, concatMap, observeOn } from "rxjs"
+import { animationFrameScheduler, concatMap, observeOn, timeout } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
@@ -70,7 +70,11 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
     await set(chatsDb.set, chat.id, chat)
 })
 
-export const removeChatAtom = atom(null, async (_, set, botName: string, id: ChatID) => {
+export const removeChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
+    const bot = get(botsDb.item(botName))
+    invariant(bot, `Bot ${botName} not found`)
+    const isLastChat = bot.chats.length === 1
+
     await set(botsDb.set, botName, (prev) => {
         invariant(prev, `Bot ${botName} not found`)
         return {
@@ -79,6 +83,9 @@ export const removeChatAtom = atom(null, async (_, set, botName: string, id: Cha
         }
     })
     await set(chatsDb.delete, id)
+    if (isLastChat) {
+        await set(addChatAtom, botName)
+    }
 })
 
 export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: MessageData) => {
@@ -107,13 +114,6 @@ export const updateMessageAtom = atom(
         const message = get(messagesDb.item(messageID))
         invariant(message, `Message ${messageID} not found`)
         await set(messagesDb.set, messageID, data)
-        // await set(
-        //     updateChatAtom,
-        //     chatID,
-        //     produce((draft) => {
-        //         draft.updatedAt = Date.now()
-        //     }),
-        // )
     },
 )
 
@@ -201,6 +201,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
 
     stream
         .pipe(
+            timeout(10000),
             observeOn(animationFrameScheduler),
             concatMap(async (msg) => {
                 await set(messagesDb.set, taskMeta.generatingMessageID, (prev) => {
@@ -213,9 +214,6 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
             }),
         )
         .subscribe({
-            next: () => {
-                console.log("next")
-            },
             error: (err: unknown) => {
                 handleError(err)
             },
