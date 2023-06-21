@@ -6,7 +6,12 @@ import { sortBy } from "rambda"
 import * as React from "react"
 import invariant from "tiny-invariant"
 
-import type { ChatItem } from "@/atoms"
+import type { MessageData } from "@/bots/builtins/types"
+import Icon from "@/components/atoms/Icon/Icon"
+import Redirect from "@/components/atoms/Redirect/Redirect"
+import TitleInput from "@/components/atoms/TitleInput/TitleInput"
+import Chat from "@/components/Chat/Chat"
+import { Router } from "@/router"
 import {
     addChatAtom,
     addMessageAtom,
@@ -15,15 +20,10 @@ import {
     requestChatCompletionAtom,
     useChat,
     useMessage,
-} from "@/atoms"
-import { useChatsMeta } from "@/atoms/hooks"
-import type { MessageData } from "@/bots/builtins/types"
-import Icon from "@/components/atoms/Icon/Icon"
-import Redirect from "@/components/atoms/Redirect/Redirect"
-import TitleInput from "@/components/atoms/TitleInput/TitleInput"
-import Chat from "@/components/Chat/Chat"
-import { Router } from "@/router"
+} from "@/stores"
+import { useChatsMeta } from "@/stores/hooks"
 import { vars } from "@/theme/vars.css"
+import type { ChatItem } from "@/types"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"

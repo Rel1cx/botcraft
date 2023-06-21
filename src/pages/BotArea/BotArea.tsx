@@ -2,10 +2,10 @@ import { useAtomValue } from "jotai"
 import * as React from "react"
 import { match } from "ts-pattern"
 
-import { botsMetaAtom, useFirstChatMeta } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { Router } from "@/router"
+import { botsMetaAtom, useFirstChatMeta } from "@/stores"
 import { isChatID } from "@/zod/id"
 
 import RootLayout from "../RootLayout/RootLayout"

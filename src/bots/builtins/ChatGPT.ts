@@ -1,6 +1,5 @@
 import { Result } from "@swan-io/boxed"
-import type { Observable } from "rxjs"
-import { from, map, mergeMap } from "rxjs"
+import { from, map, mergeMap, type Observable } from "rxjs"
 
 import { getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"

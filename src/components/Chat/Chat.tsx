@@ -2,8 +2,8 @@ import { useResizeObserver } from "@react-hookz/web"
 import { AnimatePresence, m } from "framer-motion"
 import * as React from "react"
 
-import type { ChatItem } from "@/atoms"
 import type { MessageData } from "@/bots/builtins/types"
+import type { ChatItem } from "@/types"
 import { makeMessageID, type MessageID } from "@/zod/id"
 
 import * as css from "./styles.css"

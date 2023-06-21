@@ -7,11 +7,10 @@ import * as React from "react"
 import invariant from "tiny-invariant"
 
 import type { Model } from "@/api/types"
-import { useBot } from "@/atoms"
-import { apiKeyAtom, endpointAtom } from "@/atoms/app/atoms"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import { Router } from "@/router"
+import { apiKeyAtom, endpointAtom, useBot } from "@/stores"
 import { isModel } from "@/zod"
 import { makeMessageID } from "@/zod/id"
 
