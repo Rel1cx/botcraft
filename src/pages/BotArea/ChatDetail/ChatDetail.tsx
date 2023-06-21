@@ -2,19 +2,21 @@ import { Chat as ChatIcon } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
+import { sortBy } from "rambda"
 import * as React from "react"
 import invariant from "tiny-invariant"
 
 import type { ChatItem } from "@/atoms"
 import {
     addChatAtom,
+    addMessageAtom,
     chatCompletionTaskAtom,
     removeChatAtom,
     requestChatCompletionAtom,
-    sortedChatsAtom,
     useChat,
     useMessage,
 } from "@/atoms"
+import { useChatsMeta } from "@/atoms/hooks"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import Redirect from "@/components/atoms/Redirect/Redirect"
@@ -24,7 +26,6 @@ import { Router } from "@/router"
 import { vars } from "@/theme/vars.css"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
-import { addMessageAtom } from "../../../atoms/bot/atoms"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
@@ -47,6 +48,43 @@ export type ChatProps = {
     onHeightChange?: (height: number) => void
 }
 
+type AsideProps = {
+    botName: string
+    selectedChatID: string
+    isGenerating: boolean
+    onAddChatClick: () => void
+    onRemoveChatClick: (id: string) => void
+}
+
+const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
+    const chatsMeta = useChatsMeta(botName)
+
+    const sortedChats = React.useMemo(() => sortBy((chat) => -chat.updatedAt, chatsMeta), [chatsMeta])
+
+    return (
+        <TimeStack
+            items={sortedChats}
+            renderItemIcon={(id) => (
+                <Icon
+                    style={{
+                        flexShrink: 0,
+                    }}
+                    as={ChatIcon}
+                    color={selectedChatID === id ? "#fff" : vars.colors.text}
+                />
+            )}
+            newItemName="New chat"
+            selected={selectedChatID}
+            disableMutation={isGenerating}
+            onItemClick={(id) => {
+                Router.push("BotChat", { botName, chatID: id })
+            }}
+            onItemAdd={onAddChatClick}
+            onItemRemove={onRemoveChatClick}
+        />
+    )
+}
+
 const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
     const [data] = useMessage(id)
 
@@ -67,7 +105,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
-    const sortedChats = useAtomValue(sortedChatsAtom)
     const [removing, setRemoving] = React.useState(O.None<ChatID>())
     const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
 
@@ -110,36 +147,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         [addMessage, botName, chatID, requestChatCompletion],
     )
 
-    const aside = React.useMemo(
-        () => (
-            <TimeStack
-                items={sortedChats}
-                renderItemIcon={(id) => (
-                    <Icon
-                        style={{
-                            flexShrink: 0,
-                        }}
-                        as={ChatIcon}
-                        color={chatID === id ? "#fff" : vars.colors.text}
-                    />
-                )}
-                newItemName="New chat"
-                selected={chatID}
-                disableMutation={isGenerating}
-                onItemClick={(id) => {
-                    Router.push("BotChat", { botName, chatID: id })
-                }}
-                onItemAdd={onAddChatClick}
-                onItemRemove={(id) => {
-                    if (isChatID(id)) {
-                        setRemoving(O.Some(id))
-                    }
-                }}
-            />
-        ),
-        [botName, chatID, isGenerating, onAddChatClick, sortedChats],
-    )
-
     if (!chat) {
         return <Redirect to={`/bots/${botName}/new`} />
     }
@@ -147,7 +154,19 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     return (
         <Layout
             asideHeader={botName}
-            aside={aside}
+            aside={
+                <Aside
+                    botName={botName}
+                    selectedChatID={chatID}
+                    isGenerating={isGenerating}
+                    onAddChatClick={onAddChatClick}
+                    onRemoveChatClick={(id) => {
+                        if (isChatID(id)) {
+                            setRemoving(O.Some(id))
+                        }
+                    }}
+                />
+            }
             header={
                 <TitleInput
                     id="chat-title"

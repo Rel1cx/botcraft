@@ -1,7 +1,7 @@
 import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
 import { atom } from "jotai"
-import { omit, pick, sortBy } from "rambda"
+import { omit } from "rambda"
 import toast from "react-hot-toast"
 import { animationFrameScheduler, concatMap, observeOn, timeout } from "rxjs"
 import { stringify } from "telejson"
@@ -15,7 +15,7 @@ import { makeMessageID } from "@/zod/id"
 
 import { apiKeyAtom, endpointAtom } from "../app/atoms"
 import { botsDb, chatsDb, messagesDb } from "../db"
-import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem, ChatMeta } from "./types"
+import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem } from "./types"
 
 export const botsMetaAtom = atom((get) => {
     const bots = get(botsDb.values)
@@ -24,25 +24,6 @@ export const botsMetaAtom = atom((get) => {
         title: bot.name,
         icon: bot.icon,
     }))
-})
-
-export const chatMetaAtom = atom((get) => {
-    return get(chatsDb.values).reduceRight<ChatMeta[]>((acc, item) => {
-        const title = item.title === "" ? "Untitled" : item.title
-        acc.push({
-            title,
-            ...pick(["id", "updatedAt"], item),
-        })
-        return acc
-    }, [])
-})
-
-export const messageMetaAtom = atom((get) => {
-    return get(messagesDb.values).map(pick(["id", "Role", "updatedAt"]))
-})
-
-export const sortedChatsAtom = atom((get) => {
-    return sortBy((chat) => -chat.updatedAt, get(chatMetaAtom))
 })
 
 export const addChatAtom = atom(null, async (get, set, botName: string) => {
@@ -54,6 +35,13 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
         messages: [],
     }
 
+    await set(
+        messagesDb.setMany,
+        newChat.content.map<[string, MessageData]>((message) => [message.id, message]),
+    )
+
+    await set(chatsDb.set, chat.id, chat)
+
     await set(botsDb.set, botName, (prev) => {
         invariant(prev, `Bot ${botName} not found`)
         return {
@@ -61,13 +49,6 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
             chats: [...prev.chats, chat.id],
         }
     })
-
-    await set(
-        messagesDb.setMany,
-        newChat.content.map<[string, MessageData]>((message) => [message.id, message]),
-    )
-
-    await set(chatsDb.set, chat.id, chat)
 })
 
 export const removeChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
@@ -82,7 +63,9 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
             chats: prev.chats.filter((chatID) => chatID !== id),
         }
     })
+
     await set(chatsDb.delete, id)
+
     if (isLastChat) {
         await set(addChatAtom, botName)
     }

@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai"
 import * as React from "react"
 import { match } from "ts-pattern"
 
-import { botsMetaAtom, sortedChatsAtom } from "@/atoms"
+import { botsMetaAtom, useFirstChatMeta } from "@/atoms"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { Router } from "@/router"
@@ -14,12 +14,12 @@ const ChatDetail = React.lazy(() => import("./ChatDetail/ChatDetail"))
 
 const Settings = React.lazy(() => import("./Settings/Settings"))
 
-type BotProps = {
+type BotAreaProps = {
     botName: string
 }
 
 const RedirectChat = React.memo(({ botName }: { botName: string }) => {
-    const firstChat = useAtomValue(sortedChatsAtom)[0]
+    const firstChat = useFirstChatMeta(botName)
 
     if (firstChat) {
         return <Redirect to={`/bots/${botName}/${firstChat.id}`} />
@@ -28,7 +28,7 @@ const RedirectChat = React.memo(({ botName }: { botName: string }) => {
     return null
 })
 
-const BotArea = ({ botName }: BotProps) => {
+const BotArea = ({ botName }: BotAreaProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
     const botsMeta = useAtomValue(botsMetaAtom)
 
