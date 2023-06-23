@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { defineConfig } from "vite"
 import { imagetools } from "vite-imagetools"
+import checker from "vite-plugin-checker"
 import preload from "vite-plugin-preload"
 import topLevelAwait from "vite-plugin-top-level-await"
 import wasm from "vite-plugin-wasm"
@@ -17,6 +18,12 @@ export default defineConfig({
         vanillaExtractPlugin(),
         wasm(),
         imagetools(),
+        checker({
+            eslint: {
+                lintCommand: "eslint --color src",
+            },
+            typescript: true,
+        }),
         !isDev &&
             preload({
                 includeCss: true,

@@ -2,7 +2,6 @@ import { Button } from "@ariakit/react"
 import { Container, Group, Text, Title } from "@mantine/core"
 
 import { Router } from "@/router"
-import { vars } from "@/theme/vars.css"
 
 import * as css from "./styles.css"
 
