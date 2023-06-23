@@ -3,7 +3,6 @@
     "extends": ["with-tsconfig"],
     "rules": {
         "new-cap": "off",
-        "camelcase": "off",
         "unicorn/prefer-spread": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-redeclare": "off"
@@ -13,16 +12,18 @@
             "files": ["scripts/**/*.ts", "vite.config.ts"],
             "parserOptions": {
                 "project": "tsconfig.node.json"
-            },
-            "rules": {
-                "@typescript-eslint/no-unsafe-assignment": "off",
-                "@typescript-eslint/no-unsafe-member-access": "off"
             }
         },
         {
             "files": ["src/i18n/i18n-*.@(ts|tsx)"],
             "rules": {
                 "unicorn/no-abusive-eslint-disable": "off"
+            }
+        },
+        {
+            "files": ["src/**/*.css.ts"],
+            "rules": {
+                "sonarjs/no-duplicate-string": "off"
             }
         }
     ]
