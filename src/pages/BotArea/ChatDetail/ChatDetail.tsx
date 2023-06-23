@@ -8,7 +8,6 @@ import invariant from "tiny-invariant"
 
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
-import Redirect from "@/components/atoms/Redirect/Redirect"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import Chat from "@/components/Chat/Chat"
 import { Router } from "@/router"
@@ -148,7 +147,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     )
 
     if (!chat) {
-        return <Redirect to="/404" />
+        return null
     }
 
     return (

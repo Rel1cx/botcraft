@@ -12,7 +12,7 @@ import { mantineTheme } from "@/theme/mantine.config"
 
 import * as css from "./App.css"
 
-const Bot = React.lazy(() => import("@/pages/BotArea/BotArea"))
+const BotArea = React.lazy(() => import("@/pages/BotArea/BotArea"))
 const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 
 // const BotProvider = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
@@ -23,7 +23,7 @@ const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 //     return <AtomProvider store={botStore}>{children}</AtomProvider>
 // }
 
-const BotProvider = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
+const BotGuard = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
     const [bot] = useBot(botName)
 
     if (!bot) {
@@ -47,9 +47,9 @@ const App = ({ locale }: { locale: Locales }) => {
                                     match(route)
                                         .with({ name: "Home" }, () => <Redirect to="/bots/ChatGPT" />)
                                         .with({ name: "BotArea" }, ({ params }) => (
-                                            <BotProvider botName={params.botName}>
-                                                <Bot botName={params.botName} />
-                                            </BotProvider>
+                                            <BotGuard botName={params.botName}>
+                                                <BotArea botName={params.botName} />
+                                            </BotGuard>
                                         ))
                                         .otherwise(() => <NotFound />),
                                 [route],
