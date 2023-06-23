@@ -4,7 +4,7 @@ import { vars } from "./vars.css"
 
 export const colors = {
     blue: [
-        "#2563eb",
+        "#1c345d",
         "#1d4ed8",
         "#1e40af",
         "#1e3a8a",
