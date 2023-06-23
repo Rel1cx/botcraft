@@ -4,7 +4,7 @@ import * as React from "react"
 import { noop } from "@/lib/helper"
 import type { ChatID } from "@/zod/id"
 
-import MarkdownEditor from "../atoms/MarkdownEditor/MarkdownEditor"
+import TextEditor from "../atoms/TextEditor/TextEditor"
 import * as css from "./styles.css"
 
 type ChatMessageEditorProps = {
@@ -54,7 +54,7 @@ const ChatMessageEditor = React.memo(
 
                 {React.useMemo(
                     () => (
-                        <MarkdownEditor
+                        <TextEditor
                             className={css.content}
                             defaultValue={defaultContent}
                             onFocus={() => setFocused(true)}

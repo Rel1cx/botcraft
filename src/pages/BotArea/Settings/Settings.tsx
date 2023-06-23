@@ -19,7 +19,7 @@ import * as css from "./styles.css"
 
 const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
 
-const MarkdownEditor = React.lazy(() => import("@/components/atoms/MarkdownEditor/MarkdownEditor"))
+const TextEditor = React.lazy(() => import("@/components/atoms/TextEditor/TextEditor"))
 
 type SettingsProps = {
     botName: string
@@ -206,7 +206,7 @@ const Settings = ({ botName }: SettingsProps) => {
                             />
                         </Input.Wrapper>
                         <Input.Wrapper label="System Message">
-                            <MarkdownEditor
+                            <TextEditor
                                 className={css.textarea}
                                 defaultValue={bot.systemMessage}
                                 placeholder="Write a system message"
@@ -221,7 +221,7 @@ const Settings = ({ botName }: SettingsProps) => {
                             />
                         </Input.Wrapper>
                         <Input.Wrapper label="Intro Message">
-                            <MarkdownEditor
+                            <TextEditor
                                 className={css.textarea}
                                 placeholder="Write an intro message"
                                 defaultValue={bot.intro}

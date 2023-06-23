@@ -94,7 +94,7 @@
         "core-dts": "0.0.3",
         "dpdm": "3.13.1",
         "eslint": "8.43.0",
-        "eslint-config-with-tsconfig": "1.5.8",
+        "eslint-config-with-tsconfig": "1.5.9",
         "hkt-toolbelt": "0.22.0-beta.1",
         "husky": "8.0.3",
         "local-pkg": "0.4.3",

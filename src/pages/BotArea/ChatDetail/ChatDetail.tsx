@@ -125,9 +125,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     }, [addChat, botName])
 
     const onChatRemoveClick = React.useCallback(
-        (chatID: ChatID) => {
+        async (chatID: ChatID) => {
+            await removeChat(botName, chatID)
             Router.replace("BotNewChat", { botName })
-            void removeChat(botName, chatID)
         },
         [botName, removeChat],
     )
@@ -205,11 +205,11 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 danger
                 open={removing.isSome()}
                 onClose={() => setRemoving(O.None())}
-                onConfirm={() => {
+                onConfirm={async () => {
                     if (removing.isNone()) {
                         return
                     }
-                    onChatRemoveClick(removing.get())
+                    await onChatRemoveClick(removing.get())
                     setRemoving(O.None())
                 }}
             />
