@@ -30,7 +30,7 @@ import * as css from "./styles.css"
 
 const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"))
 
-const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
+const Message = React.lazy(() => import("@/components/Message/Message"))
 
 const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"))
 
@@ -87,15 +87,15 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
 const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
     const [data] = useMessage(id)
 
-    const content = React.useMemo(() => {
-        if (!data?.content || data.role === "system") {
-            return null
-        }
+    if (!data) {
+        return null
+    }
 
-        return <Message data={data} />
-    }, [data])
-
-    return <React.Suspense>{content}</React.Suspense>
+    return (
+        <React.Suspense>
+            <Message data={data} />
+        </React.Suspense>
+    )
 })
 
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {

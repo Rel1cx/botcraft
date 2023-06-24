@@ -8,7 +8,7 @@ import { makeMessageID, type MessageID } from "@/zod/id"
 
 import * as css from "./styles.css"
 
-const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
+const Message = React.lazy(() => import("@/components/Message/Message"))
 
 const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
 
