@@ -17,7 +17,7 @@ type BotListProps = ListProtocol<ListItemProtocol & IconProtocol> & {
 
 export const BotList = ({ items, selected }: BotListProps) => {
     return (
-        <div className={css.container}>
+        <div className={css.root}>
             {items.map((item) => {
                 const avatar = <Avatar bg={item.icon} />
                 if (selected === item.id) {

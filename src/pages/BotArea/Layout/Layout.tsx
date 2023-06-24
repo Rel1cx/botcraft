@@ -10,7 +10,7 @@ type LayoutProps = React.PropsWithChildren<{
 
 export const Layout = ({ aside, asideHeader, children, header }: LayoutProps) => {
     return (
-        <div className={css.container}>
+        <div className={css.root}>
             <aside className={css.aside}>
                 <div className={css.asideHeader}>{asideHeader}</div>
                 {aside}

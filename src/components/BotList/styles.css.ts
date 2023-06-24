@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
-export const container = style({
+export const root = style({
     height: "100%",
     display: "flex",
     flexFlow: "column",

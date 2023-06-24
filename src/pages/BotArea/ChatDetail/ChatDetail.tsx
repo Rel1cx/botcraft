@@ -28,7 +28,7 @@ import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
-const TimeStack = React.lazy(() => import("@/components/TimeStack/TimeStack"))
+const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"))
 
 const Message = React.lazy(() => import("@/components/atoms/Message/Message"))
 
@@ -61,7 +61,7 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
     const sortedChats = React.useMemo(() => sortBy((chat) => -chat.updatedAt, chatsMeta), [chatsMeta])
 
     return (
-        <TimeStack
+        <ChatList
             items={sortedChats}
             renderItemIcon={(id) => (
                 <Icon

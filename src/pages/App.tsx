@@ -40,7 +40,7 @@ const App = ({ locale }: { locale: Locales }) => {
         <React.StrictMode>
             <TypesafeI18n locale={locale}>
                 <MantineProvider theme={{ ...mantineTheme, colorScheme: "light" }}>
-                    <div className={css.container}>
+                    <div className={css.root}>
                         <React.Suspense fallback={<RootLayout navHeader={<small>Loading...</small>} />}>
                             {React.useMemo(
                                 () =>

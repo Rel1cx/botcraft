@@ -40,7 +40,7 @@ const ChatMessageEditor = React.memo(
         // }, [bot, debouncedContent])
 
         return (
-            <div className={css.container}>
+            <div className={css.root}>
                 <div
                     className={css.toolbar}
                     style={{

@@ -13,7 +13,7 @@ const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, 
     const deferredValue = React.useDeferredValue(value)
 
     return (
-        <div id={id} className={css.container}>
+        <div id={id} className={css.root}>
             <input
                 className={css.input}
                 type="text"

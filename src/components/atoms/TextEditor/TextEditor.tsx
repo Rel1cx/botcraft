@@ -99,7 +99,7 @@ const TextEditor = React.memo(
         )
 
         return (
-            <div className={clsx(css.container, className)}>
+            <div className={clsx(css.root, className)}>
                 <ErrorBoundary fallback={<div>Something went wrong</div>}>
                     <CodeMirror
                         id="markdown-editor"

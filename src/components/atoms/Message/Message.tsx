@@ -33,7 +33,7 @@ const Message = React.memo(
         const deferredContent = React.useDeferredValue(content)
 
         return (
-            <div className={clsx(css.container[role], className)} ref={ref} {...rest}>
+            <div className={clsx(css.root[role], className)} ref={ref} {...rest}>
                 <ErrorBoundary fallback={<div>{content}</div>}>
                     <MemoizedReactMarkdown
                         className={`${css.content[role]} prose dark:prose-invert`}

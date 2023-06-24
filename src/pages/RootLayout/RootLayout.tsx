@@ -13,7 +13,7 @@ export type RootLayoutProps = PropsWithChildren<{
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, nav, navFooter, navHeader }) => {
     return (
-        <div className={css.container}>
+        <div className={css.root}>
             <nav className={css.navContainer}>
                 <div className={css.navHeader}>{navHeader}</div>
                 <div className={css.navContent}>{nav}</div>

@@ -16,7 +16,7 @@ const BotMenu = React.memo(({ botName, children }: BotMenuProps) => {
     return (
         <Menu shadow="md" width={200} position="bottom-start">
             <Menu.Target>{children}</Menu.Target>
-            <Menu.Dropdown className={css.container}>
+            <Menu.Dropdown className={css.root}>
                 <Menu.Label>Preferences</Menu.Label>
                 <Menu.Item
                     icon={<Icon as={Gear} />}

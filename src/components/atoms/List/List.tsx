@@ -35,7 +35,7 @@ const List = React.memo(
             const scrollContainer = React.useRef<HTMLDivElement>(null)
 
             return (
-                <div ref={ref} className={css.container} {...rest}>
+                <div ref={ref} className={css.root} {...rest}>
                     <div className={css.content} ref={scrollContainer}>
                         <div
                             className={css.itemList}

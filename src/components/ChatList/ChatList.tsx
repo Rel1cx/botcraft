@@ -11,7 +11,7 @@ import Icon from "../atoms/Icon/Icon"
 import List, { ListItem } from "../atoms/List/List"
 import * as css from "./styles.css"
 
-type TimeStackProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
+type ChatListProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
     selected?: string
     newItemName?: string
     disableMutation?: boolean
@@ -47,7 +47,7 @@ const NewItemButton = ({
     )
 }
 
-const TimeStack = React.memo(
+const ChatList = React.memo(
     ({
         disableMutation = false,
         items,
@@ -59,7 +59,7 @@ const TimeStack = React.memo(
         onItemUnpin,
         renderItemIcon,
         selected,
-    }: TimeStackProps) => {
+    }: ChatListProps) => {
         const markers = React.useMemo(() => {
             const markers = new BiMap<string, number>()
 
@@ -89,7 +89,7 @@ const TimeStack = React.memo(
         // })
 
         return (
-            <div className={css.container}>
+            <div className={css.root}>
                 <div className={css.actionArea}>
                     <NewItemButton title={newItemName} disabled={disableMutation} onClick={handleItemAdd} />
                 </div>
@@ -129,4 +129,4 @@ const TimeStack = React.memo(
     },
 )
 
-export default TimeStack
+export default ChatList

@@ -14,7 +14,7 @@ const Avatar = React.memo(
         return (
             <div
                 ref={ref}
-                className={css.container}
+                className={css.root}
                 style={{
                     backgroundImage: bg ? `url("${bg}")` : "none",
                     borderRadius: radius,

@@ -43,7 +43,7 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
     )
 
     return (
-        <div className={css.container}>
+        <div className={css.root}>
             <div className={css.content} ref={contentRef}>
                 <Animation>
                     <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

@@ -2,7 +2,7 @@ import { globalStyle, style, styleVariants } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
-export const baseContainer = style({
+export const baseRoot = style({
     margin: "1rem 0",
     display: "flex",
     width: "100%",
@@ -18,10 +18,10 @@ export const baseContent = style({
     borderRadius: "1rem",
 })
 
-export const container = styleVariants({
-    system: [baseContainer, { justifyContent: "center" }],
-    user: [baseContainer, { justifyContent: "flex-end" }],
-    assistant: [baseContainer, { justifyContent: "flex-start" }],
+export const root = styleVariants({
+    system: [baseRoot, { justifyContent: "center" }],
+    user: [baseRoot, { justifyContent: "flex-end" }],
+    assistant: [baseRoot, { justifyContent: "flex-start" }],
 })
 
 export const content = styleVariants({

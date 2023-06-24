@@ -2,7 +2,7 @@ import { globalStyle, style } from "@vanilla-extract/css"
 
 import { vars } from "@/theme/vars.css"
 
-export const container = style({
+export const root = style({
     display: "flex",
     fontSize: "16px",
     borderRadius: "0.5rem",
