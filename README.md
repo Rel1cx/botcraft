@@ -8,11 +8,11 @@ Local-first, customizable ChatGPT powered chatbot app.
 
 ## TODO
 
-- [] Token counting
-- [] Auto title
-- [] Delete message
-- [] Copy message
-- [] Edit message
+- [ ] Auto title
+- [ ] Token counting
+- [ ] Delete message
+- [ ] Copy message
+- [ ] Edit message
 
 ## Demo
 
