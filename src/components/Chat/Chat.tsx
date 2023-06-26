@@ -13,7 +13,7 @@ const Message = React.lazy(() => import("@/components/Message/Message"))
 
 const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
 
-export type MessageRendererProps = {
+export type MessageComponentProps = {
     chatID: ChatID
     id: MessageID
     className?: string
@@ -23,7 +23,7 @@ export type ChatProps = {
     data: ChatItem
     isGenerating?: boolean
     onHeightChange?: (height: number) => void
-    MessageComponent: React.ComponentType<MessageRendererProps>
+    MessageComponent: React.ComponentType<MessageComponentProps>
 }
 
 const Chat = ({ data, isGenerating, MessageComponent, onHeightChange }: ChatProps) => {
