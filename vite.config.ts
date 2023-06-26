@@ -24,10 +24,9 @@ export default defineConfig({
             },
             typescript: true,
         }),
-        !isDev &&
-            preload({
-                includeCss: true,
-            }),
+        preload({
+            includeCss: true,
+        }),
     ].filter(Boolean),
     resolve: {
         alias: {

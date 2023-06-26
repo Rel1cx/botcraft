@@ -45,6 +45,34 @@ export const isChatMessage = (value: unknown): value is ChatMessage => {
     return ChatMessage.safeParse(value).success
 }
 
+export const ChatCompletionData = z.object({
+    id: z.string(),
+    object: z.literal("chat.completion"),
+    created: z.number(),
+    model: Model,
+    choices: z.array(
+        z.object({
+            message: z.object({
+                role: z.optional(Role),
+                content: z.optional(z.string()),
+            }),
+            index: z.number(),
+            finish_reason: z.null().or(z.string()),
+        }),
+    ),
+    usage: z.object({
+        prompt_tokens: z.number(),
+        completion_tokens: z.number(),
+        total_tokens: z.number(),
+    }),
+})
+
+export type ChatCompletionData = z.infer<typeof ChatCompletionData>
+
+export const isChatCompletionData = (value: unknown): value is ChatCompletionData => {
+    return ChatCompletionData.safeParse(value).success
+}
+
 export const ChatCompletionChunk = z.object({
     id: z.string(),
     object: z.literal("chat.completion.chunk"),

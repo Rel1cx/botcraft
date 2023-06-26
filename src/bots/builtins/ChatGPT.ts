@@ -1,7 +1,7 @@
 import { Result } from "@swan-io/boxed"
-import { from, map, mergeMap, type Observable } from "rxjs"
+import { from, map, mergeMap, type Observable, of } from "rxjs"
 
-import { getChatCompletionStream } from "@/api/client"
+import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
@@ -9,6 +9,7 @@ import { makeNameGenerator } from "@/lib/name"
 import { readerToObservable } from "@/lib/stream"
 import { stripIndentTrim } from "@/lib/strip-indent"
 import { countTokens } from "@/lib/tokenizer"
+import { ChatCompletionData } from "@/zod"
 import { makeChatID, makeMessageID } from "@/zod/id"
 
 import type { Bot, ChatData, MessageData } from "./types"
@@ -49,6 +50,30 @@ export const initChat = () => (bot: Bot): ChatData => {
 export const estimateTokenCount = (messages: Pick<MessageData, "role" | "content">[]) => (bot: Bot) => {
     return countTokens(messages, bot.options.model)
 }
+
+export const generateChatCompletion =
+    (apiKey: string, endpoint: string, chat: ChatData) => async (bot: Bot): Promise<Result<string, Error>> => {
+        const messages = chat.content
+        const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
+
+        if (result.isError()) {
+            return Result.Error(result.getError())
+        }
+
+        const completion = ChatCompletionData.safeParse(result.get())
+
+        if (!completion.success) {
+            return Result.Error(completion.error)
+        }
+
+        const choice = completion.data.choices[0]
+
+        if (!choice) {
+            return Result.Error(new Error("Failed to get completion"))
+        }
+
+        return Result.Ok(choice.message.content ?? "")
+    }
 
 export const generateChatCompletionStream =
     (apiKey: string, endpoint: string, chat: ChatData, signal?: AbortSignal) =>
