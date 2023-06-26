@@ -27,10 +27,12 @@ const Message = React.memo(
         // Significantly reduce rendering blocking time.
         const deferredContent = React.useDeferredValue(content)
 
+        const displayMenu = showMenu && role !== "system"
+
         return (
             <div className={clsx(css.root[role], className)} {...rest}>
                 <Markdown className={css.content[role]} content={deferredContent} />
-                {role !== "system" && showMenu && (
+                {displayMenu && (
                     <MessageMenu position="bottom-start" onRemoveClick={onRemoveClick}>
                         <Button as="button" className={css.actionButton} clickOnEnter clickOnSpace>
                             <Icon as={DotsThree} size={24} fill={vars.colors.black50} />

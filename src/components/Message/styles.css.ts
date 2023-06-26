@@ -7,6 +7,7 @@ export const baseRoot = style({
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
 
     vars: {
         "--action-button-opacity": "0",

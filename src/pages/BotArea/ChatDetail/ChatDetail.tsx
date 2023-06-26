@@ -197,7 +197,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <ChatMessageEditor id={chatID} onComplete={onMessageCreate} shouldSend={!isGenerating} />
+                <ChatMessageEditor onComplete={onMessageCreate} shouldSend={!isGenerating} />
             </div>
             <ConfirmDialog
                 title="Remove chat"
