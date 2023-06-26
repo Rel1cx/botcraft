@@ -4,8 +4,19 @@ import { vars } from "@/theme/vars.css"
 
 export const baseRoot = style({
     margin: "1rem 0",
-    display: "flex",
     width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+
+    vars: {
+        "--action-button-opacity": "0",
+    },
+
+    ":hover": {
+        vars: {
+            "--action-button-opacity": "1",
+        },
+    },
 })
 
 export const baseContent = style({
@@ -18,8 +29,8 @@ export const baseContent = style({
 
 export const root = styleVariants({
     system: [baseRoot, { justifyContent: "center" }],
-    user: [baseRoot, { justifyContent: "flex-end" }],
-    assistant: [baseRoot, { justifyContent: "flex-start" }],
+    user: [baseRoot, { flexDirection: "row-reverse" }],
+    assistant: [baseRoot, { flexDirection: "row" }],
 })
 
 export const content = styleVariants({
@@ -50,4 +61,25 @@ export const content = styleVariants({
             color: vars.colors.text,
         },
     ],
+})
+
+export const actionButton = style({
+    position: "sticky",
+    top: "1rem",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "9999px",
+    opacity: "var(--action-button-opacity)",
+    transition: "all 120ms ease-in-out",
+
+    ":hover": {
+        background: vars.colors.lightGray,
+    },
+
+    ":active": {
+        filter: "brightness(0.9)",
+    },
 })

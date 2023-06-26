@@ -4,7 +4,8 @@ import * as React from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
 import type { ChatItem } from "@/types"
-import { makeMessageID, type MessageID } from "@/zod/id"
+import type { ChatID, MessageID } from "@/zod/id"
+import { makeMessageID } from "@/zod/id"
 
 import * as css from "./styles.css"
 
@@ -12,15 +13,21 @@ const Message = React.lazy(() => import("@/components/Message/Message"))
 
 const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
 
+export type MessageRendererProps = {
+    chatID: ChatID
+    id: MessageID
+    className?: string
+}
+
 export type ChatProps = {
     data: ChatItem
     isGenerating?: boolean
     onHeightChange?: (height: number) => void
-    MessageRenderer: ({ id }: { id: MessageID; className?: string }) => React.ReactNode
+    MessageRenderer: React.ComponentType<MessageRendererProps>
 }
 
 const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps) => {
-    const { id, intro, messages } = data
+    const { id: chatID, intro, messages } = data
 
     const contentRef = React.useRef<HTMLDivElement>(null)
 
@@ -46,13 +53,13 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
         <div className={css.root}>
             <div className={css.content} ref={contentRef}>
                 <Animation>
-                    <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Message className={css.intro} data={introMessage} />
+                    <m.div key={chatID} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <Message className={css.intro} data={introMessage} showMenu={false} />
                     </m.div>
                     <AnimatePresence>
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                <MessageRenderer id={id} />
+                                <MessageRenderer chatID={chatID} id={id} />
                             </m.div>
                         ))}
                     </AnimatePresence>

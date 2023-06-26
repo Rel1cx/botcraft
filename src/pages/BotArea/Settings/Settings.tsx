@@ -242,7 +242,7 @@ const Settings = ({ botName }: SettingsProps) => {
             <div className={css.content}>
                 <React.Suspense>
                     <Message data={systemMessage} />
-                    <Message data={introMessage} />
+                    <Message data={introMessage} showMenu={false} />
                 </React.Suspense>
             </div>
         </Layout>

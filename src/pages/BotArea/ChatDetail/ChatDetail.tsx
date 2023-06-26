@@ -16,6 +16,7 @@ import {
     addMessageAtom,
     chatCompletionTaskAtom,
     removeChatAtom,
+    removeMessageAtom,
     requestChatCompletionAtom,
     useChat,
     useMessage,
@@ -84,8 +85,9 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
     )
 }
 
-const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
+const ChatMessageRenderer = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
     const [data] = useMessage(id)
+    const removeMessage = useSetAtom(removeMessageAtom)
 
     if (!data) {
         return null
@@ -93,7 +95,7 @@ const ChatMessageRenderer = React.memo(({ id }: { id: MessageID }) => {
 
     return (
         <React.Suspense>
-            <Message data={data} />
+            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
         </React.Suspense>
     )
 })

@@ -91,7 +91,18 @@ export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: Mess
     )
 })
 
-export const removeMessageAtom = atom(null, async (_, set, chatID: ChatID, id: MessageID) => {
+export const removeMessageAtom = atom(null, async (get, set, chatID: ChatID, id: MessageID) => {
+    const chat = get(chatsDb.item(chatID))
+    invariant(chat, `Chat ${chatID} not found`)
+    await set(
+        chatsDb.set,
+        chatID,
+        produce((draft: ChatItem) => {
+            draft.messages = draft.messages.filter((messageID) => messageID !== id)
+            draft.updatedAt = Date.now()
+        })(chat),
+    )
+
     await set(messagesDb.delete, id)
 })
 
