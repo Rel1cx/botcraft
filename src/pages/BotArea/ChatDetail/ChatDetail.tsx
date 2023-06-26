@@ -85,7 +85,7 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
     )
 }
 
-const ChatMessageRenderer = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
+const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
     const [data] = useMessage(id)
     const removeMessage = useSetAtom(removeMessageAtom)
 
@@ -188,7 +188,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <Chat
                     data={chat}
                     isGenerating={isGenerating}
-                    MessageRenderer={ChatMessageRenderer}
+                    MessageComponent={ChatMessagePresenter}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({
                             top: contentRef.current.scrollHeight,

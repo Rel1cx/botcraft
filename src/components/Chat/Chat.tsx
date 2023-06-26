@@ -23,10 +23,10 @@ export type ChatProps = {
     data: ChatItem
     isGenerating?: boolean
     onHeightChange?: (height: number) => void
-    MessageRenderer: React.ComponentType<MessageRendererProps>
+    MessageComponent: React.ComponentType<MessageRendererProps>
 }
 
-const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps) => {
+const Chat = ({ data, isGenerating, MessageComponent, onHeightChange }: ChatProps) => {
     const { id: chatID, intro, messages } = data
 
     const contentRef = React.useRef<HTMLDivElement>(null)
@@ -59,7 +59,7 @@ const Chat = ({ data, isGenerating, MessageRenderer, onHeightChange }: ChatProps
                     <AnimatePresence>
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                <MessageRenderer chatID={chatID} id={id} />
+                                <MessageComponent chatID={chatID} id={id} />
                             </m.div>
                         ))}
                     </AnimatePresence>
