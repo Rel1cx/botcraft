@@ -13,8 +13,8 @@ import type { Locales } from "@/i18n/i18n-types"
 import { isLocale } from "@/i18n/i18n-util"
 import { Router } from "@/router"
 import { apiKeyAtom, endpointAtom, titleLocaleAtom, useBot } from "@/stores"
+import type { Role } from "@/zod"
 import { isModel } from "@/zod"
-import { makeMessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
@@ -43,35 +43,31 @@ const titleLocales: { value: Locales; label: string }[] = [
     { value: "zh-CN", label: "简体中文" },
 ]
 
-const dummySystemMessageID = makeMessageID()
+const ChatMessagePresenter = React.memo(({ content, role }: { role: Role; content: string }) => {
+    const dummyID = React.useId()
 
-const dummyIntroMessageID = makeMessageID()
+    const data = React.useMemo<MessageData>(
+        () => ({
+            id: `msg-${dummyID}`,
+            role,
+            content,
+            updatedAt: Date.now(),
+        }),
+        [content, dummyID, role],
+    )
+
+    return (
+        <React.Suspense>
+            <Message data={data} showMenu={false} />
+        </React.Suspense>
+    )
+})
 
 const Settings = ({ botName }: SettingsProps) => {
     const [bot, setBot] = useBot(botName)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
     const [endpoint, setEndpoint] = useAtom(endpointAtom)
     const [titleLocale, setTitleLocale] = useAtom(titleLocaleAtom)
-
-    const systemMessage = React.useMemo<MessageData>(
-        () => ({
-            id: dummySystemMessageID,
-            role: "system",
-            content: bot?.systemMessage ?? "",
-            updatedAt: Date.now(),
-        }),
-        [bot?.systemMessage],
-    )
-
-    const introMessage = React.useMemo<MessageData>(
-        () => ({
-            id: dummyIntroMessageID,
-            role: "assistant",
-            content: bot?.intro ?? "",
-            updatedAt: Date.now(),
-        }),
-        [bot?.intro],
-    )
 
     if (!bot) {
         return null
@@ -260,10 +256,8 @@ const Settings = ({ botName }: SettingsProps) => {
             }
         >
             <div className={css.content}>
-                <React.Suspense>
-                    <Message data={systemMessage} />
-                    <Message data={introMessage} showMenu={false} />
-                </React.Suspense>
+                <ChatMessagePresenter role="system" content={bot.systemMessage} />
+                <ChatMessagePresenter role="assistant" content={bot.intro} />
             </div>
         </Layout>
     )

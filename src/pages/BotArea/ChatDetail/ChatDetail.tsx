@@ -93,6 +93,10 @@ const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: M
         return null
     }
 
+    if (data.role === "system") {
+        return null
+    }
+
     return (
         <React.Suspense>
             <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
