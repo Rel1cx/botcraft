@@ -4,7 +4,7 @@ import { from, map, mergeMap, timeout } from "rxjs"
 
 import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
-import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=png&quality=100"
+import chatgptLogo from "@/assets/chatgpt_logo.svg"
 import {
     DEFAULT_CHAT_COMPLETION_OPTIONS,
     DEFAULT_CHAT_TITLE_COMPLETION_PROMPT,
@@ -24,7 +24,7 @@ const nameGenerator = makeNameGenerator()
 
 export const defaultBot: Bot = {
     name: "ChatGPT",
-    icon: chatgpt,
+    icon: chatgptLogo,
     intro: DEFAULT_INTRO,
     prompt: "",
     systemMessage: DEFAULT_SYSTEM_MESSAGE,
