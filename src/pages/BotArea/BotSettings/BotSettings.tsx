@@ -23,7 +23,7 @@ const Message = React.lazy(() => import("@/components/Message/Message"))
 
 const TextEditor = React.lazy(() => import("@/components/atoms/TextEditor/TextEditor"))
 
-type SettingsProps = {
+type BotSettingsProps = {
     botName: string
 }
 
@@ -63,7 +63,7 @@ const ChatMessagePresenter = React.memo(({ content, role }: { role: Role; conten
     )
 })
 
-const Settings = ({ botName }: SettingsProps) => {
+const BotSettings = ({ botName }: BotSettingsProps) => {
     const [bot, setBot] = useBot(botName)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
     const [endpoint, setEndpoint] = useAtom(endpointAtom)
@@ -263,4 +263,4 @@ const Settings = ({ botName }: SettingsProps) => {
     )
 }
 
-export default Settings
+export default BotSettings

@@ -14,7 +14,7 @@ import RootLayout from "../RootLayout/RootLayout"
 
 const ChatDetail = React.lazy(() => import("./ChatDetail/ChatDetail"))
 
-const Settings = React.lazy(() => import("./Settings/Settings"))
+const BotSettings = React.lazy(() => import("./BotSettings/BotSettings"))
 
 type BotAreaProps = {
     botName: string
@@ -51,7 +51,7 @@ const BotArea = ({ botName }: BotAreaProps) => {
             match(route)
                 .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
                 .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
-                .with({ name: "BotSettings" }, ({ params }) => <Settings botName={params.botName} />)
+                .with({ name: "BotSettings" }, ({ params }) => <BotSettings botName={params.botName} />)
                 .with({ name: "BotChat" }, ({ params }) => {
                     const { botName, chatID } = params
                     if (!isChatID(chatID)) {
