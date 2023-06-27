@@ -18,15 +18,16 @@ export default defineConfig({
         vanillaExtractPlugin(),
         wasm(),
         imagetools(),
-        checker({
-            eslint: {
-                lintCommand: "eslint --color src",
-            },
-            typescript: true,
-        }),
         preload({
             includeCss: true,
         }),
+        isDev &&
+            checker({
+                eslint: {
+                    lintCommand: "eslint --color src",
+                },
+                typescript: true,
+            }),
     ].filter(Boolean),
     resolve: {
         alias: {
