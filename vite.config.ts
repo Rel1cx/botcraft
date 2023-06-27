@@ -2,7 +2,6 @@ import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin"
 import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { defineConfig } from "vite"
-import { imagetools } from "vite-imagetools"
 import checker from "vite-plugin-checker"
 import preload from "vite-plugin-preload"
 import topLevelAwait from "vite-plugin-top-level-await"
@@ -17,7 +16,6 @@ export default defineConfig({
         react(),
         vanillaExtractPlugin(),
         wasm(),
-        imagetools(),
         preload({
             includeCss: true,
         }),

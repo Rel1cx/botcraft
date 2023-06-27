@@ -38,15 +38,14 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
     const bot = get(botsDb.item(botName))
     invariant(bot, `Bot ${botName} not found`)
     const newChat = initChat()(bot)
+    const messageKeys = newChat.content.map((message) => message.id)
+    const messagesEntries = newChat.content.map<[string, MessageData]>((message) => [message.id, message])
     const chat = {
         ...omit(["content"], newChat),
-        messages: [],
+        messages: messageKeys,
     }
 
-    await set(
-        messagesDb.setMany,
-        newChat.content.map<[string, MessageData]>((message) => [message.id, message]),
-    )
+    await set(messagesDb.setMany, messagesEntries)
 
     await set(chatsDb.set, chat.id, chat)
 
