@@ -137,6 +137,18 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         [botName, removeChat],
     )
 
+    const onMessageChange = React.useCallback(
+        (content: string) => {
+            void setChat(
+                produce((draft) => {
+                    invariant(draft, "Chat must be defined")
+                    draft.draft = content
+                }),
+            )
+        },
+        [setChat],
+    )
+
     const onMessageCreate = React.useCallback(
         async (content: string) => {
             const message: MessageData = {
@@ -201,7 +213,12 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <ChatMessageEditor onComplete={onMessageCreate} shouldSend={!isGenerating} />
+                <ChatMessageEditor
+                    content={chat.draft}
+                    onChange={onMessageChange}
+                    onComplete={onMessageCreate}
+                    shouldSend={!isGenerating}
+                />
             </div>
             <ConfirmDialog
                 title="Remove chat"

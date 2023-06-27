@@ -14,6 +14,7 @@ import * as css from "./styles.css"
 
 type TextEditorProps = {
     className?: string
+    value?: string
     defaultValue?: string
     placeholder?: string
     onFocus?: () => void
@@ -76,6 +77,7 @@ const TextEditor = React.memo(
         placeholder = defaultPlaceholder,
         shouldComplete = defaultShouldComplete,
         shouldResetEditor = defaultShouldResetEditor,
+        value = "",
     }: TextEditorProps) => {
         const contentRef = React.useRef(defaultValue)
         const editorRef = React.useRef<O<EditorView>>(O.None())
@@ -107,7 +109,7 @@ const TextEditor = React.memo(
                         aria-label="markdown-editor"
                         width="100%"
                         maxHeight="320px"
-                        value={defaultValue}
+                        value={value}
                         defaultValue={defaultValue}
                         placeholder={placeholder}
                         onCreateEditor={(editor) => {

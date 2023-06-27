@@ -45,6 +45,7 @@ export const initChat = () => (bot: Bot): ChatData => {
         id: makeChatID(),
         title: nameGenerator(),
         intro: bot.intro,
+        draft: "",
         content: [firstMessage],
         updatedAt: Date.now(),
     }

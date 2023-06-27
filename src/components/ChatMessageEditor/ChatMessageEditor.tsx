@@ -6,13 +6,21 @@ import TextEditor from "../atoms/TextEditor/TextEditor"
 import * as css from "./styles.css"
 
 type ChatMessageEditorProps = {
+    content?: string
     defaultContent?: string
     shouldSend?: boolean
+    onChange?: (content: string) => void
     onComplete?: (content: string) => void
 }
 
 const ChatMessageEditor = React.memo(
-    ({ defaultContent = "", onComplete = noop, shouldSend = false }: ChatMessageEditorProps) => {
+    ({
+        content = "",
+        defaultContent = "",
+        onChange = noop,
+        onComplete = noop,
+        shouldSend = false,
+    }: ChatMessageEditorProps) => {
         const [focused, setFocused] = React.useState(false)
 
         return (
@@ -27,15 +35,16 @@ const ChatMessageEditor = React.memo(
                     () => (
                         <TextEditor
                             className={css.content}
+                            value={content}
                             defaultValue={defaultContent}
                             onFocus={() => setFocused(true)}
                             onBlur={() => setFocused(false)}
-                            // onChange={onContentChange}
+                            onChange={onChange}
                             onComplete={onComplete}
                             shouldComplete={(value) => value.trim() !== "" && shouldSend}
                         />
                     ),
-                    [defaultContent, onComplete, shouldSend],
+                    [content, defaultContent, onChange, onComplete, shouldSend],
                 )}
             </div>
         )
