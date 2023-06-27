@@ -1,6 +1,6 @@
 import { $ } from "zx"
 
-await $`pnpm run i18n --no-watch`
+await $`pnpm run i18n`
 
 await Promise.allSettled([
     $`pnpm rome format .`,

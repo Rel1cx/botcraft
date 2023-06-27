@@ -41,7 +41,7 @@ pnpm run build
 ### Generate i18n files
 
 ```bash
-pnpm run i18n --no-watch
+pnpm run i18n
 ```
 
 ## License
