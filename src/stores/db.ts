@@ -1,4 +1,5 @@
 import { MiniDb } from "jotai-minidb"
+import { omit } from "rambda"
 
 import { defaultBot, initChat } from "@/bot"
 import type { Bot, MessageData } from "@/bot/types"
@@ -15,7 +16,7 @@ export const initialBots: Record<string, Bot> = {
 
 export const initialChats: Record<string, ChatItem> = {
     [initialChat.id]: {
-        ...initialChat,
+        ...omit(["content"], initialChat),
         messages: initialChat.content.map((message) => message.id),
     },
 }
