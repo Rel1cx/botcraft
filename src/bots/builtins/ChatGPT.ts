@@ -1,5 +1,6 @@
 import { Result } from "@swan-io/boxed"
-import { from, map, mergeMap, type Observable } from "rxjs"
+import type { Observable } from "rxjs"
+import { from, map, mergeMap, timeout } from "rxjs"
 
 import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
@@ -140,7 +141,7 @@ export const generateChatCompletionStream =
 
         return Result.Ok(
             observable.pipe(
-                // timeout(8000),
+                timeout(10000),
                 map((value) => textDecoder.decode(value)),
                 map(parseEventSource),
                 mergeMap((events) => from(events)),
