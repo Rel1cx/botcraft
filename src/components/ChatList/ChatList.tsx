@@ -4,7 +4,6 @@ import { BiMap } from "@rizzzse/bimap"
 import { formatDistanceToNow } from "date-fns"
 import * as React from "react"
 
-// import { useHotkeys } from "react-hotkeys-hook"
 import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols"
 
 import Icon from "../atoms/Icon/Icon"
@@ -79,14 +78,6 @@ const ChatList = React.memo(
         const handleItemAdd = React.useCallback(() => onItemAdd?.(), [onItemAdd])
 
         const handleItemRemove = React.useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
-
-        // useHotkeys("Delete", () => {
-        //     if (!selected) {
-        //         return
-        //     }
-
-        //     handleItemRemove(selected)
-        // })
 
         return (
             <div className={css.root}>

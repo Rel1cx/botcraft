@@ -67,15 +67,15 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
     return (
         <ChatList
             items={sortedChats}
-            // renderItemIcon={(id) => (
-            //     <Icon
-            //         style={{
-            //             flexShrink: 0,
-            //         }}
-            //         as={ChatIcon}
-            //         color={selectedChatID === id ? "#fff" : vars.colors.text}
-            //     />
-            // )}
+            renderItemIcon={(id) => (
+                <Icon
+                    style={{
+                        flexShrink: 0,
+                    }}
+                    as={ChatIcon}
+                    color={selectedChatID === id ? "#fff" : vars.colors.text}
+                />
+            )}
             newItemName="New chat"
             selected={selectedChatID}
             disableMutation={isGenerating}
