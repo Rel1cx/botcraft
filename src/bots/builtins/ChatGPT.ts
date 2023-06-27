@@ -4,10 +4,15 @@ import { from, map, mergeMap, type Observable } from "rxjs"
 import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
-import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
+import {
+    DEFAULT_CHAT_COMPLETION_OPTIONS,
+    DEFAULT_CHAT_TITLE_COMPLETION_PROMPT,
+    DEFAULT_INTRO,
+    DEFAULT_SYSTEM_MESSAGE,
+} from "@/constants"
+import type { Locales } from "@/i18n/i18n-types"
 import { makeNameGenerator } from "@/lib/name-generator"
 import { readerToObservable } from "@/lib/stream"
-import { stripIndentTrim } from "@/lib/string"
 import { countTokens } from "@/lib/tokenizer"
 import { ChatCompletionData } from "@/zod"
 import { makeChatID, makeMessageID } from "@/zod/id"
@@ -19,12 +24,9 @@ const nameGenerator = makeNameGenerator()
 export const defaultBot: Bot = {
     name: "ChatGPT",
     icon: chatgpt,
-    intro: "Hello! How can I assist you today?",
+    intro: DEFAULT_INTRO,
     prompt: "",
-    systemMessage: stripIndentTrim(`
-      You have expertise in multiple fields and can assist users in solving problems.
-      Try to answer user's questions as accurately as possible.
-    `),
+    systemMessage: DEFAULT_SYSTEM_MESSAGE,
     options: DEFAULT_CHAT_COMPLETION_OPTIONS,
     chats: [],
 }
@@ -51,38 +53,46 @@ export const estimateTokenCount = (messages: Pick<MessageData, "role" | "content
     return countTokens(messages, bot.options.model)
 }
 
-export const generateChatTitle = (apiKey: string, endpoint: string, chat: ChatData) => async (bot: Bot) => {
-    const messages: MessageData[] = [
-        ...chat.content,
-        { id: makeMessageID(), role: "user", content: "Generate a brief title for this chat.", updatedAt: Date.now() },
-    ]
+export const generateChatTitle =
+    (apiKey: string, endpoint: string, chat: ChatData, locale: Locales = "en") =>
+    async (bot: Bot): Promise<Result<string, Error>> => {
+        const prompt = DEFAULT_CHAT_TITLE_COMPLETION_PROMPT[locale]
+        const messages: MessageData[] = [
+            ...chat.content,
+            {
+                id: makeMessageID(),
+                role: "user",
+                content: prompt,
+                updatedAt: Date.now(),
+            },
+        ]
 
-    const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
+        const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
 
-    if (result.isError()) {
-        return Result.Error(result.getError())
+        if (result.isError()) {
+            return Result.Error(result.getError())
+        }
+
+        const completion = ChatCompletionData.safeParse(result.get())
+
+        if (!completion.success) {
+            return Result.Error(completion.error)
+        }
+
+        const choice = completion.data.choices[0]
+
+        if (!choice) {
+            return Result.Error(new Error("Failed to get completion"))
+        }
+
+        const title = choice.message.content
+
+        if (!title) {
+            return Result.Error(new Error("Failed to get title"))
+        }
+
+        return Result.Ok(title)
     }
-
-    const completion = ChatCompletionData.safeParse(result.get())
-
-    if (!completion.success) {
-        return Result.Error(completion.error)
-    }
-
-    const choice = completion.data.choices[0]
-
-    if (!choice) {
-        return Result.Error(new Error("Failed to get completion"))
-    }
-
-    const title = choice.message.content
-
-    if (!title) {
-        return Result.Error(new Error("Failed to get title"))
-    }
-
-    return Result.Ok(title)
-}
 
 export const generateChatCompletion =
     (apiKey: string, endpoint: string, chat: ChatData) => async (bot: Bot): Promise<Result<string, Error>> => {

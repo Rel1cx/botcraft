@@ -9,8 +9,10 @@ import invariant from "tiny-invariant"
 import type { Model } from "@/api/types"
 import type { MessageData } from "@/bots/builtins/types"
 import Icon from "@/components/atoms/Icon/Icon"
+import type { Locales } from "@/i18n/i18n-types"
+import { isLocale } from "@/i18n/i18n-util"
 import { Router } from "@/router"
-import { apiKeyAtom, endpointAtom, useBot } from "@/stores"
+import { apiKeyAtom, endpointAtom, titleLocaleAtom, useBot } from "@/stores"
 import { isModel } from "@/zod"
 import { makeMessageID } from "@/zod/id"
 
@@ -36,6 +38,11 @@ const models: { value: Model; label: Model }[] = [
     { value: "gpt-4-32k-0613", label: "gpt-4-32k-0613" },
 ]
 
+const titleLocales: { value: Locales; label: string }[] = [
+    { value: "en", label: "English" },
+    { value: "zh-CN", label: "简体中文" },
+]
+
 const dummySystemMessageID = makeMessageID()
 
 const dummyIntroMessageID = makeMessageID()
@@ -44,6 +51,7 @@ const Settings = ({ botName }: SettingsProps) => {
     const [bot, setBot] = useBot(botName)
     const [apiKey, setApiKey] = useAtom(apiKeyAtom)
     const [endpoint, setEndpoint] = useAtom(endpointAtom)
+    const [titleLocale, setTitleLocale] = useAtom(titleLocaleAtom)
 
     const systemMessage = React.useMemo<MessageData>(
         () => ({
@@ -105,6 +113,18 @@ const Settings = ({ botName }: SettingsProps) => {
                             value={apiKey}
                             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                                 setApiKey(evt.target.value)
+                            }}
+                        />
+                        <Select
+                            label="Title Language"
+                            placeholder="Select language"
+                            data={titleLocales}
+                            value={titleLocale}
+                            onChange={(value) => {
+                                if (!value || !isLocale(value)) {
+                                    return
+                                }
+                                setTitleLocale(value)
                             }}
                         />
                     </section>

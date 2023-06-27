@@ -8,9 +8,10 @@ import { animationFrameScheduler, concatMap, observeOn, timeout } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { generateChatCompletionStream, initChat } from "@/bots/builtins/chatgpt"
+import { generateChatCompletionStream, generateChatTitle, initChat } from "@/bots/builtins/chatgpt"
 import type { MessageData } from "@/bots/builtins/types"
 import { DEFAULT_API_ENDPOINT } from "@/constants"
+import type { Locales } from "@/i18n/i18n-types"
 import { localStorageGetItem } from "@/lib/browser"
 import { uid } from "@/lib/uuid"
 import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem } from "@/types"
@@ -22,6 +23,8 @@ import { botsDb, chatsDb, messagesDb } from "./db"
 export const apiKeyAtom = atomWithStorage("API_KEY", localStorageGetItem("API_KEY", ""))
 
 export const endpointAtom = atomWithStorage("ENDPOINT", localStorageGetItem("ENDPOINT", DEFAULT_API_ENDPOINT))
+
+export const titleLocaleAtom = atomWithStorage<Locales>("TITLE_LOCALE", localStorageGetItem("TITLE_LOCALE", "en"))
 
 export const botsMetaAtom = atom((get) => {
     const bots = get(botsDb.values)
@@ -217,8 +220,38 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
             error: (err: unknown) => {
                 handleError(err)
             },
-            complete() {
+            async complete() {
                 set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
+
+                const chat = get(chatsDb.item(id))
+
+                invariant(chat, `Chat ${id} not found`)
+
+                const messages = await Promise.all(chat.messages.map((id) => get(messagesDb.item(id))).filter(Boolean))
+                const titleLocale = get(titleLocaleAtom)
+
+                if (messages.length > 10) {
+                    return
+                }
+
+                const result = await generateChatTitle(
+                    apiKey,
+                    endpoint,
+                    {
+                        ...omit(["messages"], chat),
+                        content: messages,
+                    },
+                    titleLocale,
+                )(bot)
+
+                if (!result.isOk()) {
+                    return
+                }
+
+                await set(chatsDb.set, id, {
+                    ...chat,
+                    title: result.get(),
+                })
             },
         })
 })

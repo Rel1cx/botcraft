@@ -17,12 +17,12 @@ const ChatMessageEditor = React.memo(
 
         return (
             <div className={css.root}>
-                <div
+                {/* <div
                     className={css.toolbar}
                     style={{
                         opacity: focused ? 1 : 0,
                     }}
-                />
+                /> */}
                 {React.useMemo(
                     () => (
                         <TextEditor
