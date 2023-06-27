@@ -22,5 +22,4 @@ dist-ssr
 
 .env.*
 
-pnpm-lock.yaml
 /stats.html
