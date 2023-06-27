@@ -1,4 +1,4 @@
-import type { Remap } from "@/lib/utilityTypes"
+import type { Remap } from "@/lib/utils"
 
 import type { ContentProtocol, CreatableProtocol, IDProtocol, RoleProtocol, TitleProtocol } from "./base"
 

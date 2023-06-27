@@ -1,20 +1,20 @@
 import { Result } from "@swan-io/boxed"
-import { from, map, mergeMap, type Observable, of } from "rxjs"
+import { from, map, mergeMap, type Observable } from "rxjs"
 
 import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
 import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
 import { DEFAULT_CHAT_COMPLETION_OPTIONS } from "@/constants"
-import { makeNameGenerator } from "@/lib/name"
+import { makeNameGenerator } from "@/lib/name-generator"
 import { readerToObservable } from "@/lib/stream"
-import { stripIndentTrim } from "@/lib/strip-indent"
+import { stripIndentTrim } from "@/lib/string"
 import { countTokens } from "@/lib/tokenizer"
 import { ChatCompletionData } from "@/zod"
 import { makeChatID, makeMessageID } from "@/zod/id"
 
 import type { Bot, ChatData, MessageData } from "./types"
 
-const botNameGenerator = makeNameGenerator()
+const nameGenerator = makeNameGenerator()
 
 export const defaultBot: Bot = {
     name: "ChatGPT",
@@ -40,7 +40,7 @@ export const initChat = () => (bot: Bot): ChatData => {
 
     return {
         id: makeChatID(),
-        title: botNameGenerator(),
+        title: nameGenerator(),
         intro: bot.intro,
         content: [firstMessage],
         updatedAt: Date.now(),
@@ -49,6 +49,39 @@ export const initChat = () => (bot: Bot): ChatData => {
 
 export const estimateTokenCount = (messages: Pick<MessageData, "role" | "content">[]) => (bot: Bot) => {
     return countTokens(messages, bot.options.model)
+}
+
+export const generateChatTitle = (apiKey: string, endpoint: string, chat: ChatData) => async (bot: Bot) => {
+    const messages: MessageData[] = [
+        ...chat.content,
+        { id: makeMessageID(), role: "user", content: "Generate a brief title for this chat.", updatedAt: Date.now() },
+    ]
+
+    const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
+
+    if (result.isError()) {
+        return Result.Error(result.getError())
+    }
+
+    const completion = ChatCompletionData.safeParse(result.get())
+
+    if (!completion.success) {
+        return Result.Error(completion.error)
+    }
+
+    const choice = completion.data.choices[0]
+
+    if (!choice) {
+        return Result.Error(new Error("Failed to get completion"))
+    }
+
+    const title = choice.message.content
+
+    if (!title) {
+        return Result.Error(new Error("Failed to get title"))
+    }
+
+    return Result.Ok(title)
 }
 
 export const generateChatCompletion =

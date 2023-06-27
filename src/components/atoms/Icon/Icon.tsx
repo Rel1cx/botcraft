@@ -1,7 +1,7 @@
 import type { IconProps as PhosphorProps } from "@phosphor-icons/react"
 import * as React from "react"
 
-import type { Remap } from "@/lib/utilityTypes"
+import type { Remap } from "@/lib/utils"
 import { vars } from "@/theme/vars.css"
 
 type IconProps = Remap<

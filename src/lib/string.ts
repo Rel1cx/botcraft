@@ -1,3 +1,5 @@
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
 export const minIndent = (str: string): number => {
     const match = str.match(/^[\t ]*(?=\S)/gmu)
 

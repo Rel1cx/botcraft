@@ -4,7 +4,7 @@ import { clsx } from "clsx"
 import * as React from "react"
 
 import type { MessageData } from "@/bots/builtins/types"
-import { noop } from "@/lib/helper"
+import { noop } from "@/lib/utils"
 import { vars } from "@/theme/vars.css"
 
 import Icon from "../atoms/Icon/Icon"

@@ -1,5 +1,5 @@
 import { Button } from "@ariakit/react"
-import { Plus, Star, X } from "@phosphor-icons/react"
+import { Plus, X } from "@phosphor-icons/react"
 import { BiMap } from "@rizzzse/bimap"
 import { formatDistanceToNow } from "date-fns"
 import * as React from "react"
@@ -35,7 +35,7 @@ const NewItemButton = ({
     return (
         <Button
             as="button"
-            className={css.newChatButton}
+            className={css.listActionButton}
             clickOnEnter
             clickOnSpace
             disabled={disabled}
@@ -90,7 +90,7 @@ const ChatList = React.memo(
 
         return (
             <div className={css.root}>
-                <div className={css.actionArea}>
+                <div className={css.listAction}>
                     <NewItemButton title={newItemName} disabled={disableMutation} onClick={handleItemAdd} />
                 </div>
 
@@ -107,11 +107,8 @@ const ChatList = React.memo(
                                     <span className={css.itemTitle}>{item.title}</span>
                                     {!!selected && (
                                         <div className={css.itemActions}>
-                                            <Button className={css.actionButton} as="button">
-                                                <Icon color="#fff" as={Star} />
-                                            </Button>
                                             <Button
-                                                className={css.actionButton}
+                                                className={css.itemActionButton}
                                                 as="button"
                                                 onClick={() => handleItemRemove(item.id)}
                                             >

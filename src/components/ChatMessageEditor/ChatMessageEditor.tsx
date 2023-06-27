@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { noop } from "@/lib/helper"
+import { noop } from "@/lib/utils"
 
 import TextEditor from "../atoms/TextEditor/TextEditor"
 import * as css from "./styles.css"
