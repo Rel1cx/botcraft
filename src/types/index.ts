@@ -1,6 +1,6 @@
 import type { StrictOmit } from "ts-essentials"
 
-import type { ChatData } from "@/bots/builtins/types"
+import type { ChatData } from "@/bot/types"
 import type { Remap } from "@/lib/utils"
 import type { ChatProtocol } from "@/protocols"
 import type { Model } from "@/zod"

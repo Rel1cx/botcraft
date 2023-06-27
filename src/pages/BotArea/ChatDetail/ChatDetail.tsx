@@ -6,7 +6,7 @@ import { sortBy } from "rambda"
 import * as React from "react"
 import invariant from "tiny-invariant"
 
-import type { MessageData } from "@/bots/builtins/types"
+import type { MessageData } from "@/bot/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import Chat from "@/components/Chat/Chat"

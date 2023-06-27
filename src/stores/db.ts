@@ -1,7 +1,7 @@
 import { MiniDb } from "jotai-minidb"
 
-import { defaultBot, initChat } from "@/bots/builtins/chatgpt"
-import type { Bot, MessageData } from "@/bots/builtins/types"
+import { defaultBot, initChat } from "@/bot"
+import type { Bot, MessageData } from "@/bot/types"
 import type { ChatItem } from "@/types"
 
 export const initialChat = initChat()(defaultBot)

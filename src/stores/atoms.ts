@@ -8,7 +8,7 @@ import { animationFrameScheduler, concatMap, observeOn, timeout } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
-import { generateChatCompletionStream, generateChatTitle, initChat, type MessageData } from "@/bots/builtins"
+import { generateChatCompletionStream, generateChatTitle, initChat, type MessageData } from "@/bot"
 import { DEFAULT_API_ENDPOINT } from "@/constants"
 import type { Locales } from "@/i18n/i18n-types"
 import { localStorageGetItem } from "@/lib/browser"

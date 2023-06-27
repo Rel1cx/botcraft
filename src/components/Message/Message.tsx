@@ -3,7 +3,7 @@ import { DotsThree } from "@phosphor-icons/react"
 import { clsx } from "clsx"
 import * as React from "react"
 
-import type { MessageData } from "@/bots/builtins/types"
+import type { MessageData } from "@/bot/types"
 import { noop } from "@/lib/utils"
 import { vars } from "@/theme/vars.css"
 

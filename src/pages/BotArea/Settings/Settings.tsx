@@ -7,7 +7,7 @@ import * as React from "react"
 import invariant from "tiny-invariant"
 
 import type { Model } from "@/api/types"
-import type { MessageData } from "@/bots/builtins/types"
+import type { MessageData } from "@/bot/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import type { Locales } from "@/i18n/i18n-types"
 import { isLocale } from "@/i18n/i18n-util"
