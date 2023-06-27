@@ -42,3 +42,8 @@ export const messagesDb = new MiniDb<MessageData>({
     version: 0,
     initialData: initialMessages,
 })
+
+export const draftsDb = new MiniDb<string>({
+    name: "drafts",
+    version: 0,
+})

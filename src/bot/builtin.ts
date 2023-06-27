@@ -45,7 +45,6 @@ export const initChat = () => (bot: Bot): ChatData => {
         id: makeChatID(),
         title: nameGenerator(),
         intro: bot.intro,
-        draft: "",
         content: [firstMessage],
         updatedAt: Date.now(),
     }
@@ -60,7 +59,7 @@ export const generateChatTitle =
     async (bot: Bot): Promise<Result<string, Error>> => {
         const prompt = DEFAULT_CHAT_TITLE_COMPLETION_PROMPT[locale]
         const messages: MessageData[] = [
-            ...chat.content,
+            ...chat.content.filter((message) => message.role !== "system"),
             {
                 id: makeMessageID(),
                 role: "user",

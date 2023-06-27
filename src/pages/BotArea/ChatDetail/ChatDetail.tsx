@@ -1,7 +1,7 @@
 import { Chat as ChatIcon } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { sortBy } from "rambda"
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -23,6 +23,7 @@ import {
     useChat,
     useMessage,
 } from "@/stores"
+import { draftsDb } from "@/stores/db"
 import { useChatsMeta } from "@/stores/hooks"
 import { vars } from "@/theme/vars.css"
 import type { ChatItem } from "@/types"
@@ -110,6 +111,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
     const [chat, setChat] = useChat(chatID)
+    const [draft, setDraft] = useAtom(draftsDb.item(chatID))
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
@@ -140,18 +142,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         [botName, removeChat],
     )
 
-    const onMessageChange = React.useCallback(
-        async (content: string) => {
-            await setChat(
-                produce((draft) => {
-                    invariant(draft, "Chat must be defined")
-                    draft.draft = content
-                }),
-            )
-        },
-        [setChat],
-    )
-
     const onMessageCreate = React.useCallback(
         async (content: string) => {
             const message: MessageData = {
@@ -177,12 +167,12 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 return
             }
 
-            const content = chat?.draft.trim()
+            const content = draft?.trim() ?? ""
             if (!content) {
                 return
             }
             evt.preventDefault()
-            await onMessageChange("")
+            await setDraft("")
             await onMessageCreate(content)
         },
         {
@@ -239,7 +229,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <ChatMessageEditor ref={messageEditorRef} content={chat.draft} onChange={onMessageChange} />
+                <ChatMessageEditor ref={messageEditorRef} content={draft ?? ""} onChange={setDraft} />
             </div>
             <ConfirmDialog
                 title="Remove chat"

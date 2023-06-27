@@ -21,7 +21,6 @@ export type MessageData = IDProtocol &
 export type ChatData = (IDProtocol & TitleProtocol & CreatableProtocol & ContentProtocol<MessageData[]>) & {
     id: ChatID
     intro: string
-    draft: string
 }
 
 export type Bot = (NameProtocol & IconProtocol) & {

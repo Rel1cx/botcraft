@@ -228,7 +228,7 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
                 const messages = await Promise.all(chat.messages.map((id) => get(messagesDb.item(id))).filter(Boolean))
                 const titleLocale = get(titleLocaleAtom)
 
-                if (messages.length > 10) {
+                if (messages.length < 2 || messages.length > 10) {
                     return
                 }
 
