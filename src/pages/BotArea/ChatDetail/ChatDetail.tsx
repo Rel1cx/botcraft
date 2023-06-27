@@ -112,6 +112,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
     const [chat, setChat] = useChat(chatID)
     const [draft, setDraft] = useAtom(draftsDb.item(chatID))
+    const deleteDraft = useSetAtom(draftsDb.delete)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
@@ -172,7 +173,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 return
             }
             evt.preventDefault()
-            await setDraft("")
+            await deleteDraft(chatID)
             await onMessageCreate(content)
         },
         {
