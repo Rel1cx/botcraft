@@ -4,7 +4,7 @@ import { from, map, mergeMap, timeout } from "rxjs"
 
 import { getChatCompletion, getChatCompletionStream } from "@/api/client"
 import { getContentFromEventSource, parseEventSource } from "@/api/helper"
-import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=webp&quality=100"
+import chatgpt from "@/assets/chatgpt.png?w=176&h=176&fill=contain&format=png&quality=100"
 import {
     DEFAULT_CHAT_COMPLETION_OPTIONS,
     DEFAULT_CHAT_TITLE_COMPLETION_PROMPT,
