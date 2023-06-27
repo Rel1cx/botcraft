@@ -81,4 +81,8 @@ export const vars = createGlobalTheme(":root", {
             fontWeightBlack: "900",
         },
     },
+    timing: {
+        transitionDuration: "120ms",
+        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+    },
 })

@@ -8,47 +8,30 @@ import * as css from "./styles.css"
 type ChatMessageEditorProps = {
     content?: string
     defaultContent?: string
-    shouldSend?: boolean
     onChange?: (content: string) => void
-    onComplete?: (content: string) => void
 }
 
 const ChatMessageEditor = React.memo(
-    ({
-        content = "",
-        defaultContent = "",
-        onChange = noop,
-        onComplete = noop,
-        shouldSend = false,
-    }: ChatMessageEditorProps) => {
-        const [focused, setFocused] = React.useState(false)
-
-        return (
-            <div className={css.root}>
-                {/* <div
+    React.forwardRef<HTMLInputElement, ChatMessageEditorProps>(
+        ({ content = "", defaultContent = "", onChange = noop }, ref) => {
+            return (
+                <div ref={ref} className={css.root}>
+                    {/* <div
                     className={css.toolbar}
                     style={{
                         opacity: focused ? 1 : 0,
                     }}
                 /> */}
-                {React.useMemo(
-                    () => (
-                        <TextEditor
-                            className={css.content}
-                            value={content}
-                            defaultValue={defaultContent}
-                            onFocus={() => setFocused(true)}
-                            onBlur={() => setFocused(false)}
-                            onChange={onChange}
-                            onComplete={onComplete}
-                            shouldComplete={(value) => value.trim() !== "" && shouldSend}
-                        />
-                    ),
-                    [content, defaultContent, onChange, onComplete, shouldSend],
-                )}
-            </div>
-        )
-    },
+                    <TextEditor
+                        className={css.content}
+                        value={content}
+                        defaultValue={defaultContent}
+                        onChange={onChange}
+                    />
+                </div>
+            )
+        },
+    ),
 )
 
 export default ChatMessageEditor

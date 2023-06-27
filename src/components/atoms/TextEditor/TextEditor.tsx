@@ -8,7 +8,6 @@ import clsx from "clsx"
 import { basicLight } from "cm6-theme-basic-light"
 import * as React from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { useHotkeys } from "react-hotkeys-hook"
 
 import * as css from "./styles.css"
 
@@ -20,14 +19,7 @@ type TextEditorProps = {
     onFocus?: () => void
     onBlur?: () => void
     onChange?: (value: string) => void
-    onComplete?: (value: string) => void
-    shouldComplete?: (value: string) => boolean
-    shouldResetEditor?: (value: string) => boolean
 }
-
-const defaultShouldComplete = (value: string) => value.trim() !== ""
-
-const defaultShouldResetEditor = (value: string) => value.trim() !== ""
 
 const setupOptions: BasicSetupOptions = {
     lineNumbers: false,
@@ -56,49 +48,18 @@ const defaultPlaceholder = "Ctrl+Enter to send, Enter to add new line"
 // const extensions = [markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]
 const extensions = [EditorView.lineWrapping]
 
-const resetEditor = (editor: EditorView) => {
-    editor.dispatch({
-        changes: {
-            from: 0,
-            to: editor.state.doc.length,
-            insert: "",
-        },
-    })
-}
-
 const TextEditor = React.memo(
     ({
         className,
         defaultValue = "",
         onBlur,
         onChange,
-        onComplete,
         onFocus,
         placeholder = defaultPlaceholder,
-        shouldComplete = defaultShouldComplete,
-        shouldResetEditor = defaultShouldResetEditor,
         value = "",
     }: TextEditorProps) => {
         const contentRef = React.useRef(defaultValue)
         const editorRef = React.useRef<O<EditorView>>(O.None())
-
-        useHotkeys(
-            "ctrl+enter",
-            (evt) => {
-                const content = contentRef.current.trim()
-                if (!shouldComplete(content)) {
-                    return
-                }
-                evt.preventDefault()
-                onComplete?.(content)
-                if (shouldResetEditor(content)) {
-                    editorRef.current.map(resetEditor)
-                }
-            },
-            {
-                enableOnContentEditable: true,
-            },
-        )
 
         return (
             <div className={clsx(css.root, className)}>

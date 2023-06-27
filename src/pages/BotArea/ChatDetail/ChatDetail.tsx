@@ -4,12 +4,14 @@ import { produce } from "immer"
 import { useAtomValue, useSetAtom } from "jotai"
 import { sortBy } from "rambda"
 import * as React from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import invariant from "tiny-invariant"
 
 import type { MessageData } from "@/bot/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import Chat from "@/components/Chat/Chat"
+import { isContainTarget } from "@/lib/browser"
 import { Router } from "@/router"
 import {
     addChatAtom,
@@ -106,6 +108,7 @@ const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: M
 
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
+    const messageEditorRef = React.useRef<HTMLInputElement>(null)
     const [chat, setChat] = useChat(chatID)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
@@ -138,8 +141,8 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     )
 
     const onMessageChange = React.useCallback(
-        (content: string) => {
-            void setChat(
+        async (content: string) => {
+            await setChat(
                 produce((draft) => {
                     invariant(draft, "Chat must be defined")
                     draft.draft = content
@@ -157,11 +160,34 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 role: "user",
                 updatedAt: Date.now(),
             }
+
             await addMessage(chatID, message)
 
             await requestChatCompletion(botName, chatID)
         },
         [addMessage, botName, chatID, requestChatCompletion],
+    )
+
+    useHotkeys(
+        "ctrl+enter",
+        async (evt) => {
+            const { target } = evt
+            const container = messageEditorRef.current
+            if (!container || !target || !isContainTarget(target, container)) {
+                return
+            }
+
+            const content = chat?.draft.trim()
+            if (!content) {
+                return
+            }
+            evt.preventDefault()
+            await onMessageChange("")
+            await onMessageCreate(content)
+        },
+        {
+            enableOnContentEditable: true,
+        },
     )
 
     if (!chat) {
@@ -213,12 +239,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <ChatMessageEditor
-                    content={chat.draft}
-                    onChange={onMessageChange}
-                    onComplete={onMessageCreate}
-                    shouldSend={!isGenerating}
-                />
+                <ChatMessageEditor ref={messageEditorRef} content={chat.draft} onChange={onMessageChange} />
             </div>
             <ConfirmDialog
                 title="Remove chat"

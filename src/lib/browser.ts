@@ -29,6 +29,14 @@ export const autoBlur = (element: HTMLElement | Document) => {
     })
 }
 
+export const isContainTarget = <T extends EventTarget | null>(target: T, container: HTMLElement) => {
+    if (!target || !(target instanceof HTMLElement)) {
+        return false
+    }
+
+    return container.contains(target)
+}
+
 export const wait = (ms: number) => {
     // eslint-disable-next-line no-promise-executor-return
     return new Promise((resolve) => setTimeout(resolve, ms))
