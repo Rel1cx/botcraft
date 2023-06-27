@@ -100,19 +100,19 @@ const Settings = ({ botName }: SettingsProps) => {
                     <h3 className={css.title}>General Settings</h3>
                     <section className={css.section}>
                         <TextInput
-                            name="endpoint"
-                            label="Endpoint"
-                            value={endpoint}
-                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                setEndpoint(evt.target.value)
-                            }}
-                        />
-                        <TextInput
                             name="apiKey"
                             label="API Key"
                             value={apiKey}
                             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                                 setApiKey(evt.target.value)
+                            }}
+                        />
+                        <TextInput
+                            name="endpoint"
+                            label="Endpoint"
+                            value={endpoint}
+                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                                setEndpoint(evt.target.value)
                             }}
                         />
                         <Select
