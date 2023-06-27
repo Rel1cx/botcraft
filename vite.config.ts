@@ -44,7 +44,7 @@ export default defineConfig({
         target: ["es2021", "firefox90", "chrome113", "safari14"],
         chunkSizeWarningLimit: 600,
         rollupOptions: {
-            treeshake: "safest",
+            treeshake: "recommended",
             output: {
                 manualChunks: {
                     react: ["react", "react-dom"],
