@@ -4,7 +4,7 @@ import { atom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { omit } from "rambda"
 import toast from "react-hot-toast"
-import { animationFrameScheduler, concatMap, observeOn, timeout } from "rxjs"
+import { animationFrameScheduler, concatMap, observeOn } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
 
@@ -202,7 +202,6 @@ export const requestChatCompletionAtom = atom(null, async (get, set, botName: st
 
     stream
         .pipe(
-            timeout(10000),
             observeOn(animationFrameScheduler),
             concatMap(async (msg) => {
                 await set(messagesDb.set, taskMeta.generatingMessageID, (prev) => {

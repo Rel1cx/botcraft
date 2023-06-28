@@ -151,6 +151,7 @@ export const generateChatCompletionStream =
                 map(parseEventSource),
                 mergeMap((events) => from(events)),
                 map(getContentFromEventSource),
+                mergeMap((content) => from(content)),
             ),
         )
     }

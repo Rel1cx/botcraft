@@ -6,6 +6,8 @@ export const root = style({
 })
 
 globalStyle(`${root} pre`, {
+    marginTop: "0.5rem",
+    marginBottom: "0.5rem",
     backgroundColor: "#2e3440",
     whiteSpace: "pre-wrap",
     wordWrap: "break-word",
