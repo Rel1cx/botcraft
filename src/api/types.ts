@@ -14,6 +14,11 @@ export type Model =
     | "gpt-4-32k"
     | "gpt-4-32k-0613"
 
+export type Message = {
+    role: Role
+    content: string
+}
+
 export type ChatCompletionOptions = {
     model: Model
     max_tokens: number

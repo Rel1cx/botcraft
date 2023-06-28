@@ -1,4 +1,5 @@
 import { Result } from "@swan-io/boxed"
+import { compose } from "rambda"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
 
@@ -19,6 +20,7 @@ import { ChatCompletionData } from "@/zod"
 import { makeChatID, makeMessageID } from "@/zod/id"
 
 import type { Bot, ChatData, MessageData } from "./types"
+import { excludeMessages, extractMessages, filterMessages } from "./utils"
 
 const nameGenerator = makeNameGenerator()
 
@@ -58,15 +60,18 @@ export const generateChatTitle =
     (apiKey: string, endpoint: string, chat: ChatData, locale: Locales = "en") =>
     async (bot: Bot): Promise<Result<string, Error>> => {
         const prompt = DEFAULT_CHAT_TITLE_COMPLETION_PROMPT[locale]
-        const messages: MessageData[] = [
-            ...chat.content.filter((message) => message.role !== "system"),
-            {
-                id: makeMessageID(),
-                role: "user",
-                content: prompt,
-                updatedAt: Date.now(),
-            },
-        ]
+        const promptMessage: MessageData = {
+            id: makeMessageID(),
+            role: "user",
+            content: prompt,
+            updatedAt: Date.now(),
+        }
+
+        const messages = compose(
+            excludeMessages("system"),
+            filterMessages,
+            extractMessages,
+        )([...chat.content, promptMessage])
 
         const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
 
@@ -97,7 +102,7 @@ export const generateChatTitle =
 
 export const generateChatCompletion =
     (apiKey: string, endpoint: string, chat: ChatData) => async (bot: Bot): Promise<Result<string, Error>> => {
-        const messages = chat.content
+        const messages = compose(filterMessages, extractMessages)(chat.content)
         const result = await getChatCompletion(apiKey, endpoint, messages, bot.options)
 
         if (result.isError()) {
@@ -122,7 +127,7 @@ export const generateChatCompletion =
 export const generateChatCompletionStream =
     (apiKey: string, endpoint: string, chat: ChatData, signal?: AbortSignal) =>
     async (bot: Bot): Promise<Result<Observable<string>, Error>> => {
-        const messages = chat.content
+        const messages = compose(filterMessages, extractMessages)(chat.content)
         const stream = await getChatCompletionStream(apiKey, endpoint, messages, bot.options, {}, signal)
 
         if (stream.isError()) {

@@ -32,9 +32,9 @@ import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
 
-const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"))
-
 const Message = React.lazy(() => import("@/components/Message/Message"))
+
+const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"))
 
 const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"))
 
