@@ -6,7 +6,15 @@ export const root = style({
     marginBottom: "1rem",
 })
 
-export const content = style({})
+export const content = style({
+    fontSize: "16px",
+
+    "@media": {
+        "screen and (max-width: 768px)": {
+            fontSize: "14px",
+        },
+    },
+})
 
 globalStyle(`${content} .cm-editor`, {
     padding: "0.5rem",

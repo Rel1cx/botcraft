@@ -1,13 +1,16 @@
 // import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 // import { languages } from "@codemirror/language-data"
 import { EditorView } from "@codemirror/view"
-import { Option as O } from "@swan-io/boxed"
-import type { BasicSetupOptions } from "@uiw/react-codemirror"
+import { useDebouncedCallback, useDebouncedEffect } from "@react-hookz/web"
+import type { BasicSetupOptions, ReactCodeMirrorRef } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
 import clsx from "clsx"
 import { basicLight } from "cm6-theme-basic-light"
 import * as React from "react"
 import { ErrorBoundary } from "react-error-boundary"
+import invariant from "tiny-invariant"
+
+import { noop } from "@/lib/utils"
 
 import * as css from "./styles.css"
 
@@ -53,19 +56,39 @@ const TextEditor = React.memo(
         className,
         defaultValue = "",
         onBlur,
-        onChange,
+        onChange = noop,
         onFocus,
         placeholder = defaultPlaceholder,
         value = "",
     }: TextEditorProps) => {
-        const contentRef = React.useRef(defaultValue)
-        const editorRef = React.useRef<O<EditorView>>(O.None())
+        const ref = React.useRef<ReactCodeMirrorRef>(null)
+
+        const debouncedOnChange = useDebouncedCallback(onChange, [onChange], 500)
+
+        useDebouncedEffect(
+            () => {
+                const view = ref.current?.view
+                const state = ref.current?.state
+                const focused = view?.hasFocus
+
+                invariant(view && state, "view and state must be defined")
+
+                if (focused) {
+                    return
+                }
+
+                state.update({ changes: { from: 0, to: state.doc.length, insert: value } })
+            },
+            [value],
+            120,
+        )
 
         return (
             <div className={clsx(css.root, className)}>
                 <ErrorBoundary fallback={<div>Something went wrong</div>}>
                     <CodeMirror
                         id="markdown-editor"
+                        ref={ref}
                         className={css.content}
                         aria-label="markdown-editor"
                         width="100%"
@@ -73,18 +96,23 @@ const TextEditor = React.memo(
                         value={value}
                         defaultValue={defaultValue}
                         placeholder={placeholder}
-                        onCreateEditor={(editor) => {
-                            editorRef.current = O.Some(editor)
-                        }}
-                        onFocus={onFocus}
-                        onBlur={onBlur}
-                        onChange={(value) => {
-                            contentRef.current = value
-                            onChange?.(value)
-                        }}
                         theme={basicLight}
                         basicSetup={setupOptions}
                         extensions={extensions}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onChange={(value, viewUpdate) => {
+                            if (!viewUpdate.docChanged) {
+                                return
+                            }
+
+                            if (viewUpdate.view.composing) {
+                                debouncedOnChange(value)
+                                return
+                            }
+
+                            onChange(value)
+                        }}
                     />
                 </ErrorBoundary>
             </div>

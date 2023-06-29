@@ -7,31 +7,23 @@ import * as css from "./styles.css"
 
 type ChatMessageEditorProps = {
     content?: string
-    defaultContent?: string
     onChange?: (content: string) => void
 }
 
 const ChatMessageEditor = React.memo(
-    React.forwardRef<HTMLInputElement, ChatMessageEditorProps>(
-        ({ content = "", defaultContent = "", onChange = noop }, ref) => {
-            return (
-                <div ref={ref} className={css.root}>
-                    {/* <div
+    React.forwardRef<HTMLInputElement, ChatMessageEditorProps>(({ content = "", onChange = noop }, ref) => {
+        return (
+            <div ref={ref} className={css.root}>
+                {/* <div
                     className={css.toolbar}
                     style={{
                         opacity: focused ? 1 : 0,
                     }}
                 /> */}
-                    <TextEditor
-                        className={css.content}
-                        value={content}
-                        defaultValue={defaultContent}
-                        onChange={onChange}
-                    />
-                </div>
-            )
-        },
-    ),
+                <TextEditor className={css.content} value={content} defaultValue={content} onChange={onChange} />
+            </div>
+        )
+    }),
 )
 
 export default ChatMessageEditor
