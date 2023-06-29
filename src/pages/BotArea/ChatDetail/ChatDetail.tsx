@@ -45,19 +45,6 @@ type ChatDetailProps = {
     chatID: ChatID
 }
 
-export type ChatProps = {
-    data: ChatItem
-    onHeightChange?: (height: number) => void
-}
-
-type AsideProps = {
-    botName: string
-    selectedChatID: ChatID
-    generatingChatID: O<ChatID>
-    onAddChatClick: () => void
-    onRemoveChatClick: (id: string) => void
-}
-
 type ChatIconPresenterProps = {
     id: ChatID
     selected: boolean
@@ -81,6 +68,68 @@ const ChatIconPresenter = React.memo(({ id, isGenerating, selected }: ChatIconPr
         />
     )
 })
+
+const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
+    const [data] = useMessage(id)
+    const removeMessage = useSetAtom(removeMessageAtom)
+
+    if (!data) {
+        return null
+    }
+
+    if (data.role === "system") {
+        return null
+    }
+
+    return (
+        <React.Suspense>
+            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
+        </React.Suspense>
+    )
+})
+
+type ChatMessageEditorPresenterProps = {
+    chatID: ChatID
+    onCompleted?: (content: string) => void
+}
+
+const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMessageEditorPresenterProps) => {
+    const messageEditorRef = React.useRef<HTMLInputElement>(null)
+    const [draft, setDraft] = useAtom(draftsDb.item(chatID))
+    const deleteDraft = useSetAtom(draftsDb.delete)
+
+    useHotkeys(
+        "ctrl+enter",
+        async (evt) => {
+            const { target } = evt
+            const container = messageEditorRef.current
+            if (!container || !target || !isContainTarget(target, container)) {
+                return
+            }
+
+            const content = draft?.trim() ?? ""
+            if (!content) {
+                return
+            }
+            evt.preventDefault()
+            await deleteDraft(chatID)
+            onCompleted?.(content)
+        },
+        {
+            enableOnContentEditable: true,
+        },
+    )
+
+    return <ChatMessageEditor ref={messageEditorRef} content={draft ?? ""} onChange={setDraft} />
+})
+
+type AsideProps = {
+    botName: string
+    selectedChatID: ChatID
+    generatingChatID: O<ChatID>
+    onAddChatClick: () => void
+    onRemoveChatClick: (id: string) => void
+}
 
 const Aside = ({ botName, generatingChatID, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
     const chatsMeta = useChats(botName)
@@ -109,31 +158,9 @@ const Aside = ({ botName, generatingChatID, onAddChatClick, onRemoveChatClick, s
     )
 }
 
-const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
-    const [data] = useMessage(id)
-    const removeMessage = useSetAtom(removeMessageAtom)
-
-    if (!data) {
-        return null
-    }
-
-    if (data.role === "system") {
-        return null
-    }
-
-    return (
-        <React.Suspense>
-            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
-        </React.Suspense>
-    )
-})
-
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
-    const messageEditorRef = React.useRef<HTMLInputElement>(null)
     const [chat, setChat] = useChat(chatID)
-    const [draft, setDraft] = useAtom(draftsDb.item(chatID))
-    const deleteDraft = useSetAtom(draftsDb.delete)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
@@ -172,28 +199,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             await requestChatCompletion(botName, chatID)
         },
         [addMessage, botName, chatID, requestChatCompletion],
-    )
-
-    useHotkeys(
-        "ctrl+enter",
-        async (evt) => {
-            const { target } = evt
-            const container = messageEditorRef.current
-            if (!container || !target || !isContainTarget(target, container)) {
-                return
-            }
-
-            const content = draft?.trim() ?? ""
-            if (!content) {
-                return
-            }
-            evt.preventDefault()
-            await deleteDraft(chatID)
-            await onMessageCreate(content)
-        },
-        {
-            enableOnContentEditable: true,
-        },
     )
 
     if (!chat) {
@@ -246,7 +251,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             </div>
             <div className={css.bottom}>
-                <ChatMessageEditor ref={messageEditorRef} content={draft ?? ""} onChange={setDraft} />
+                <ChatMessageEditorPresenter chatID={chatID} onCompleted={onMessageCreate} />
             </div>
             <ConfirmDialog
                 title="Remove chat"
