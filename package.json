@@ -20,7 +20,7 @@
         "defaults and supports es6-module"
     ],
     "dependencies": {
-        "@ariakit/react": "0.2.11",
+        "@ariakit/react": "0.2.12",
         "@codemirror/lang-markdown": "6.2.0",
         "@codemirror/language-data": "6.3.1",
         "@codemirror/state": "6.2.1",
