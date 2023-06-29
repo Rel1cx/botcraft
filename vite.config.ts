@@ -1,4 +1,5 @@
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin"
+import basicSSL from "@vitejs/plugin-basic-ssl"
 import react from "@vitejs/plugin-react"
 import { resolve } from "path"
 import { defineConfig } from "vite"
@@ -19,13 +20,13 @@ export default defineConfig({
         preload({
             includeCss: true,
         }),
-        isDev &&
-            checker({
-                eslint: {
-                    lintCommand: "eslint --color src",
-                },
-                typescript: true,
-            }),
+        basicSSL(),
+        checker({
+            eslint: {
+                lintCommand: "eslint --color src",
+            },
+            typescript: true,
+        }),
     ].filter(Boolean),
     resolve: {
         alias: {

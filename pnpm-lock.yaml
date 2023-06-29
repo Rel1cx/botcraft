@@ -220,6 +220,9 @@ devDependencies:
   '@vanilla-extract/vite-plugin':
     specifier: 3.8.2
     version: 3.8.2(@types/node@20.3.2)(vite@4.3.9)
+  '@vitejs/plugin-basic-ssl':
+    specifier: 1.0.1
+    version: 1.0.1(vite@4.3.9)
   '@vitejs/plugin-react':
     specifier: 4.0.1
     version: 4.0.1(vite@4.3.9)
@@ -2645,6 +2648,15 @@ packages:
       - supports-color
       - terser
       - ts-node
+    dev: true
+
+  /@vitejs/plugin-basic-ssl@1.0.1(vite@4.3.9):
+    resolution: {integrity: sha512-pcub+YbFtFhaGRTo1832FQHQSHvMrlb43974e2eS8EKleR3p1cDdkJFPci1UhwkEf1J9Bz+wKBSzqpKp7nNj2A==}
+    engines: {node: '>=14.6.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      vite: 4.3.9(@types/node@20.3.2)
     dev: true
 
   /@vitejs/plugin-react@4.0.1(vite@4.3.9):

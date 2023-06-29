@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react"
 import { Toaster } from "react-hot-toast"
 
-import TailwindIndicator from "@/components/TailwindIndicator/TailwindIndicator"
+import TailwindIndicator from "@/components/atoms/TailwindIndicator/TailwindIndicator"
 
 import * as css from "./styles.css"
 
