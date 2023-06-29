@@ -1,5 +1,5 @@
 import { atom, useAtom, useAtomValue } from "jotai"
-import { pick, sortBy } from "rambda"
+import { sortBy } from "rambda"
 import * as React from "react"
 import invariant from "tiny-invariant"
 
@@ -19,7 +19,7 @@ export const useMessage = (id: MessageID) => {
     return useAtom(messagesDb.item(id))
 }
 
-export const useChatsMeta = (botName: string) => {
+export const useChats = (botName: string) => {
     const [bot] = useBot(botName)
     invariant(bot, `Bot ${botName} not found`)
     const chatsAtom = React.useMemo(
@@ -28,7 +28,7 @@ export const useChatsMeta = (botName: string) => {
                 return bot.chats.map((id) => {
                     const item = get(chatsDb.item(id))
                     invariant(item, `Chat ${id} not found`)
-                    return pick(["id", "title", "updatedAt"], item)
+                    return item
                 })
             }),
         [bot.chats],
@@ -37,13 +37,13 @@ export const useChatsMeta = (botName: string) => {
     return useAtomValue(chatsAtom)
 }
 
-export const useSortedChatsMeta = (botName: string) => {
-    const chatsMeta = useChatsMeta(botName)
+export const useSortedChats = (botName: string) => {
+    const chatsMeta = useChats(botName)
     return React.useMemo(() => sortBy((chat) => -chat.updatedAt, chatsMeta), [chatsMeta])
 }
 
 export const useFirstChatMeta = (botName: string) => {
-    return useSortedChatsMeta(botName)[0]
+    return useSortedChats(botName)[0]
 }
 
 // export const useChatTokens = (botName: string, chatID: ChatID) => {

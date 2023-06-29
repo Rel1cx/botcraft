@@ -1,4 +1,4 @@
-import { Chat as ChatIcon } from "@phosphor-icons/react"
+import { Chat as ChatIcon, ChatDots } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
@@ -21,10 +21,10 @@ import {
     removeMessageAtom,
     requestChatCompletionAtom,
     useChat,
+    useChats,
     useMessage,
 } from "@/stores"
 import { draftsDb } from "@/stores/db"
-import { useChatsMeta } from "@/stores/hooks"
 import { vars } from "@/theme/vars.css"
 import type { ChatItem } from "@/types"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
@@ -47,20 +47,43 @@ type ChatDetailProps = {
 
 export type ChatProps = {
     data: ChatItem
-    isGenerating?: boolean
     onHeightChange?: (height: number) => void
 }
 
 type AsideProps = {
     botName: string
-    selectedChatID: string
-    isGenerating: boolean
+    selectedChatID: ChatID
+    generatingChatID: O<ChatID>
     onAddChatClick: () => void
     onRemoveChatClick: (id: string) => void
 }
 
-const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
-    const chatsMeta = useChatsMeta(botName)
+type ChatIconPresenterProps = {
+    id: ChatID
+    selected: boolean
+    isGenerating: boolean
+}
+
+const ChatIconPresenter = React.memo(({ id, isGenerating, selected }: ChatIconPresenterProps) => {
+    const [chat] = useChat(id)
+
+    const messageLength = React.useMemo(() => chat?.messages.length ?? 0, [chat])
+
+    const color = selected ? "#fff" : vars.colors.text
+
+    return (
+        <Icon
+            style={{
+                flexShrink: 0,
+            }}
+            as={messageLength > 1 ? ChatDots : ChatIcon}
+            color={color}
+        />
+    )
+})
+
+const Aside = ({ botName, generatingChatID, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
+    const chatsMeta = useChats(botName)
 
     const sortedChats = React.useMemo(() => sortBy((chat) => -chat.updatedAt, chatsMeta), [chatsMeta])
 
@@ -68,17 +91,15 @@ const Aside = ({ botName, isGenerating, onAddChatClick, onRemoveChatClick, selec
         <ChatList
             items={sortedChats}
             renderItemIcon={(id) => (
-                <Icon
-                    style={{
-                        flexShrink: 0,
-                    }}
-                    as={ChatIcon}
-                    color={selectedChatID === id ? "#fff" : vars.colors.text}
+                <ChatIconPresenter
+                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                    id={id as ChatID}
+                    selected={id === selectedChatID}
+                    isGenerating={generatingChatID.toNull() === id}
                 />
             )}
             newItemName="New chat"
             selected={selectedChatID}
-            disableMutation={isGenerating}
             onItemClick={(id) => {
                 Router.push("BotChat", { botName, chatID: id })
             }}
@@ -121,15 +142,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const isGenerating = React.useMemo(() => {
-        if (chatCompletionTask.isNone()) {
-            return false
-        }
+    const generatingChatID = chatCompletionTask.map((task) => task.chatID)
 
-        const task = chatCompletionTask.get()
-
-        return task.type === "pending" && task.chatID === chatID
-    }, [chatCompletionTask, chatID])
+    const isGenerating = generatingChatID.toNull() === chatID
 
     const onAddChatClick = React.useCallback(() => {
         void addChat(botName)
@@ -192,7 +207,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <Aside
                     botName={botName}
                     selectedChatID={chatID}
-                    isGenerating={isGenerating}
+                    generatingChatID={generatingChatID}
                     onAddChatClick={onAddChatClick}
                     onRemoveChatClick={(id) => {
                         if (isChatID(id)) {
@@ -218,6 +233,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             }
         >
             <div ref={contentRef} className={css.content}>
+                {isGenerating}
                 <Chat
                     data={chat}
                     isGenerating={isGenerating}
