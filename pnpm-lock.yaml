@@ -21,8 +21,8 @@ overrides:
 
 dependencies:
   '@ariakit/react':
-    specifier: 0.2.11
-    version: 0.2.11(react-dom@18.2.0)(react@18.2.0)
+    specifier: 0.2.12
+    version: 0.2.12(react-dom@18.2.0)(react@18.2.0)
   '@codemirror/lang-markdown':
     specifier: 6.1.1
     version: 6.1.1
@@ -330,8 +330,8 @@ packages:
     resolution: {integrity: sha512-Hs0N1EMYq88WW4v9xnSIHNR38TvbQuoUX6FYFmeLCZSTIXQBiET7lr1DQXwOOmdEtRtlxQ5HsxbTkxeOkPv+eg==}
     dev: false
 
-  /@ariakit/react-core@0.2.11(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-u9Pw49M31yvxXQnHMxsAG4YIfu5FSkuPntZlUnKquqc2sMEsvRnod88m/4wiBftlrGoh45y3gyB7HMcABd7Vrg==}
+  /@ariakit/react-core@0.2.12(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3KSKlX10nnhCvjsbPW0CAnqG+6grryfwnMkeJJ/h34FSV7hEfUMexmIjKBVZyfBG08Xj8NjSK8kkx9c3ChkXeA==}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
@@ -343,13 +343,13 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@ariakit/react@0.2.11(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-vT+hdFP1aUHfImoHLFYAWNqIqJqNTnm+qATJ8rt6Gq5mtOZwK2nsKugSyFUR30SnRRq8Lb5TOiqRVh7Oz3k0SQ==}
+  /@ariakit/react@0.2.12(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4rAgMyUURHW78EKgRCanhyRUtsiYCOxO65BBHF4mg3tZsDeOvu9kBG5IAXX8mUgakTcyr0EKXuOtGThaj7gobA==}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0
       react-dom: ^17.0.0 || ^18.0.0
     dependencies:
-      '@ariakit/react-core': 0.2.11(react-dom@18.2.0)(react@18.2.0)
+      '@ariakit/react-core': 0.2.12(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false

@@ -1,7 +1,6 @@
 // import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 // import { languages } from "@codemirror/language-data"
 import { EditorView } from "@codemirror/view"
-import { useDebouncedCallback, useDebouncedEffect } from "@react-hookz/web"
 import type { BasicSetupOptions, ReactCodeMirrorRef } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
 import clsx from "clsx"
@@ -63,26 +62,6 @@ const TextEditor = React.memo(
     }: TextEditorProps) => {
         const ref = React.useRef<ReactCodeMirrorRef>(null)
 
-        const debouncedOnChange = useDebouncedCallback(onChange, [onChange], 500)
-
-        useDebouncedEffect(
-            () => {
-                const view = ref.current?.view
-                const state = ref.current?.state
-                const focused = view?.hasFocus
-
-                invariant(view && state, "view and state must be defined")
-
-                if (focused) {
-                    return
-                }
-
-                state.update({ changes: { from: 0, to: state.doc.length, insert: value } })
-            },
-            [value],
-            120,
-        )
-
         return (
             <div className={clsx(css.root, className)}>
                 <ErrorBoundary fallback={<div>Something went wrong</div>}>
@@ -93,21 +72,25 @@ const TextEditor = React.memo(
                         aria-label="markdown-editor"
                         width="100%"
                         maxHeight="320px"
-                        value={value}
-                        defaultValue={defaultValue}
                         placeholder={placeholder}
                         theme={basicLight}
                         basicSetup={setupOptions}
                         extensions={extensions}
                         onFocus={onFocus}
                         onBlur={onBlur}
+                        value={value}
+                        defaultValue={defaultValue}
+                        onCompositionEnd={() => {
+                            const view = ref.current?.view
+                            invariant(view, "view is not defined")
+                            onChange(view.state.doc.toString())
+                        }}
                         onChange={(value, viewUpdate) => {
                             if (!viewUpdate.docChanged) {
                                 return
                             }
 
                             if (viewUpdate.view.composing) {
-                                debouncedOnChange(value)
                                 return
                             }
 
