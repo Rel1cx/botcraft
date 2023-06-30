@@ -26,7 +26,6 @@ import {
 } from "@/stores"
 import { draftsDb } from "@/stores/db"
 import { vars } from "@/theme/vars.css"
-import type { ChatItem } from "@/types"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"
@@ -54,7 +53,7 @@ type ChatIconPresenterProps = {
 const ChatIconPresenter = React.memo(({ id, isGenerating, selected }: ChatIconPresenterProps) => {
     const [chat] = useChat(id)
 
-    const messageLength = React.useMemo(() => chat?.messages.length ?? 0, [chat])
+    const messageLength = chat?.messages.length ?? 0
 
     const color = selected ? "#fff" : vars.colors.text
 

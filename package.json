@@ -46,7 +46,7 @@
         "codemirror": "6.0.1",
         "date-fns": "2.30.0",
         "deep-weak-map": "1.1.0",
-        "framer-motion": "10.12.17",
+        "framer-motion": "10.12.18",
         "highlight.js": "11.8.0",
         "idb-keyval": "6.2.1",
         "immer": "10.0.2",
