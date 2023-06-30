@@ -70,10 +70,9 @@ const ChatIconPresenter = React.memo(({ id, selected }: ChatIconPresenterProps) 
 type ChatMessagePresenterProps = {
     chatID: ChatID
     id: MessageID
-    isGenerating: boolean
 }
 
-const ChatMessagePresenter = React.memo(({ chatID, id, isGenerating }: ChatMessagePresenterProps) => {
+const ChatMessagePresenter = React.memo(({ chatID, id }: ChatMessagePresenterProps) => {
     const [data] = useMessage(id)
     const removeMessage = useSetAtom(removeMessageAtom)
 
@@ -87,7 +86,7 @@ const ChatMessagePresenter = React.memo(({ chatID, id, isGenerating }: ChatMessa
 
     return (
         <React.Suspense>
-            <Message data={data} isGenerating={isGenerating} onRemoveClick={() => removeMessage(chatID, id)} />
+            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
         </React.Suspense>
     )
 })
@@ -241,13 +240,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             <div ref={contentRef} className={css.content}>
                 <Chat
                     data={chat}
-                    renderMessage={(id: MessageID) => (
-                        <ChatMessagePresenter
-                            id={id}
-                            chatID={chatID}
-                            isGenerating={generatingChatID.toNull() === chatID}
-                        />
-                    )}
+                    renderMessage={(id: MessageID) => <ChatMessagePresenter id={id} chatID={chatID} />}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({
                             top: contentRef.current.scrollHeight,
