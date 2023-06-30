@@ -6,7 +6,7 @@ import { match } from "ts-pattern"
 import Redirect from "@/components/atoms/Redirect/Redirect"
 import { BotList } from "@/components/BotList/BotList"
 import { Router } from "@/router"
-import { botsMetaAtom, useFirstChatMeta } from "@/stores"
+import { botListAtom, useFirstChatMeta } from "@/stores"
 import { botsDb } from "@/stores/db"
 import { isChatID } from "@/zod/id"
 
@@ -44,7 +44,7 @@ const ChatGuard = React.memo(
 
 const BotArea = ({ botName }: BotAreaProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
-    const botsMeta = useAtomValue(botsMetaAtom)
+    const botList = useAtomValue(botListAtom)
 
     const contentView = React.useMemo(
         () =>
@@ -68,7 +68,7 @@ const BotArea = ({ botName }: BotAreaProps) => {
     )
 
     return (
-        <RootLayout nav={<BotList items={botsMeta} selected={botName} />}>
+        <RootLayout nav={<BotList items={botList} selected={botName} />}>
             <React.Suspense>{contentView}</React.Suspense>
         </RootLayout>
     )

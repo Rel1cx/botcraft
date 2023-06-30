@@ -25,7 +25,7 @@ export const endpointAtom = atomWithStorage("ENDPOINT", localStorageGetItem("END
 
 export const titleLocaleAtom = atomWithStorage<Locales>("TITLE_LOCALE", localStorageGetItem("TITLE_LOCALE", "en"))
 
-export const botsMetaAtom = atom((get) => {
+export const botListAtom = atom((get) => {
     const bots = get(botsDb.values)
     return bots.map((bot) => ({
         id: bot.name,

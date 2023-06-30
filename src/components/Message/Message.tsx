@@ -16,22 +16,33 @@ export type MessageProps = {
     className?: string
     data: MessageData
     showMenu?: boolean
+    isGenerating?: boolean
     onRegenerateClick?: () => void
     onRemoveClick?: () => void
 }
 
 const Message = React.memo(
-    ({ className, data, onRegenerateClick = noop, onRemoveClick = noop, showMenu = true, ...rest }: MessageProps) => {
+    ({
+        className,
+        data,
+        isGenerating = false,
+        onRegenerateClick = noop,
+        onRemoveClick = noop,
+        showMenu = true,
+        ...rest
+    }: MessageProps) => {
         const { content, role } = data
 
         // Significantly reduce rendering blocking time.
         const deferredContent = React.useDeferredValue(content)
 
+        const finalContent = isGenerating ? "···" : deferredContent
+
         const displayMenu = showMenu && role !== "system"
 
         return (
             <div className={clsx(css.root[role], className)} {...rest}>
-                <Markdown className={css.content[role]} content={deferredContent} />
+                <Markdown className={css.content[role]} content={finalContent} />
                 {displayMenu && (
                     <MessageMenu position="bottom-start" onRemoveClick={onRemoveClick}>
                         <Button as="button" className={css.actionButton} clickOnEnter clickOnSpace>

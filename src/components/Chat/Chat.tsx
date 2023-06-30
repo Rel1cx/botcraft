@@ -21,12 +21,11 @@ export type MessageComponentProps = {
 
 export type ChatProps = {
     data: ChatItem
-    isGenerating?: boolean
     onHeightChange?: (height: number) => void
-    MessageComponent: React.ComponentType<MessageComponentProps>
+    renderMessage?: (id: MessageID) => React.ReactNode
 }
 
-const Chat = ({ data, isGenerating, MessageComponent, onHeightChange }: ChatProps) => {
+const Chat = ({ data, onHeightChange, renderMessage }: ChatProps) => {
     const { id: chatID, intro, messages } = data
 
     const contentRef = React.useRef<HTMLDivElement>(null)
@@ -41,13 +40,9 @@ const Chat = ({ data, isGenerating, MessageComponent, onHeightChange }: ChatProp
         [intro],
     )
 
-    useResizeObserver(
-        contentRef,
-        (entry) => {
-            onHeightChange?.(entry.contentRect.height)
-        },
-        isGenerating,
-    )
+    useResizeObserver(contentRef, (entry) => {
+        onHeightChange?.(entry.contentRect.height)
+    })
 
     return (
         <div className={css.root}>
@@ -59,7 +54,7 @@ const Chat = ({ data, isGenerating, MessageComponent, onHeightChange }: ChatProp
                     <AnimatePresence>
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                <MessageComponent chatID={chatID} id={id} />
+                                {renderMessage?.(id)}
                             </m.div>
                         ))}
                     </AnimatePresence>

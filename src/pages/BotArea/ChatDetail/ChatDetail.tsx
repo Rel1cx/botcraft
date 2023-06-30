@@ -47,10 +47,9 @@ type ChatDetailProps = {
 type ChatIconPresenterProps = {
     id: ChatID
     selected: boolean
-    isGenerating: boolean
 }
 
-const ChatIconPresenter = React.memo(({ id, isGenerating, selected }: ChatIconPresenterProps) => {
+const ChatIconPresenter = React.memo(({ id, selected }: ChatIconPresenterProps) => {
     const [chat] = useChat(id)
 
     const messageLength = chat?.messages.length ?? 0
@@ -68,7 +67,13 @@ const ChatIconPresenter = React.memo(({ id, isGenerating, selected }: ChatIconPr
     )
 })
 
-const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: MessageID }) => {
+type ChatMessagePresenterProps = {
+    chatID: ChatID
+    id: MessageID
+    isGenerating: boolean
+}
+
+const ChatMessagePresenter = React.memo(({ chatID, id, isGenerating }: ChatMessagePresenterProps) => {
     const [data] = useMessage(id)
     const removeMessage = useSetAtom(removeMessageAtom)
 
@@ -82,7 +87,7 @@ const ChatMessagePresenter = React.memo(({ chatID, id }: { chatID: ChatID; id: M
 
     return (
         <React.Suspense>
-            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
+            <Message data={data} isGenerating={isGenerating} onRemoveClick={() => removeMessage(chatID, id)} />
         </React.Suspense>
     )
 })
@@ -130,7 +135,7 @@ type AsideProps = {
     onRemoveChatClick: (id: string) => void
 }
 
-const Aside = ({ botName, generatingChatID, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
+const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
     const chatsMeta = useChats(botName)
 
     const sortedChats = React.useMemo(() => sortBy((chat) => -chat.updatedAt, chatsMeta), [chatsMeta])
@@ -143,7 +148,6 @@ const Aside = ({ botName, generatingChatID, onAddChatClick, onRemoveChatClick, s
                     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                     id={id as ChatID}
                     selected={id === selectedChatID}
-                    isGenerating={generatingChatID.toNull() === id}
                 />
             )}
             newItemName="New chat"
@@ -200,9 +204,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         [addMessage, botName, chatID, requestChatCompletion],
     )
 
-    if (!chat) {
-        return null
-    }
+    invariant(chat, "Chat must be defined")
 
     return (
         <Layout
@@ -237,11 +239,15 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             }
         >
             <div ref={contentRef} className={css.content}>
-                {isGenerating}
                 <Chat
                     data={chat}
-                    isGenerating={isGenerating}
-                    MessageComponent={ChatMessagePresenter}
+                    renderMessage={(id: MessageID) => (
+                        <ChatMessagePresenter
+                            id={id}
+                            chatID={chatID}
+                            isGenerating={generatingChatID.toNull() === chatID}
+                        />
+                    )}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({
                             top: contentRef.current.scrollHeight,
