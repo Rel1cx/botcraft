@@ -7,7 +7,7 @@ export const DEFAULT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions"
 
 export const DEFAULT_CHAT_COMPLETION_OPTIONS: ChatCompletionOptions = {
     model: "gpt-3.5-turbo-16k-0613",
-    temperature: 0.7,
+    temperature: 0.5,
     max_tokens: 4096,
     // top_p: 1,
     presence_penalty: 0,
