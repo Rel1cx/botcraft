@@ -114,6 +114,17 @@ const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMess
     const [draft = "", setDraft] = useAtom(draftsDb.item(chatID))
     const deleteDraft = useSetAtom(draftsDb.delete)
 
+    const handleChange = React.useCallback(
+        (value: string) => {
+            if (value === "") {
+                void deleteDraft(chatID)
+                return
+            }
+            void setDraft(value)
+        },
+        [chatID, deleteDraft, setDraft],
+    )
+
     useHotkeys(
         "ctrl+enter",
         async (evt) => {
@@ -138,7 +149,7 @@ const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMess
         },
     )
 
-    return <ChatMessageEditor key={key} ref={messageEditorRef} content={draft} onChange={setDraft} />
+    return <ChatMessageEditor key={key} ref={messageEditorRef} content={draft} onChange={handleChange} />
 })
 
 type AsideProps = {
