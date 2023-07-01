@@ -142,7 +142,7 @@ export const updateChatCompletionAtom = atom(
                     throw new Error(`Message ${completionMessageID} not found`)
                 }
 
-                return messages.slice(0, updateMessageIndex + 1)
+                return messages.slice(0, updateMessageIndex)
             })
             .exhaustive()
 

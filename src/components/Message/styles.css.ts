@@ -67,6 +67,7 @@ export const content = styleVariants({
 export const actionButton = style({
     position: "sticky",
     top: "1rem",
+    bottom: "1rem",
     width: "40px",
     height: "40px",
     display: "flex",

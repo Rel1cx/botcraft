@@ -33,7 +33,11 @@ const Message = React.memo(
             <div className={clsx(css.root[role], className)} {...rest}>
                 <Markdown className={css.content[role]} content={deferredContent} />
                 {displayMenu && (
-                    <MessageMenu position="bottom-start" onRemoveClick={onRemoveClick}>
+                    <MessageMenu
+                        position="bottom-start"
+                        onRemoveClick={onRemoveClick}
+                        onRegenerateClick={onRegenerateClick}
+                    >
                         <Button as="button" className={css.actionButton} clickOnEnter clickOnSpace>
                             <Icon as={DotsThree} size={24} fill={vars.colors.black50} />
                         </Button>

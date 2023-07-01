@@ -68,13 +68,15 @@ const ChatIconPresenter = React.memo(({ id, selected }: ChatIconPresenterProps) 
 })
 
 type ChatMessagePresenterProps = {
+    botName: string
     chatID: ChatID
     id: MessageID
 }
 
-const ChatMessagePresenter = React.memo(({ chatID, id }: ChatMessagePresenterProps) => {
+const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePresenterProps) => {
     const [data] = useMessage(id)
     const removeMessage = useSetAtom(removeMessageAtom)
+    const updateChatCompletion = useSetAtom(updateChatCompletionAtom)
 
     if (!data) {
         return null
@@ -86,7 +88,17 @@ const ChatMessagePresenter = React.memo(({ chatID, id }: ChatMessagePresenterPro
 
     return (
         <React.Suspense>
-            <Message data={data} onRemoveClick={() => removeMessage(chatID, id)} />
+            <Message
+                data={data}
+                onRemoveClick={() => removeMessage(chatID, id)}
+                onRegenerateClick={() => {
+                    if (data.role !== "assistant") {
+                        return
+                    }
+
+                    void updateChatCompletion(botName, chatID, id)
+                }}
+            />
         </React.Suspense>
     )
 })
@@ -237,7 +249,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <Chat
                     data={chat}
                     isGenerating={isGenerating}
-                    renderMessage={(id: MessageID) => <ChatMessagePresenter id={id} chatID={chatID} />}
+                    renderMessage={(id: MessageID) => (
+                        <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
+                    )}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({
                             top: contentRef.current.scrollHeight,
