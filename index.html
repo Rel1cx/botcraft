@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BotCraft</title>
     <link rel="icon" href="/favicon.ico" />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net/npm/web-vitals@3.3.2/+esm" />
 </head>
 
 <body>
     <div id="root"></div>
     <script type="module">
-        import { Progress } from 'https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js'
         import { onFCP } from 'https://cdn.jsdelivr.net/npm/web-vitals@3.3.2/+esm';
+        import { Progress } from 'https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js'
         window.progress = new Progress({
             color: "#1c345dcc",
             height: 3
