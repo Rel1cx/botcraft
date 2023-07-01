@@ -94,7 +94,7 @@
         "consola": "3.2.2",
         "core-dts": "0.0.3",
         "dpdm": "3.13.1",
-        "esbuild": "0.18.10",
+        "esbuild": "0.18.11",
         "eslint": "8.43.0",
         "eslint-config-with-tsconfig": "1.6.0",
         "eslint-plugin-jsx-a11y": "6.7.1",
