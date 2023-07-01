@@ -56,9 +56,25 @@ const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: 
     useResizeObserver(
         contentRef,
         (entry) => {
+            const root = rootRef.current
+
+            if (!root) {
+                return
+            }
+
+            const atBottomOffset = 300
+
+            const { clientHeight, scrollHeight, scrollTop } = root
+
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight - atBottomOffset
+
+            if (!isAtBottom) {
+                return
+            }
+
             const { height } = entry.contentRect
 
-            rootRef.current?.scrollTo({
+            root.scrollTo({
                 top: height,
             })
         },
