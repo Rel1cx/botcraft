@@ -1,6 +1,7 @@
 // import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 // import { languages } from "@codemirror/language-data"
 import { EditorView } from "@codemirror/view"
+import { useDebouncedEffect } from "@react-hookz/web"
 import type { BasicSetupOptions, ReactCodeMirrorRef } from "@uiw/react-codemirror"
 import CodeMirror from "@uiw/react-codemirror"
 import clsx from "clsx"
@@ -16,7 +17,6 @@ import * as css from "./styles.css"
 type TextEditorProps = {
     className?: string
     value?: string
-    defaultValue?: string
     placeholder?: string
     onFocus?: () => void
     onBlur?: () => void
@@ -53,7 +53,6 @@ const extensions = [EditorView.lineWrapping]
 const TextEditor = React.memo(
     ({
         className,
-        defaultValue = "",
         onBlur,
         onChange = noop,
         onFocus,
@@ -61,6 +60,40 @@ const TextEditor = React.memo(
         value = "",
     }: TextEditorProps) => {
         const ref = React.useRef<ReactCodeMirrorRef>(null)
+
+        const defaultValue = React.useRef(value).current
+
+        useDebouncedEffect(
+            () => {
+                const view = ref.current?.view
+
+                if (!view || !value) {
+                    return
+                }
+
+                const hasFocus = ref.current.view?.hasFocus
+
+                if (hasFocus) {
+                    return
+                }
+
+                const { state } = view
+
+                if (state.doc.toString() === value) {
+                    return
+                }
+
+                view.dispatch({
+                    changes: {
+                        from: 0,
+                        to: state.doc.length,
+                        insert: value,
+                    },
+                })
+            },
+            [value],
+            100,
+        )
 
         return (
             <div className={clsx(css.root, className)}>
@@ -78,13 +111,12 @@ const TextEditor = React.memo(
                         extensions={extensions}
                         onFocus={onFocus}
                         onBlur={onBlur}
-                        value={value}
-                        defaultValue={defaultValue}
                         onCompositionEnd={() => {
                             const view = ref.current?.view
                             invariant(view, "view is not defined")
                             onChange(view.state.doc.toString())
                         }}
+                        value={defaultValue}
                         onChange={(value, viewUpdate) => {
                             if (!viewUpdate.docChanged) {
                                 return

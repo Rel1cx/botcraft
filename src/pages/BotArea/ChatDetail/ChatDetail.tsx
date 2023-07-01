@@ -110,7 +110,8 @@ type ChatMessageEditorPresenterProps = {
 
 const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMessageEditorPresenterProps) => {
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
-    const [draft, setDraft] = useAtom(draftsDb.item(chatID))
+    const [key, setKey] = React.useState(0)
+    const [draft = "", setDraft] = useAtom(draftsDb.item(chatID))
     const deleteDraft = useSetAtom(draftsDb.delete)
 
     useHotkeys(
@@ -122,20 +123,22 @@ const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMess
                 return
             }
 
-            const content = draft?.trim() ?? ""
+            const content = draft.trim()
+
             if (!content) {
                 return
             }
             evt.preventDefault()
             await deleteDraft(chatID)
             onCompleted?.(content)
+            setKey((prev) => prev + 1)
         },
         {
             enableOnContentEditable: true,
         },
     )
 
-    return <ChatMessageEditor ref={messageEditorRef} content={draft ?? ""} onChange={setDraft} />
+    return <ChatMessageEditor key={key} ref={messageEditorRef} content={draft} onChange={setDraft} />
 })
 
 type AsideProps = {
