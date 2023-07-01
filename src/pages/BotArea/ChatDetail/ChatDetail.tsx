@@ -7,7 +7,7 @@ import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import invariant from "tiny-invariant"
 
-import type { MessageData } from "@/bot/types"
+import type { MessageData } from "@/bot"
 import Icon from "@/components/atoms/Icon/Icon"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import Chat from "@/components/Chat/Chat"
@@ -175,14 +175,13 @@ const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: A
 }
 
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
-    const [chat, setChat] = useChat(chatID)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
-    const [removing, setRemoving] = React.useState(O.None<ChatID>())
     const requestChatCompletion = useSetAtom(updateChatCompletionAtom)
-
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
+    const [chat, setChat] = useChat(chatID)
+    const [removing, setRemoving] = React.useState(O.None<ChatID>())
 
     const isGenerating = chatCompletionTask[chatID]?.type === "pending"
 
@@ -222,7 +221,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         [addMessage, botName, chatID, requestChatCompletion],
     )
 
-    invariant(chat, "Chat must be defined")
+    if (!chat) {
+        return null
+    }
 
     return (
         <Layout

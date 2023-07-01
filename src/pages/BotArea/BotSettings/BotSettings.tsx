@@ -56,6 +56,10 @@ const ChatMessagePresenter = React.memo(({ content, role }: { role: Role; conten
         [content, dummyID, role],
     )
 
+    if (!content) {
+        return null
+    }
+
     return (
         <React.Suspense>
             <Message data={data} showMenu={false} />
