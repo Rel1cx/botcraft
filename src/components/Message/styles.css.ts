@@ -39,8 +39,8 @@ export const content = styleVariants({
     system: [
         baseContent,
         {
-            background: vars.colors.lightGray,
             color: vars.colors.text,
+            background: vars.colors.lightGray,
 
             "@media": {
                 "screen and (max-width: 768px)": {
@@ -52,15 +52,15 @@ export const content = styleVariants({
     user: [
         baseContent,
         {
-            background: vars.colors.primary,
             color: vars.colors.white,
+            background: vars.colors.tealDark,
         },
     ],
     assistant: [
         baseContent,
         {
-            background: vars.colors.lightGray,
             color: vars.colors.text,
+            background: vars.colors.lightGray,
         },
     ],
 })

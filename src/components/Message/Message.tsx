@@ -39,7 +39,7 @@ const Message = React.memo(
                         onRegenerateClick={onRegenerateClick}
                     >
                         <Button as="button" className={css.actionButton} clickOnEnter clickOnSpace>
-                            <Icon as={DotsThree} size={24} fill={vars.colors.black50} />
+                            <Icon as={DotsThree} size={24} fill={vars.colors.black70} />
                         </Button>
                     </MessageMenu>
                 )}
