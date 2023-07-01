@@ -5,13 +5,14 @@
         "new-cap": "off",
         "camelcase": "off",
         "unicorn/prefer-spread": "off",
+        "import/no-default-export": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-redeclare": "off",
         "tailwindcss/no-custom-classname": "off"
     },
     "overrides": [
         {
-            "files": ["scripts/**/*.ts", "vite.config.ts"],
+            "files": ["scripts/**/*.ts", "./*.config.ts"],
             "parserOptions": {
                 "project": "tsconfig.node.json"
             }

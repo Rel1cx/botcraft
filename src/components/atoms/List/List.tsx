@@ -10,8 +10,6 @@ type ListProps = {
     data?: ListItemProtocol[]
     selectedID?: string | undefined
     renderItem?: (item: ListItemProtocol, selected: boolean, index: number) => React.ReactNode
-    // onSelectPrev?: () => void
-    // onSelectNext?: () => void
 }
 
 const defaultData: ListItemProtocol[] = []
