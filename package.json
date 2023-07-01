@@ -5,7 +5,7 @@
     "scripts": {
         "build": "pnpm run i18n && vite build",
         "check": "tsx ./scripts/check.ts",
-        "clean": "rm -rf dist node_modules pnpm-lock.yaml",
+        "clean": "rm -rf docs dist node_modules pnpm-lock.yaml",
         "dev": "vite",
         "format": "rome format . --write && pnpm check",
         "i18n": "typesafe-i18n --no-watch",
@@ -135,9 +135,7 @@
             "@mantine/core": "6.0.14",
             "@mantine/hooks": "6.0.14",
             "ts-pattern": "5.0.1",
-            "typescript": "5.1.3",
-            "rollup": "3.25.3",
-            "esbuild": "0.18.10"
+            "typescript": "5.1.3"
         }
     }
 }
