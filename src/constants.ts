@@ -1,4 +1,4 @@
-import type { ChatCompletionOptions } from "@/api/types"
+import type { ChatCompletionOptions } from "@/api"
 import { type Locales } from "@/i18n/i18n-types"
 
 export const DEFAULT_LOCALE: Locales = "en"

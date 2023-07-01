@@ -1,0 +1,14 @@
+{
+    "entryPoints": [
+        "./src/main.ts",
+        "./src/protocols/index.ts",
+        "./src/types/index.ts",
+        "./src/zod/index.ts",
+        "./src/api/index.ts"
+    ],
+    "out": "docs",
+    "theme": "default",
+    "name": "BotCraft",
+    "readme": "none",
+    "hideGenerator": true
+}

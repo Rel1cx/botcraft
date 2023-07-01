@@ -3,8 +3,7 @@ import { compose } from "rambda"
 import type { Observable } from "rxjs"
 import { from, map, mergeMap, timeout } from "rxjs"
 
-import { getChatCompletion, getChatCompletionStream } from "@/api/client"
-import { getContentFromEventSource, parseEventSource } from "@/api/helper"
+import { getChatCompletion, getChatCompletionStream, getContentFromEventSource, parseEventSource } from "@/api"
 import chatgptLogo from "@/assets/chatgpt_logo.svg"
 import {
     DEFAULT_CHAT_COMPLETION_OPTIONS,

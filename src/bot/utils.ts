@@ -1,6 +1,6 @@
 import { pick } from "rambda"
 
-import type { Message } from "@/api/types"
+import type { Message } from "@/api"
 import type { Role } from "@/zod"
 
 export const extractMessages = (data: Message[]) => data.map(pick(["role", "content"]))

@@ -27,6 +27,14 @@
         }
     },
     "files": {
-        "ignore": ["src/i18n/i18n-*", "**/dist", "**/public", "**/node_modules", "**/*-lock.json", "pnpm-lock.yaml"]
+        "ignore": [
+            "src/i18n/i18n-*",
+            "docs",
+            "**/public",
+            "**/dist",
+            "**/node_modules",
+            "**/*-lock.json",
+            "pnpm-lock.yaml"
+        ]
     }
 }

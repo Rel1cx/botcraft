@@ -6,7 +6,7 @@ import { useAtom } from "jotai"
 import * as React from "react"
 import invariant from "tiny-invariant"
 
-import type { Model } from "@/api/types"
+import type { Model } from "@/api"
 import type { MessageData } from "@/bot/types"
 import Icon from "@/components/atoms/Icon/Icon"
 import type { Locales } from "@/i18n/i18n-types"

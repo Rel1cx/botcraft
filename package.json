@@ -14,7 +14,8 @@
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
         "prepare": "husky install",
         "preview": "vite preview",
-        "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
+        "typecheck": "tsc --noEmit --extendedDiagnostics -p .",
+        "docs": "typedoc --options ./typedoc.json"
     },
     "browserslist": [
         "defaults and supports es6-module"
@@ -111,6 +112,7 @@
         "ts-essentials": "9.3.2",
         "ts-unused-exports": "9.0.5",
         "tsx": "3.12.7",
+        "typedoc": "0.24.8",
         "typesafe-i18n": "5.24.3",
         "typescript": "5.1.6",
         "vite": "4.3.9",

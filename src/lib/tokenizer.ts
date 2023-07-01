@@ -1,6 +1,6 @@
 import { Tiktoken } from "@dqbd/tiktoken/lite"
 
-import type { Model } from "@/api/types"
+import type { Model } from "@/api"
 import type { ChatMessage } from "@/zod"
 
 const cl100k_base = await import("@dqbd/tiktoken/encoders/cl100k_base.json")

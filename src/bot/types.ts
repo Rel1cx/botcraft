@@ -1,4 +1,4 @@
-import type { ChatCompletionOptions } from "@/api/types"
+import type { ChatCompletionOptions } from "@/api"
 import type {
     ContentProtocol,
     CreatableProtocol,
