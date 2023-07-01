@@ -2,6 +2,7 @@
 import "@/styles/base.css"
 import "@/styles/global.css"
 import "@/styles/overrides.css"
+import "./polyfill"
 
 import { enableMapSet } from "immer"
 import { createElement } from "react"

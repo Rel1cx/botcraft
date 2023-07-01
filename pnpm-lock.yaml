@@ -92,6 +92,9 @@ dependencies:
   codemirror:
     specifier: 6.0.1
     version: 6.0.1(@lezer/common@1.0.3)
+  core-js:
+    specifier: 3.31.0
+    version: 3.31.0
   date-fns:
     specifier: 2.30.0
     version: 2.30.0
@@ -3214,6 +3217,11 @@ packages:
   /core-dts@0.0.3:
     resolution: {integrity: sha512-tflBjtVV1UhseeDgqhDBfvttGZVTuoqtpSgImXegZJFjZ/lNuAUfye3z86U3TH87sFknT7imaEQ0cMgKgJ9ebw==}
     dev: true
+
+  /core-js@3.31.0:
+    resolution: {integrity: sha512-NIp2TQSGfR6ba5aalZD+ZQ1fSxGhDo/s1w0nx3RYzf2pnJxt7YynxFlFScP6eV7+GZsKO95NSjGxyJsU3DZgeQ==}
+    requiresBuild: true
+    dev: false
 
   /cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}

@@ -19,7 +19,7 @@ import {
     chatCompletionTaskAtom,
     removeChatAtom,
     removeMessageAtom,
-    requestChatCompletionAtom,
+    updateChatCompletionAtom,
     useChat,
     useChats,
     useMessage,
@@ -129,7 +129,6 @@ const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMess
 type AsideProps = {
     botName: string
     selectedChatID: ChatID
-    generatingChatID: O<ChatID>
     onAddChatClick: () => void
     onRemoveChatClick: (id: string) => void
 }
@@ -167,13 +166,11 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const removeChat = useSetAtom(removeChatAtom)
     const addMessage = useSetAtom(addMessageAtom)
     const [removing, setRemoving] = React.useState(O.None<ChatID>())
-    const requestChatCompletion = useSetAtom(requestChatCompletionAtom)
+    const requestChatCompletion = useSetAtom(updateChatCompletionAtom)
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const generatingChatID = chatCompletionTask.map((task) => task.chatID)
-
-    const isGenerating = generatingChatID.toNull() === chatID
+    const isGenerating = Object.hasOwn(chatCompletionTask, chatID)
 
     const onAddChatClick = React.useCallback(() => {
         void addChat(botName)
@@ -212,7 +209,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <Aside
                     botName={botName}
                     selectedChatID={chatID}
-                    generatingChatID={generatingChatID}
                     onAddChatClick={onAddChatClick}
                     onRemoveChatClick={(id) => {
                         if (isChatID(id)) {
@@ -240,6 +236,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             <div ref={contentRef} className={css.content}>
                 <Chat
                     data={chat}
+                    isGenerating={isGenerating}
                     renderMessage={(id: MessageID) => <ChatMessagePresenter id={id} chatID={chatID} />}
                     onHeightChange={() => {
                         contentRef.current?.scrollTo({

@@ -1,10 +1,8 @@
 import type { StrictOmit } from "ts-essentials"
 
 import type { ChatData } from "@/bot/types"
-import type { Remap } from "@/lib/utils"
-import type { ChatProtocol } from "@/protocols"
 import type { Model } from "@/zod"
-import type { ChatID, MessageID } from "@/zod/id"
+import type { MessageID } from "@/zod/id"
 
 export type TotalTokenUsed = {
     [model in Model]?: {
@@ -17,32 +15,22 @@ export type ChatItem = StrictOmit<ChatData, "content"> & {
     messages: MessageID[]
 }
 
-export type ChatMeta = Pick<ChatProtocol, "id" | "title" | "updatedAt">
-
-export type ChatCompletionTaskMeta = {
-    id: string
-    chatID: ChatID
-    generatingMessageID: MessageID
-}
-
 export type ChatCompletionTask =
-    | Remap<
-          {
-              type: "pending"
-              content: string
-              abort: () => void
-          } & ChatCompletionTaskMeta
-      >
-    | Remap<
-          {
-              type: "done"
-              content: string
-          } & ChatCompletionTaskMeta
-      >
-    | Remap<
-          {
-              type: "error"
-              content: string
-              error: Error
-          } & ChatCompletionTaskMeta
-      >
+    | {
+          type: "init"
+          messageID: MessageID
+      }
+    | {
+          type: "pending"
+          messageID: MessageID
+          abort: () => void
+      }
+    | {
+          type: "done"
+          messageID: MessageID
+      }
+    | {
+          type: "error"
+          messageID: MessageID
+          error: Error
+      }

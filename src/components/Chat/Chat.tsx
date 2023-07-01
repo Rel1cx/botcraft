@@ -21,6 +21,7 @@ export type MessageComponentProps = {
 
 export type ChatProps = {
     data: ChatItem
+    isGenerating?: boolean
     onHeightChange?: (height: number) => void
     renderMessage?: (id: MessageID) => React.ReactNode
 }

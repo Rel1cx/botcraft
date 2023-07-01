@@ -1,21 +1,20 @@
-import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
 import { atom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
+import { atomWithImmer } from "jotai-immer"
 import { omit } from "rambda"
 import toast from "react-hot-toast"
 import { animationFrameScheduler, concatMap, observeOn } from "rxjs"
 import { stringify } from "telejson"
 import invariant from "tiny-invariant"
+import { match } from "ts-pattern"
 
 import { generateChatCompletionStream, generateChatTitle, initChat, type MessageData } from "@/bot"
 import { DEFAULT_API_ENDPOINT } from "@/constants"
 import type { Locales } from "@/i18n/i18n-types"
 import { localStorageGetItem } from "@/lib/browser"
-import { uid } from "@/lib/uuid"
-import type { ChatCompletionTask, ChatCompletionTaskMeta, ChatItem } from "@/types"
-import type { ChatID, MessageID } from "@/zod/id"
-import { makeMessageID } from "@/zod/id"
+import type { ChatCompletionTask, ChatItem } from "@/types"
+import { type ChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { botsDb, chatsDb, messagesDb } from "./db"
 
@@ -107,148 +106,164 @@ export const removeMessageAtom = atom(null, async (get, set, chatID: ChatID, id:
     await set(messagesDb.delete, id)
 })
 
-export const updateMessageAtom = atom(
+export const chatCompletionTaskAtom = atomWithImmer<Record<ChatID, ChatCompletionTask>>({})
+
+export const updateChatCompletionAtom = atom(
     null,
-    async (get, set, chatID: ChatID, messageID: MessageID, data: MessageData) => {
-        const chat = get(chatsDb.item(chatID))
-        invariant(chat, `Chat ${chatID} not found`)
-        const message = get(messagesDb.item(messageID))
-        invariant(message, `Message ${messageID} not found`)
-        await set(messagesDb.set, messageID, data)
-    },
-)
+    async (get, set, botName: string, id: ChatID, messageID?: MessageID) => {
+        const apiKey = get(apiKeyAtom)
 
-export const chatCompletionTaskAtom = atom(O.None<ChatCompletionTask>())
+        const endpoint = get(endpointAtom)
 
-export const requestChatCompletionAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
-    const apiKey = get(apiKeyAtom)
+        const bot = get(botsDb.item(botName))
 
-    const endpoint = get(endpointAtom)
+        invariant(bot, `Bot ${botName} not found`)
 
-    const bot = get(botsDb.item(botName))
+        const chat = get(chatsDb.item(id))
 
-    invariant(bot, `Bot ${botName} not found`)
+        invariant(chat, `Chat ${id} not found`)
 
-    const chat = get(chatsDb.item(id))
+        const abortController = new AbortController()
 
-    invariant(chat, `Chat ${id} not found`)
+        const messagesLoaded = await Promise.all(chat.messages.map((id) => get(messagesDb.item(id))))
 
-    const messagesLoaded = await Promise.all(chat.messages.map((id) => get(messagesDb.item(id))))
+        const messages = messagesLoaded.filter(Boolean)
 
-    const messages = messagesLoaded.filter(Boolean)
+        const completionMode = messageID ? "update" : "create"
 
-    const abortController = new AbortController()
+        const completionMessageID = messageID ?? makeMessageID()
 
-    const taskMeta: ChatCompletionTaskMeta = {
-        id: uid.seq(),
-        chatID: id,
-        generatingMessageID: makeMessageID(),
-    }
+        const contextMessages = match(completionMode)
+            .with("create", () => messages)
+            .with("update", () => {
+                const updateMessageIndex = messages.findIndex((message) => message.id === completionMessageID)
 
-    set(
-        chatCompletionTaskAtom,
-        O.Some<ChatCompletionTask>({
-            ...taskMeta,
-            type: "pending",
-            content: "",
-            abort: () => {
-                abortController.abort()
+                if (updateMessageIndex === -1) {
+                    throw new Error(`Message ${completionMessageID} not found`)
+                }
+
+                return messages.slice(0, updateMessageIndex + 1)
+            })
+            .exhaustive()
+
+        set(chatCompletionTaskAtom, (draft) => {
+            draft[id] = {
+                type: "pending",
+                messageID: completionMessageID,
+                abort: () => {
+                    abortController.abort()
+                },
+            }
+        })
+
+        const handleError = (err: unknown) => {
+            const error = err instanceof Error ? err : new Error(stringify(err))
+
+            toast.error(`Failed to generate chat completion: Error: ${error.name}\nMessage: ${error.message}`)
+
+            set(chatCompletionTaskAtom, (draft) => {
+                draft[id] = {
+                    type: "error",
+                    messageID: completionMessageID,
+                    error,
+                }
+            })
+        }
+
+        const result = await generateChatCompletionStream(
+            apiKey,
+            endpoint,
+            {
+                ...omit(["messages"], chat),
+                content: contextMessages,
             },
-        }),
-    )
+            abortController.signal,
+        )(bot)
 
-    const handleError = (err: unknown) => {
-        const error = err instanceof Error ? err : new Error(stringify(err))
+        if (!result.isOk()) {
+            const error = result.getError()
+            handleError(error)
+            return
+        }
 
-        toast.error(`Failed to generate chat completion: Error: ${error.name}\nMessage: ${error.message}`)
+        await match(completionMode)
+            .with("create", () => {
+                const message: MessageData = {
+                    id: completionMessageID,
+                    content: "",
+                    role: "assistant",
+                    updatedAt: Date.now(),
+                }
 
-        set(
-            chatCompletionTaskAtom,
-            O.Some<ChatCompletionTask>({
-                ...taskMeta,
-                type: "error",
-                content: "",
-                error,
-            }),
-        )
-    }
-
-    const result = await generateChatCompletionStream(
-        apiKey,
-        endpoint,
-        {
-            ...omit(["messages"], chat),
-            content: messages,
-        },
-        abortController.signal,
-    )(bot)
-
-    if (!result.isOk()) {
-        const error = result.getError()
-        handleError(error)
-        return
-    }
-
-    const message: MessageData = {
-        id: taskMeta.generatingMessageID,
-        content: "",
-        role: "assistant",
-        updatedAt: Date.now(),
-    }
-
-    await set(addMessageAtom, id, message)
-
-    const stream = result.get()
-
-    stream
-        .pipe(
-            observeOn(animationFrameScheduler),
-            concatMap(async (msg) => {
-                await set(messagesDb.set, taskMeta.generatingMessageID, (prev) => {
-                    invariant(prev, `Message ${taskMeta.generatingMessageID} not found`)
+                return set(addMessageAtom, id, message)
+            })
+            .with("update", () => {
+                return set(messagesDb.set, completionMessageID, (prev) => {
+                    invariant(prev, `Message ${completionMessageID} not found`)
                     return {
                         ...prev,
-                        content: prev.content + msg,
+                        content: "",
                     }
                 })
-            }),
-        )
-        .subscribe({
-            error: (err: unknown) => {
-                handleError(err)
-            },
-            async complete() {
-                set(chatCompletionTaskAtom, O.Some<ChatCompletionTask>({ ...taskMeta, type: "done", content: "" }))
+            })
+            .exhaustive()
 
-                const chat = get(chatsDb.item(id))
+        const stream = result.get()
 
-                invariant(chat, `Chat ${id} not found`)
+        stream
+            .pipe(
+                observeOn(animationFrameScheduler),
+                concatMap(async (msg) => {
+                    await set(messagesDb.set, completionMessageID, (prev) => {
+                        invariant(prev, `Message ${completionMessageID} not found`)
+                        return {
+                            ...prev,
+                            content: prev.content + msg,
+                        }
+                    })
+                }),
+            )
+            .subscribe({
+                error: (err: unknown) => {
+                    handleError(err)
+                },
+                async complete() {
+                    set(chatCompletionTaskAtom, (draft) => {
+                        draft[id] = { type: "done", messageID: completionMessageID }
+                    })
 
-                const messages = await Promise.all(chat.messages.map((id) => get(messagesDb.item(id))).filter(Boolean))
-                const titleLocale = get(titleLocaleAtom)
+                    const chat = get(chatsDb.item(id))
 
-                if (messages.length < 2 || messages.length > 10) {
-                    return
-                }
+                    invariant(chat, `Chat ${id} not found`)
 
-                const result = await generateChatTitle(
-                    apiKey,
-                    endpoint,
-                    {
-                        ...omit(["messages"], chat),
-                        content: messages,
-                    },
-                    titleLocale,
-                )(bot)
+                    const messages = await Promise.all(
+                        chat.messages.map((id) => get(messagesDb.item(id))).filter(Boolean),
+                    )
+                    const titleLocale = get(titleLocaleAtom)
 
-                if (!result.isOk()) {
-                    return
-                }
+                    if (messages.length < 2 || messages.length > 10) {
+                        return
+                    }
 
-                await set(chatsDb.set, id, {
-                    ...chat,
-                    title: result.get(),
-                })
-            },
-        })
-})
+                    const result = await generateChatTitle(
+                        apiKey,
+                        endpoint,
+                        {
+                            ...omit(["messages"], chat),
+                            content: messages,
+                        },
+                        titleLocale,
+                    )(bot)
+
+                    if (!result.isOk()) {
+                        return
+                    }
+
+                    await set(chatsDb.set, id, {
+                        ...chat,
+                        title: result.get(),
+                    })
+                },
+            })
+    },
+)
