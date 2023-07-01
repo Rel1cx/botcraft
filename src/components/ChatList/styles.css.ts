@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
+import { tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const root = style({
@@ -44,26 +45,25 @@ export const listActionButton = style({
     },
 })
 
-export const item = style({
-    display: "flex",
-    flexFlow: "row nowrap",
-    alignItems: "center",
-    gap: "0.5rem",
-    padding: "0.5rem",
-    cursor: "default",
-    borderRadius: "0.25rem",
-    background: vars.colors.lightGray,
-    transition: "filter 120ms ease-out",
-    ":hover": {
-        filter: "brightness(0.9)",
-    },
-    selectors: {
-        "&[data-selected='true']": {
-            color: "#fff",
-            background: vars.colors.primary,
+export const item = style([
+    tappable,
+    {
+        display: "flex",
+        flexFlow: "row nowrap",
+        alignItems: "center",
+        gap: "0.5rem",
+        padding: "0.5rem",
+        cursor: "default",
+        borderRadius: "0.25rem",
+        background: vars.colors.lightGray,
+        selectors: {
+            "&[data-selected='true']": {
+                color: "#fff",
+                background: vars.colors.primary,
+            },
         },
     },
-})
+])
 
 export const itemTitle = style({
     width: "100%",

@@ -1,5 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css"
 
+import { tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const baseRoot = style({
@@ -64,24 +65,23 @@ export const content = styleVariants({
     ],
 })
 
-export const actionButton = style({
-    position: "sticky",
-    top: "1rem",
-    bottom: "1rem",
-    width: "40px",
-    height: "40px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "9999px",
-    opacity: "var(--action-button-opacity)",
-    transition: "all 120ms ease-in-out",
+export const actionButton = style([
+    tappable,
+    {
+        position: "sticky",
+        top: "1rem",
+        bottom: "1rem",
+        width: "40px",
+        height: "40px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "9999px",
+        opacity: "var(--action-button-opacity)",
+        transition: "all 120ms ease-in-out",
 
-    ":hover": {
-        background: vars.colors.lightGray,
+        ":hover": {
+            background: vars.colors.lightGray,
+        },
     },
-
-    ":active": {
-        filter: "brightness(0.9)",
-    },
-})
+])

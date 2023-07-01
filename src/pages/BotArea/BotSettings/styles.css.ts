@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
+import { tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const asideContent = style({
@@ -36,20 +37,18 @@ export const asideHeader = style({
     gap: "1rem",
 })
 
-export const button = style({
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "2rem",
-    height: "2rem",
-    borderRadius: "0.5rem",
-    backgroundColor: vars.colors.lightGray,
-    transition: "filter 120ms ease-out",
-
-    ":hover": {
-        filter: "brightness(0.9)",
+export const button = style([
+    tappable,
+    {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "2rem",
+        height: "2rem",
+        borderRadius: "0.5rem",
+        backgroundColor: vars.colors.lightGray,
     },
-})
+])
 
 export const textarea = style({
     padding: "0.25rem 0.5rem",

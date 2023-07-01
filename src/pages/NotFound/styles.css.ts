@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
+import { tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const root = style({
@@ -29,19 +30,13 @@ export const description = style({
     marginBottom: "3.375rem",
 })
 
-export const button = style({
-    padding: "0.5rem 1.5rem",
-    margin: "auto",
-    borderRadius: "0.5rem",
-    color: vars.colors.white,
-    backgroundColor: vars.colors.primary,
-    transition: "filter 120ms ease-out",
-
-    ":hover": {
-        filter: "brightness(0.95)",
+export const button = style([
+    tappable,
+    {
+        padding: "0.5rem 1.5rem",
+        margin: "auto",
+        borderRadius: "0.5rem",
+        color: vars.colors.white,
+        backgroundColor: vars.colors.primary,
     },
-
-    ":active": {
-        filter: "brightness(1.05)",
-    },
-})
+])
