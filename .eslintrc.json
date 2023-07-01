@@ -6,7 +6,8 @@
         "camelcase": "off",
         "unicorn/prefer-spread": "off",
         "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/no-redeclare": "off"
+        "@typescript-eslint/no-redeclare": "off",
+        "tailwindcss/no-custom-classname": "off"
     },
     "overrides": [
         {

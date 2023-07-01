@@ -37,7 +37,11 @@ const ConfirmDialog = React.memo(
             },
         })
         return (
-            <Dialog store={dialog} backdrop={<div className={css.backdrop} />} className={css.dialog}>
+            <Dialog
+                className={css.dialog}
+                store={dialog}
+                backdrop={<div className={clsx(css.backdrop, "animate-in fade-in duration-120")} />}
+            >
                 {title && <DialogHeading className={css.heading}>{title}</DialogHeading>}
                 {!!description && <DialogDescription>{description}</DialogDescription>}
                 <div className={css.buttons}>
