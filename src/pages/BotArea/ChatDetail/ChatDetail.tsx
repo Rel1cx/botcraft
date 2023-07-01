@@ -175,7 +175,6 @@ const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: A
 }
 
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
-    const contentRef = React.useRef<HTMLDivElement>(null)
     const [chat, setChat] = useChat(chatID)
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
@@ -185,7 +184,15 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
 
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
 
-    const isGenerating = Object.hasOwn(chatCompletionTask, chatID)
+    const isGenerating = chatCompletionTask[chatID]?.type === "pending"
+
+    const generatingMessageID = React.useMemo<O<MessageID>>(() => {
+        if (!isGenerating) {
+            return O.None()
+        }
+
+        return O.fromNullable(chatCompletionTask[chatID]?.messageID)
+    }, [chatCompletionTask, chatID, isGenerating])
 
     const onAddChatClick = React.useCallback(() => {
         void addChat(botName)
@@ -248,20 +255,12 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             }
         >
-            <div ref={contentRef} className={css.content}>
-                <Chat
-                    data={chat}
-                    isGenerating={isGenerating}
-                    renderMessage={(id: MessageID) => (
-                        <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
-                    )}
-                    onHeightChange={() => {
-                        contentRef.current?.scrollTo({
-                            top: contentRef.current.scrollHeight,
-                        })
-                    }}
-                />
-            </div>
+            <Chat
+                className={css.content}
+                data={chat}
+                generatingMessageID={generatingMessageID}
+                renderMessage={(id: MessageID) => <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />}
+            />
             <div className={css.bottom}>
                 <ChatMessageEditorPresenter chatID={chatID} onCompleted={onMessageCreate} />
             </div>

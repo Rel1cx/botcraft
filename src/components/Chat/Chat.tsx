@@ -1,4 +1,6 @@
 import { useResizeObserver } from "@react-hookz/web"
+import type { Option as O } from "@swan-io/boxed"
+import clsx from "clsx"
 import { AnimatePresence, m } from "framer-motion"
 import * as React from "react"
 
@@ -21,14 +23,14 @@ export type MessageComponentProps = {
 
 export type ChatProps = {
     data: ChatItem
-    isGenerating?: boolean
-    onHeightChange?: (height: number) => void
+    generatingMessageID: O<MessageID>
     renderMessage?: (id: MessageID) => React.ReactNode
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
-const Chat = ({ data, onHeightChange, renderMessage }: ChatProps) => {
+const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: ChatProps) => {
     const { id: chatID, intro, messages } = data
 
+    const rootRef = React.useRef<HTMLDivElement>(null)
     const contentRef = React.useRef<HTMLDivElement>(null)
 
     const introMessage = React.useMemo<MessageData>(
@@ -41,12 +43,30 @@ const Chat = ({ data, onHeightChange, renderMessage }: ChatProps) => {
         [intro],
     )
 
-    useResizeObserver(contentRef, (entry) => {
-        onHeightChange?.(entry.contentRect.height)
-    })
+    const lastMessageID = React.useMemo(() => messages[messages.length - 1], [messages])
+
+    const autoScrollEnabled = React.useMemo(() => {
+        if (generatingMessageID.isNone()) {
+            return false
+        }
+
+        return generatingMessageID.toNull() === lastMessageID
+    }, [generatingMessageID, lastMessageID])
+
+    useResizeObserver(
+        contentRef,
+        (entry) => {
+            const { height } = entry.contentRect
+
+            rootRef.current?.scrollTo({
+                top: height,
+            })
+        },
+        autoScrollEnabled,
+    )
 
     return (
-        <div className={css.root}>
+        <div ref={rootRef} className={clsx(css.root, className)} {...rest}>
             <div className={css.content} ref={contentRef}>
                 <Animation>
                     <m.div key={chatID} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
