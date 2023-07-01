@@ -1,6 +1,6 @@
 import { getDefaultStore } from "jotai"
 
-import { botsDb, chatsDb, messagesDb } from "./db"
+import { botsDb, chatsDb, draftsDb, messagesDb } from "./db"
 
 const store = getDefaultStore()
 
@@ -9,5 +9,6 @@ export const suspendBeforeDbInit = async () => {
         store.get(botsDb.suspendBeforeInit),
         store.get(chatsDb.suspendBeforeInit),
         store.get(messagesDb.suspendBeforeInit),
+        store.get(draftsDb.suspendBeforeInit),
     ])
 }
