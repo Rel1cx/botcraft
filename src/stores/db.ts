@@ -1,9 +1,11 @@
+import type { Option as O } from "@swan-io/boxed"
 import { MiniDb } from "jotai-minidb"
 import { omit } from "rambda"
 
 import { defaultBot, initChat } from "@/bot"
 import type { Bot, MessageData } from "@/bot/types"
 import type { ChatItem } from "@/types"
+import type { MessageID } from "@/zod/id"
 
 export const initialChat = initChat()(defaultBot)
 
@@ -43,7 +45,10 @@ export const messagesDb = new MiniDb<MessageData>({
     initialData: initialMessages,
 })
 
-export const draftsDb = new MiniDb<string>({
+export const draftsDb = new MiniDb<{
+    content: string
+    messageID: O<MessageID>
+}>({
     name: "drafts",
     version: 0,
 })

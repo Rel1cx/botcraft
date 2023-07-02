@@ -6,6 +6,7 @@ import { sortBy } from "rambda"
 import * as React from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import invariant from "tiny-invariant"
+import { match, P } from "ts-pattern"
 
 import type { MessageData } from "@/bot"
 import Icon from "@/components/atoms/Icon/Icon"
@@ -24,7 +25,7 @@ import {
     useChats,
     useMessage,
 } from "@/stores"
-import { draftsDb } from "@/stores/db"
+import { draftsDb, messagesDb } from "@/stores/db"
 import { vars } from "@/theme/vars.css"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
@@ -75,8 +76,27 @@ type ChatMessagePresenterProps = {
 
 const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePresenterProps) => {
     const [data] = useMessage(id)
+    const setDraft = useSetAtom(draftsDb.set)
     const removeMessage = useSetAtom(removeMessageAtom)
     const updateChatCompletion = useSetAtom(updateChatCompletionAtom)
+
+    const handleRemoveClick = React.useCallback(() => {
+        void removeMessage(chatID, id)
+    }, [chatID, id, removeMessage])
+
+    const handleRegenerateClick = React.useCallback(() => {
+        match(data)
+            .with({ role: "assistant" }, () => {
+                void updateChatCompletion(botName, chatID)
+            })
+            .with({ role: "user" }, (data) => {
+                void setDraft(chatID, {
+                    messageID: O.Some(id),
+                    content: data.content,
+                })
+            })
+            .run()
+    }, [botName, chatID, data, id, setDraft, updateChatCompletion])
 
     if (!data) {
         return null
@@ -88,60 +108,100 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
 
     return (
         <React.Suspense>
-            <Message
-                data={data}
-                onRemoveClick={() => removeMessage(chatID, id)}
-                onRegenerateClick={() => {
-                    if (data.role !== "assistant") {
-                        return
-                    }
-
-                    void updateChatCompletion(botName, chatID, id)
-                }}
-            />
+            <Message data={data} onRemoveClick={handleRemoveClick} onRegenerateClick={handleRegenerateClick} />
         </React.Suspense>
     )
 })
 
 type ChatMessageEditorPresenterProps = {
+    botName: string
     chatID: ChatID
-    onCompleted?: (content: string) => void
 }
 
-const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMessageEditorPresenterProps) => {
+const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageEditorPresenterProps) => {
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
-    const [key, setKey] = React.useState(0)
-    const [draft = "", setDraft] = useAtom(draftsDb.item(chatID))
     const deleteDraft = useSetAtom(draftsDb.delete)
+    const addMessage = useSetAtom(addMessageAtom)
+    const setMessage = useSetAtom(messagesDb.set)
+    const requestChatCompletion = useSetAtom(updateChatCompletionAtom)
+    const [key, setKey] = React.useState(0)
+    const [draft, setDraft] = useAtom(draftsDb.item(chatID))
+    const content = draft?.content ?? ""
+
+    const updateMessage = React.useCallback(
+        (messageID: MessageID, content: string) => {
+            return setMessage(messageID, (prev) => {
+                invariant(prev, "message not found")
+                return {
+                    ...prev,
+                    content,
+                }
+            })
+        },
+        [setMessage],
+    )
+
+    const onMessageCreate = React.useCallback(
+        async (content: string) => {
+            const message: MessageData = {
+                id: makeMessageID(),
+                content,
+                role: "user",
+                updatedAt: Date.now(),
+            }
+
+            await addMessage(chatID, message)
+
+            await requestChatCompletion(botName, chatID)
+        },
+        [addMessage, botName, chatID, requestChatCompletion],
+    )
 
     const handleChange = React.useCallback(
         (value: string) => {
-            if (value === "") {
-                void deleteDraft(chatID)
-                return
-            }
-            void setDraft(value)
+            invariant(draft, "draft not found")
+            return match(value)
+                .with("", () => {
+                    void deleteDraft(chatID)
+                })
+                .with(P.string, () => {
+                    void setDraft({
+                        content: value,
+                        messageID: draft.messageID,
+                    })
+                })
+                .exhaustive()
         },
-        [chatID, deleteDraft, setDraft],
+        [chatID, deleteDraft, draft, setDraft],
     )
 
     useHotkeys(
         "ctrl+enter",
         async (evt) => {
+            invariant(draft, "draft not found")
             const { target } = evt
             const container = messageEditorRef.current
             if (!container || !target || !isContainTarget(target, container)) {
                 return
             }
 
-            const content = draft.trim()
+            const trimmedContent = content.trim()
 
-            if (!content) {
+            if (!trimmedContent) {
                 return
             }
             evt.preventDefault()
             await deleteDraft(chatID)
-            onCompleted?.(content)
+
+            await draft.messageID.match({
+                None: async () => {
+                    await onMessageCreate(trimmedContent)
+                },
+                Some: async (messageID) => {
+                    await updateMessage(messageID, trimmedContent)
+                },
+            })
+
             setKey((prev) => prev + 1)
         },
         {
@@ -149,7 +209,7 @@ const ChatMessageEditorPresenter = React.memo(({ chatID, onCompleted }: ChatMess
         },
     )
 
-    return <ChatMessageEditor key={key} ref={messageEditorRef} content={draft} onChange={handleChange} />
+    return <ChatMessageEditor key={key} ref={messageEditorRef} content={content} onChange={handleChange} />
 })
 
 type AsideProps = {
@@ -188,8 +248,6 @@ const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: A
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
-    const addMessage = useSetAtom(addMessageAtom)
-    const requestChatCompletion = useSetAtom(updateChatCompletionAtom)
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
     const [chat, setChat] = useChat(chatID)
     const [removing, setRemoving] = React.useState(O.None<ChatID>())
@@ -214,22 +272,6 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             Router.replace("BotNewChat", { botName })
         },
         [botName, removeChat],
-    )
-
-    const onMessageCreate = React.useCallback(
-        async (content: string) => {
-            const message: MessageData = {
-                id: makeMessageID(),
-                content,
-                role: "user",
-                updatedAt: Date.now(),
-            }
-
-            await addMessage(chatID, message)
-
-            await requestChatCompletion(botName, chatID)
-        },
-        [addMessage, botName, chatID, requestChatCompletion],
     )
 
     if (!chat) {
@@ -274,7 +316,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 renderMessage={(id: MessageID) => <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />}
             />
             <div className={css.bottom}>
-                <ChatMessageEditorPresenter chatID={chatID} onCompleted={onMessageCreate} />
+                <ChatMessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
             <ConfirmDialog
                 title="Remove chat"

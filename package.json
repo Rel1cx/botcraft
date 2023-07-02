@@ -134,7 +134,6 @@
             "@codemirror/view": "latest",
             "react": "18.2.0",
             "react-dom": "18.2.0",
-            "ts-pattern": "5.0.1",
             "typescript": "latest",
             "eslint-plugin-import": "npm:eslint-plugin-i@latest"
         }
