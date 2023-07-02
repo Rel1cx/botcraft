@@ -87,7 +87,7 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
     const handleRegenerateClick = React.useCallback(() => {
         match(data)
             .with({ role: "assistant" }, () => {
-                void updateChatCompletion(botName, chatID)
+                void updateChatCompletion(botName, chatID, id)
             })
             .with({ role: "user" }, (data) => {
                 void setDraft(chatID, {
@@ -127,6 +127,7 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
     const [key, setKey] = React.useState(0)
     const [draft, setDraft] = useAtom(draftsDb.item(chatID))
     const content = draft?.content ?? ""
+    const messageID = draft?.messageID ?? O.None()
 
     const updateMessage = React.useCallback(
         (messageID: MessageID, content: string) => {
@@ -159,7 +160,6 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
 
     const handleChange = React.useCallback(
         (value: string) => {
-            invariant(draft, "draft not found")
             return match(value)
                 .with("", () => {
                     void deleteDraft(chatID)
@@ -167,12 +167,12 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
                 .with(P.string, () => {
                     void setDraft({
                         content: value,
-                        messageID: draft.messageID,
+                        messageID,
                     })
                 })
                 .exhaustive()
         },
-        [chatID, deleteDraft, draft, setDraft],
+        [chatID, deleteDraft, messageID, setDraft],
     )
 
     useHotkeys(
@@ -190,10 +190,13 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
             if (!trimmedContent) {
                 return
             }
-            evt.preventDefault()
-            await deleteDraft(chatID)
 
-            await draft.messageID.match({
+            evt.preventDefault()
+
+            await deleteDraft(chatID)
+            setKey((prev) => prev + 1)
+
+            await messageID.match({
                 None: async () => {
                     await onMessageCreate(trimmedContent)
                 },
@@ -201,8 +204,6 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
                     await updateMessage(messageID, trimmedContent)
                 },
             })
-
-            setKey((prev) => prev + 1)
         },
         {
             enableOnContentEditable: true,
