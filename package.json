@@ -40,7 +40,6 @@
         "@swan-io/boxed": "1.0.2",
         "@swan-io/chicane": "1.4.1",
         "@total-typescript/ts-reset": "0.4.2",
-        "@uiw/react-codemirror": "4.21.7",
         "bind-event-listener": "3.0.0",
         "clsx": "1.2.1",
         "cm6-theme-basic-light": "0.2.0",
@@ -72,6 +71,7 @@
         "remark-breaks": "3.0.3",
         "remark-gfm": "3.0.1",
         "remark-math": "5.1.1",
+        "rodemirror": "2.0.0",
         "rsup-progress": "3.1.1",
         "rxjs": "7.8.1",
         "short-unique-id": "4.4.4",
@@ -127,6 +127,8 @@
     "//": "dedupe packages for pnpm",
     "pnpm": {
         "overrides": {
+            "@mantine/core": "6.0.14",
+            "@mantine/hooks": "6.0.14",
             "highlight.js": "latest",
             "@codemirror/lang-markdown": "latest",
             "@codemirror/language-data": "latest",

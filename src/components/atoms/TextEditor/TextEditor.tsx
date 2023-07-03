@@ -1,14 +1,12 @@
 // import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 // import { languages } from "@codemirror/language-data"
-import { EditorView } from "@codemirror/view"
-import { useDebouncedEffect } from "@react-hookz/web"
-import type { BasicSetupOptions, ReactCodeMirrorRef } from "@uiw/react-codemirror"
-import CodeMirror from "@uiw/react-codemirror"
+import { EditorView, placeholder } from "@codemirror/view"
 import clsx from "clsx"
 import { basicLight } from "cm6-theme-basic-light"
+import { minimalSetup } from "codemirror"
 import * as React from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import invariant from "tiny-invariant"
+import CodeMirror from "rodemirror"
 
 import { noop } from "@/lib/utils"
 
@@ -16,120 +14,55 @@ import * as css from "./styles.css"
 
 type TextEditorProps = {
     className?: string
-    value?: string
+    defaultValue?: string
     placeholder?: string
-    onFocus?: () => void
-    onBlur?: () => void
     onChange?: (value: string) => void
-}
-
-const setupOptions: BasicSetupOptions = {
-    lineNumbers: false,
-    highlightActiveLineGutter: false,
-    foldGutter: false,
-    // dropCursor?: boolean;
-    allowMultipleSelections: true,
-    // indentOnInput?: boolean;
-    bracketMatching: true,
-    closeBrackets: false,
-    autocompletion: false,
-    rectangularSelection: true,
-    crosshairCursor: true,
-    highlightActiveLine: false,
-    highlightSelectionMatches: false,
-    closeBracketsKeymap: false,
-    searchKeymap: false,
-    foldKeymap: false,
-    completionKeymap: false,
-    lintKeymap: false,
-    tabSize: 2,
 }
 
 const defaultPlaceholder = "Ctrl+Enter to send, Enter to add new line"
 
 // const extensions = [markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]
-const extensions = [EditorView.lineWrapping]
 
 const TextEditor = React.memo(
     ({
         className,
-        onBlur,
         onChange = noop,
-        onFocus,
-        placeholder = defaultPlaceholder,
-        value = "",
+        placeholder: placeholderText = defaultPlaceholder,
+        defaultValue = "",
     }: TextEditorProps) => {
-        const ref = React.useRef<ReactCodeMirrorRef>(null)
+        const ref = React.useRef(null)
+        const editorViewRef = React.useRef<EditorView>()
+        const value = React.useRef(defaultValue).current
 
-        const defaultValue = React.useRef(value).current
-
-        useDebouncedEffect(
-            () => {
-                const view = ref.current?.view
-
-                if (!view || !value) {
-                    return
-                }
-
-                const hasFocus = ref.current.view?.hasFocus
-
-                if (hasFocus) {
-                    return
-                }
-
-                const { state } = view
-
-                if (state.doc.toString() === value) {
-                    return
-                }
-
-                view.dispatch({
-                    changes: {
-                        from: 0,
-                        to: state.doc.length,
-                        insert: value,
-                    },
-                })
-            },
-            [value],
-            100,
+        const extensions = React.useMemo(
+            () => [minimalSetup, basicLight, placeholder(placeholderText), EditorView.lineWrapping],
+            [placeholderText],
         )
 
         return (
             <div className={clsx(css.root, className)}>
-                <ErrorBoundary fallback={<div>Something went wrong</div>}>
-                    <CodeMirror
-                        id="markdown-editor"
-                        ref={ref}
-                        className={css.content}
-                        aria-label="markdown-editor"
-                        width="100%"
-                        maxHeight="320px"
-                        placeholder={placeholder}
-                        theme={basicLight}
-                        basicSetup={setupOptions}
-                        extensions={extensions}
-                        onFocus={onFocus}
-                        onBlur={onBlur}
-                        onCompositionEnd={() => {
-                            const view = ref.current?.view
-                            invariant(view, "view is not defined")
-                            onChange(view.state.doc.toString())
-                        }}
-                        value={defaultValue}
-                        onChange={(value, viewUpdate) => {
-                            if (!viewUpdate.docChanged) {
-                                return
-                            }
+                <div className={css.content}>
+                    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+                        <CodeMirror
+                            ref={ref}
+                            aria-label="text-editor"
+                            extensions={extensions}
+                            value={value}
+                            onEditorViewChange={(view) => {
+                                editorViewRef.current = view
+                            }}
+                            onUpdate={(view) => {
+                                if (!view.docChanged) {
+                                    return
+                                }
 
-                            if (viewUpdate.view.composing) {
-                                return
-                            }
+                                const value = view.state.doc.toString()
 
-                            onChange(value)
-                        }}
-                    />
-                </ErrorBoundary>
+                                onChange(value)
+                            }}
+                        />
+                    </ErrorBoundary>
+                </div>
             </div>
         )
     },

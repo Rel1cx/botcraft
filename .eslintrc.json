@@ -3,6 +3,7 @@
     "extends": ["with-tsconfig"],
     "rules": {
         "sonarjs/no-duplicate-string": "warn",
+        "import/namespace": "off",
         "import/no-default-export": "off",
         "react/no-unused-prop-types": "off",
         "@typescript-eslint/no-redeclare": "off",

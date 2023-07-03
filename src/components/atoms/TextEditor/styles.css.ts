@@ -13,5 +13,6 @@ export const content = style({
 })
 
 globalStyle(`${content} .cm-editor .cm-scroller`, {
+    maxHeight: "320px",
     fontFamily: `${vars.font.family.fontFamilyBody}`,
 })

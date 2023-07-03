@@ -20,7 +20,7 @@ const ChatMessageEditor = React.memo(
                         opacity: focused ? 1 : 0,
                     }}
                 /> */}
-                <TextEditor className={css.content} value={content} onChange={onChange} />
+                <TextEditor className={css.content} defaultValue={content} onChange={onChange} />
             </div>
         )
     }),
