@@ -17,8 +17,8 @@ type ChatListProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
     onItemClick?: (id: string) => void
     onItemAdd?: () => void
     onItemRemove?: (id: string) => void
-    onItemPin?: (id: string) => void
-    onItemUnpin?: (id: string) => void
+    // onItemPin?: (id: string) => void
+    // onItemUnpin?: (id: string) => void
     renderItemIcon?: (id: string) => React.ReactNode
 }
 
@@ -53,9 +53,9 @@ const ChatList = React.memo(
         newItemName = "New item",
         onItemAdd,
         onItemClick,
-        onItemPin,
         onItemRemove,
-        onItemUnpin,
+        // onItemPin,
+        // onItemUnpin,
         renderItemIcon,
         selected,
     }: ChatListProps) => {

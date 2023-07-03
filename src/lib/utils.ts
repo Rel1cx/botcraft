@@ -27,6 +27,7 @@ export type Narrow<TType> =
           [K in keyof TType]: Narrow<TType[K]>
       }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const noop = () => {}
 
 export const identity = <T>(a: T) => a

@@ -160,7 +160,7 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
 
     const handleChange = React.useCallback(
         (value: string) => {
-            return match(value)
+            match(value)
                 .with("", () => {
                     void deleteDraft(chatID)
                 })
@@ -325,7 +325,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 confirmLabel="Remove"
                 danger
                 open={removing.isSome()}
-                onClose={() => setRemoving(O.None())}
+                onClose={() => {
+                    setRemoving(O.None())
+                }}
                 onConfirm={async () => {
                     if (removing.isNone()) {
                         return

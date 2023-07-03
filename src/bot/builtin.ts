@@ -1,7 +1,6 @@
 import { Result } from "@swan-io/boxed"
 import { compose } from "rambda"
-import type { Observable } from "rxjs"
-import { from, map, mergeMap, timeout } from "rxjs"
+import { from, map, mergeMap, type Observable, timeout } from "rxjs"
 
 import { getChatCompletion, getChatCompletionStream, getContentFromEventSource, parseEventSource } from "@/api"
 import chatgptLogo from "@/assets/chatgpt_logo.svg"

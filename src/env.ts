@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { Env } from "./zod"
 
 export const { DEV, PROD } = Env.parse(import.meta.env)

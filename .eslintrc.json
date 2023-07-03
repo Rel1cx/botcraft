@@ -2,13 +2,12 @@
     "root": true,
     "extends": ["with-tsconfig"],
     "rules": {
-        "new-cap": "off",
-        "camelcase": "off",
-        "unicorn/prefer-spread": "off",
+        "sonarjs/no-duplicate-string": "warn",
         "import/no-default-export": "off",
-        "@typescript-eslint/ban-types": "off",
+        "react/no-unused-prop-types": "off",
         "@typescript-eslint/no-redeclare": "off",
-        "tailwindcss/no-custom-classname": "off"
+        "tailwindcss/no-custom-classname": "off",
+        "security/detect-object-injection": "off"
     },
     "overrides": [
         {

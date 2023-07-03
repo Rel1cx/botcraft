@@ -165,7 +165,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             invariant(draft, "bot is undefined")
-                                            draft.options.temperature = Number.parseFloat(value.toPrecision(2))
+                                            draft.options.temperature = value
                                         }),
                                     )
                                 }}
