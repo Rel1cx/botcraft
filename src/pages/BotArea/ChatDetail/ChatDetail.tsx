@@ -160,19 +160,12 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
 
     const handleChange = React.useCallback(
         (value: string) => {
-            match(value)
-                .with("", () => {
-                    void deleteDraft(chatID)
-                })
-                .with(P.string, () => {
-                    void setDraft({
-                        content: value,
-                        messageID,
-                    })
-                })
-                .exhaustive()
+            void setDraft({
+                content: value,
+                messageID,
+            })
         },
-        [chatID, deleteDraft, messageID, setDraft],
+        [messageID, setDraft],
     )
 
     useHotkeys(

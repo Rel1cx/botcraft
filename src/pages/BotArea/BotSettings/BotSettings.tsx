@@ -228,7 +228,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                         <Input.Wrapper label="System Message">
                             <TextEditor
                                 className={css.textarea}
-                                defaultValue={bot.systemMessage}
+                                value={bot.systemMessage}
                                 placeholder="Write a system message"
                                 onChange={(value) => {
                                     void setBot(
@@ -244,7 +244,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             <TextEditor
                                 className={css.textarea}
                                 placeholder="Write an intro message"
-                                defaultValue={bot.intro}
+                                value={bot.intro}
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
