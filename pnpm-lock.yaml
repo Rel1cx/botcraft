@@ -247,8 +247,8 @@ devDependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-with-tsconfig:
-    specifier: 1.6.7
-    version: 1.6.7(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
+    specifier: 1.6.6
+    version: 1.6.6(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
   eslint-plugin-jsx-a11y:
     specifier: 6.7.1
     version: 6.7.1(eslint@8.44.0)
@@ -3244,7 +3244,7 @@ packages:
     dependencies:
       ansi-align: 3.0.1
       camelcase: 7.0.1
-      chalk: 5.0.1
+      chalk: 5.3.0
       cli-boxes: 3.0.0
       string-width: 5.1.2
       type-fest: 2.19.0
@@ -4075,8 +4075,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /eslint-config-relicx@0.0.7(eslint-plugin-i@2.27.5-3)(eslint@8.44.0)(tailwindcss@3.3.2):
-    resolution: {integrity: sha512-9aE5orbxCxe6bKCvtl89yG7IEHAC3dp/LFwfMiPHwSu7SVyJP3OdkwC82P8IWJXWDZ5RW/tjPuOgNqRmAaZL4g==}
+  /eslint-config-relicx@0.0.5(eslint-plugin-i@2.27.5-3)(eslint@8.44.0)(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-wH7wnP3aWtSVTzSrqB80cpdsr+yki0C18217PzARDZ65w9KGVK45UDr0I28fO9SK9BR2zyAzFRsw6YRqNFc+tQ==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4141,8 +4141,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /eslint-config-with-tsconfig@1.6.7(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
-    resolution: {integrity: sha512-XfWlAWB5zsmoY3nE8gH6DNKhhEF7nDOVRvbv7W+wh1Pa/5unOPJvCUSE9LLi5BM0aGRjn4A5p1vWd5+KXwYipg==}
+  /eslint-config-with-tsconfig@1.6.6(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-92oKY92bWxTsaIBKrGH0xiEBaQlzMFTkSYXkBTurkCMxxdBbtGGC3bc5LiiPIhVTr7i0fDDbdJgPxEs/sxrn1A==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4150,7 +4150,7 @@ packages:
     dependencies:
       consola: 3.2.2
       eslint: 8.44.0
-      eslint-config-relicx: 0.0.7(eslint-plugin-i@2.27.5-3)(eslint@8.44.0)(tailwindcss@3.3.2)
+      eslint-config-relicx: 0.0.5(eslint-plugin-i@2.27.5-3)(eslint@8.44.0)(tailwindcss@3.3.2)
       eslint-plugin-import: /eslint-plugin-i@2.27.5-3(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)
       eslint-plugin-regexp: 1.15.0(eslint@8.44.0)
       eslint-plugin-sort: 2.10.0(eslint@8.44.0)(typescript@5.1.6)
