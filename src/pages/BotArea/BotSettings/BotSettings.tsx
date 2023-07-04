@@ -1,6 +1,7 @@
 import { Button } from "@ariakit/react"
 import { Input, Select, Slider, TextInput } from "@mantine/core"
 import { ArrowLeft } from "@phosphor-icons/react"
+import { from, toNumber } from "dnum"
 import { produce } from "immer"
 import { useAtom } from "jotai"
 import * as React from "react"
@@ -165,7 +166,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             invariant(draft, "bot is undefined")
-                                            draft.options.temperature = value
+                                            draft.options.temperature = toNumber(from(value), 1)
                                         }),
                                     )
                                 }}
@@ -182,7 +183,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             invariant(draft, "bot is undefined")
-                                            draft.options.max_tokens = value
+                                            draft.options.max_tokens = toNumber(from(value), 0)
                                         }),
                                     )
                                 }}
@@ -199,7 +200,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             invariant(draft, "bot is undefined")
-                                            draft.options.frequency_penalty = Number.parseFloat(value.toPrecision(2))
+                                            draft.options.frequency_penalty = toNumber(from(value), 1)
                                         }),
                                     )
                                 }}
@@ -216,7 +217,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             invariant(draft, "bot is undefined")
-                                            draft.options.presence_penalty = Number.parseFloat(value.toPrecision(2))
+                                            draft.options.presence_penalty = toNumber(from(value), 1)
                                         }),
                                     )
                                 }}

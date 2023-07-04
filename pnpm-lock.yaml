@@ -99,6 +99,9 @@ dependencies:
   deep-weak-map:
     specifier: 1.1.0
     version: 1.1.0
+  dnum:
+    specifier: 2.7.0
+    version: 2.7.0
   framer-motion:
     specifier: 10.12.18
     version: 10.12.18(react-dom@18.2.0)(react@18.2.0)
@@ -3745,6 +3748,12 @@ packages:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
     dev: true
 
+  /dnum@2.7.0:
+    resolution: {integrity: sha512-A+B7s8AbIMF6PkOSgS6CakvI+iLX5G4kdcPIinzZnTNHWLD/+pbQBNeEsAYVAP3kzIG5qcC/LbbdKKs/q65BPw==}
+    dependencies:
+      from-exponential: 1.1.1
+    dev: false
+
   /doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
@@ -4754,6 +4763,10 @@ packages:
       tslib: 2.6.0
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
+    dev: false
+
+  /from-exponential@1.1.1:
+    resolution: {integrity: sha512-VBE7f5OVnYwdgB3LHa+Qo29h8qVpxhVO9Trlc+AWm+/XNAgks1tAwMFHb33mjeiof77GglsJzeYF7OqXrROP/A==}
     dev: false
 
   /from@0.1.7:

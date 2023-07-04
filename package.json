@@ -48,6 +48,7 @@
         "core-js": "3.31.0",
         "date-fns": "2.30.0",
         "deep-weak-map": "1.1.0",
+        "dnum": "2.7.0",
         "framer-motion": "10.12.18",
         "highlight.js": "11.8.0",
         "idb-keyval": "6.2.1",
