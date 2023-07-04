@@ -1,12 +1,8 @@
-import { createGlobalTheme, createVar } from "@vanilla-extract/css"
-
-export const desktopBreakpoint = createVar()
-export const lineHeightRelaxed = createVar()
+import { createGlobalTheme } from "@vanilla-extract/css"
 
 export const vars = createGlobalTheme(":root", {
     desktopBreakpoint: "768px",
     contentWidth: "1024px",
-    floatingContentWidth: "calc(100% - 2rem)",
     colors: {
         white: "#fff",
         black: "#1a1a1a",

@@ -7,6 +7,8 @@
         "import/no-default-export": "off",
         "react/no-unused-prop-types": "off",
         "@typescript-eslint/no-redeclare": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/explicit-member-accessibility": "off",
         "tailwindcss/no-custom-classname": "off",
         "security/detect-object-injection": "off"
     },

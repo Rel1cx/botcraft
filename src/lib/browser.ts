@@ -1,4 +1,3 @@
-import { bind } from "bind-event-listener"
 import { parse, stringify } from "telejson"
 import { match } from "ts-pattern"
 
@@ -10,22 +9,8 @@ export const waitDOMContentLoaded = () => {
             .with("interactive", resolve)
             .with("complete", resolve)
             .otherwise(() => {
-                window.addEventListener("DOMContentLoaded", resolve)
+                window.addEventListener("DOMContentLoaded", resolve, { once: true })
             })
-    })
-}
-
-export const autoBlur = (element: HTMLElement | Document) => {
-    return bind(element, {
-        type: "keydown",
-        listener: (evt) => {
-            if (evt.key === "Escape") {
-                const { activeElement } = document
-                if (activeElement instanceof HTMLElement) {
-                    activeElement.blur()
-                }
-            }
-        },
     })
 }
 
@@ -35,11 +20,6 @@ export const isContainTarget = <T extends EventTarget | null>(target: T, contain
     }
 
     return container.contains(target)
-}
-
-export const wait = (ms: number) => {
-    // eslint-disable-next-line no-promise-executor-return
-    return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export const localStorageGetItem = <T>(key: string, defaultValue: T): T => {

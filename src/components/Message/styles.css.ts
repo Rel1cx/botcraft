@@ -10,13 +10,9 @@ export const baseRoot = style({
     justifyContent: "space-between",
     alignItems: "center",
 
-    vars: {
-        "--action-button-opacity": "0",
-    },
-
     ":hover": {
         vars: {
-            "--action-button-opacity": "1",
+            "--tooltip-opacity": "1",
         },
     },
 })
@@ -77,7 +73,7 @@ export const actionButton = style([
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "9999px",
-        opacity: "var(--action-button-opacity)",
+        opacity: "var(--tooltip-opacity)",
         transition: "all 120ms ease-in-out",
 
         ":hover": {
