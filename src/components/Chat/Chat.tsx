@@ -9,6 +9,7 @@ import type { ChatItem } from "@/types"
 import type { ChatID, MessageID } from "@/zod/id"
 import { makeMessageID } from "@/zod/id"
 
+import MessageIndicator from "../MessageIndicator/MessageIndicator"
 import * as css from "./styles.css"
 
 const Message = React.lazy(() => import("@/components/Message/Message"))
@@ -92,6 +93,7 @@ const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: 
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                 {renderMessage?.(id)}
+                                {generatingMessageID.toNull() === id && <MessageIndicator status="sending" />}
                             </m.div>
                         ))}
                     </AnimatePresence>

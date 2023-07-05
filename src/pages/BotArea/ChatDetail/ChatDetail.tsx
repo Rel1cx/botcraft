@@ -38,7 +38,7 @@ const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"))
 
 const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"))
 
-const ChatMessageEditor = React.lazy(() => import("@/components/ChatMessageEditor/ChatMessageEditor"))
+const MessageEditor = React.lazy(() => import("@/components/MessageEditor/MessageEditor"))
 
 type ChatDetailProps = {
     botName: string
@@ -113,12 +113,12 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
     )
 })
 
-type ChatMessageEditorPresenterProps = {
+type MessageEditorPresenterProps = {
     botName: string
     chatID: ChatID
 }
 
-const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageEditorPresenterProps) => {
+const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPresenterProps) => {
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
     const deleteDraft = useSetAtom(draftsDb.delete)
     const addMessage = useSetAtom(addMessageAtom)
@@ -210,7 +210,7 @@ const ChatMessageEditorPresenter = React.memo(({ botName, chatID }: ChatMessageE
         },
     )
 
-    return <ChatMessageEditor key={key} ref={messageEditorRef} content={content} onChange={handleChange} />
+    return <MessageEditor key={key} ref={messageEditorRef} content={content} onChange={handleChange} />
 })
 
 type AsideProps = {
@@ -318,7 +318,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 renderMessage={(id: MessageID) => <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />}
             />
             <div className={css.bottom}>
-                <ChatMessageEditorPresenter botName={botName} chatID={chatID} />
+                <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
             <ConfirmDialog
                 title="Remove chat"

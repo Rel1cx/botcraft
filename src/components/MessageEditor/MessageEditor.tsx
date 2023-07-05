@@ -5,13 +5,13 @@ import { noop } from "@/lib/utils"
 import TextEditor from "../atoms/TextEditor/TextEditor"
 import * as css from "./styles.css"
 
-type ChatMessageEditorProps = {
+type MessageEditorProps = {
     content?: string
     onChange?: (content: string) => void
 }
 
-const ChatMessageEditor = React.memo(
-    React.forwardRef<HTMLInputElement, ChatMessageEditorProps>(({ content = "", onChange = noop }, ref) => {
+const MessageEditor = React.memo(
+    React.forwardRef<HTMLInputElement, MessageEditorProps>(({ content = "", onChange = noop }, ref) => {
         return (
             <div ref={ref} className={css.root}>
                 {/* <div
@@ -26,4 +26,4 @@ const ChatMessageEditor = React.memo(
     }),
 )
 
-export default ChatMessageEditor
+export default MessageEditor
