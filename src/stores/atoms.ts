@@ -72,9 +72,11 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
 
     await set(chatsDb.delete, id)
 
-    if (isLastChat) {
-        await set(addChatAtom, botName)
+    if (!isLastChat) {
+        return
     }
+
+    await set(addChatAtom, botName)
 })
 
 export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: MessageData) => {

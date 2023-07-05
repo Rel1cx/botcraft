@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes } from "react"
 import React, { useState } from "react"
+import { match } from "ts-pattern"
 
 export type Props = InputHTMLAttributes<HTMLInputElement>
 
@@ -25,23 +26,25 @@ export const withComposition = <T extends Props>(WrappedComponent: React.Compone
             const { currentTarget, type } = e
             const { value } = currentTarget
 
-            if (type === "compositionstart") {
-                composing.current = true
-                return
-            }
-            if (type === "compositionend") {
-                composing.current = false
-                setText(value)
-                props.onChange?.(e)
-            }
+            match(type)
+                .with("compositionstart", () => {
+                    composing.current = true
+                })
+                .with("compositionend", () => {
+                    composing.current = false
+                    setText(value)
+                    props.onChange?.(e)
+                })
+                .run()
         }
 
         const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
             setText(e.currentTarget.value)
 
-            if (!composing.current) {
-                props.onChange?.(e)
+            if (composing.current) {
+                return
             }
+            props.onChange?.(e)
         }
 
         const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {

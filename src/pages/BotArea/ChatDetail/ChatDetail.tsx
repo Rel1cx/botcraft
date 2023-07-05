@@ -288,9 +288,10 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     selectedChatID={chatID}
                     onAddChatClick={onAddChatClick}
                     onRemoveChatClick={(id) => {
-                        if (isChatID(id)) {
-                            setRemoving(O.Some(id))
+                        if (!isChatID(id)) {
+                            return
                         }
+                        setRemoving(O.Some(id))
                     }}
                 />
             }

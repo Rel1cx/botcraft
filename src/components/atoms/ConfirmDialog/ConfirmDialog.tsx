@@ -31,9 +31,10 @@ const ConfirmDialog = React.memo(
         const dialog = useDialogStore({
             open,
             setOpen(open) {
-                if (!open) {
-                    onClose?.()
+                if (open) {
+                    return
                 }
+                onClose?.()
             },
         })
         return (

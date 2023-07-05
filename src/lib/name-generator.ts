@@ -16,6 +16,7 @@ export const makeNameGenerator = (size = 25) => {
             name = getRandomWords()
         }
 
+        // eslint-disable-next-line functional/no-conditional-statements
         if (generated.size > size) {
             generated.delete(generated.values().next().value)
         }

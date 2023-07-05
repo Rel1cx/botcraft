@@ -1,5 +1,3 @@
-/* eslint-disable functional/readonly-type */
-
 export type Remap<T> = {
     [P in keyof T]: T[P]
 } & {}

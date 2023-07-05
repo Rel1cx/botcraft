@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-this-expressions */
 import { replaceUnsafe } from "@swan-io/chicane"
 import * as React from "react"
 

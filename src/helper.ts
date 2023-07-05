@@ -7,9 +7,10 @@ export const installAutoBlur = (target: HTMLElement | Window = window) => {
             Escape: (event) => {
                 event.preventDefault()
                 const { activeElement } = document
-                if (activeElement instanceof HTMLElement) {
-                    activeElement.blur()
+                if (!(activeElement instanceof HTMLElement)) {
+                    return
                 }
+                activeElement.blur()
             },
         },
         { event: "keydown" },
