@@ -23,6 +23,12 @@ export const sending = style({
     gap: "0.5rem",
 })
 
+export const failed = style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+})
+
 export const dot = style({
     height: "0.5rem",
     width: "0.5rem",
