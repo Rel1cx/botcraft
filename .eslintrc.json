@@ -8,7 +8,12 @@
         "react/no-unused-prop-types": "off",
         "@typescript-eslint/no-redeclare": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/explicit-member-accessibility": "off",
+        "functional/no-expression-statements": "off",
+        "functional/functional-parameters": "off",
+        "functional/prefer-immutable-types": "off",
+        "functional/no-return-void": "off",
+        "functional/no-mixed-types": "off",
+        "functional/no-classes": "off",
         "tailwindcss/no-custom-classname": "off",
         "security/detect-object-injection": "off"
     },

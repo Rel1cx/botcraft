@@ -10,7 +10,7 @@ export type ConfigManagerProps<T> = {
 }
 
 export class ConfigManager<T> {
-    parse: (data: unknown) => T
+    public parse: (data: unknown) => T
 
     #store: UseStore
 
@@ -19,32 +19,32 @@ export class ConfigManager<T> {
         this.parse = parse
     }
 
-    static make<T>(props: ConfigManagerProps<T>) {
+    public static make<T>(props: ConfigManagerProps<T>) {
         return new ConfigManager(props)
     }
 
-    async getConfig<K extends Extract<keyof T, string>>(key: K) {
+    public async getConfig<K extends Extract<keyof T, string>>(key: K) {
         const val: T[K] | undefined = await get(key, this.#store)
         return O.fromNullable(val)
     }
 
-    setConfig<K extends Extract<keyof T, string>>(key: K, value: T[K]) {
+    public setConfig<K extends Extract<keyof T, string>>(key: K, value: T[K]) {
         return R.fromPromise<void, Error>(set(key, value, this.#store))
     }
 
-    setConfigMany(data: Partial<T>) {
+    public setConfigMany(data: Partial<T>) {
         return R.fromPromise<void, Error>(setMany(Object.entries(data), this.#store))
     }
 
-    deleteConfig<K extends Extract<keyof T, string>>(key: K) {
+    public deleteConfig<K extends Extract<keyof T, string>>(key: K) {
         return R.fromPromise<void, Error>(del(key, this.#store))
     }
 
-    deleteConfigMany(keys: Extract<keyof T, string>[]) {
+    public deleteConfigMany(keys: Extract<keyof T, string>[]) {
         return R.fromPromise<void, Error>(delMany(keys, this.#store))
     }
 
-    loadConfig() {
+    public loadConfig() {
         // eslint-disable-next-line unicorn/consistent-function-scoping
         const load = async () => {
             const keyList = await keys<string>(this.#store)
@@ -54,7 +54,7 @@ export class ConfigManager<T> {
         return R.fromPromise(load())
     }
 
-    resetConfig() {
+    public resetConfig() {
         return R.fromPromise<void, Error>(clear(this.#store))
     }
 }

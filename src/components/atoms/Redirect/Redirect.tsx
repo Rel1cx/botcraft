@@ -6,12 +6,12 @@ type RedirectProps = {
 }
 
 class Redirect extends React.Component<RedirectProps> {
-    override componentDidMount() {
+    public override componentDidMount() {
         const { to } = this.props
         replaceUnsafe(to)
     }
 
-    override render() {
+    public override render() {
         return null
     }
 }
