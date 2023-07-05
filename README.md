@@ -2,17 +2,20 @@
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FRel1cx%2Fbotcraft.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FRel1cx%2Fbotcraft?ref=badge_small)
 
-Local-first, customizable ChatGPT powered chatbot app.
+Local-first, customizable ChatGPT Web UI.
 
 🚧 Work in Progress 🚧
 
 ## TODO
 
-- [ ] Auto title
+- [x] Auto title
+- [x] Delete message
+- [x] Regenerate message
 - [ ] Token counting
-- [ ] Delete message
-- [ ] Copy message
-- [ ] Edit message
+- [ ] Share chat
+- [ ] Create custom bot
+- [ ] Export bot to file
+- [ ] Import bot from file
 
 ## Demo
 
