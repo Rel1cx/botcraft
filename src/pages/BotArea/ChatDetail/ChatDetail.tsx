@@ -1,3 +1,4 @@
+import { LoadingOverlay } from "@mantine/core"
 import { Chat as ChatIcon, ChatDots } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
 import { produce } from "immer"
@@ -11,7 +12,6 @@ import { match, P } from "ts-pattern"
 import type { MessageData } from "@/bot"
 import Icon from "@/components/atoms/Icon/Icon"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
-import Chat from "@/components/Chat/Chat"
 import { isContainTarget } from "@/lib/browser"
 import { Router } from "@/router"
 import {
@@ -31,6 +31,8 @@ import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { Layout } from "../Layout/Layout"
 import * as css from "./styles.css"
+
+const Chat = React.lazy(() => import("@/components/Chat/Chat"))
 
 const Message = React.lazy(() => import("@/components/Message/Message"))
 
@@ -210,7 +212,11 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
         },
     )
 
-    return <MessageEditor key={key} ref={messageEditorRef} content={content} onChange={handleChange} />
+    return (
+        <React.Suspense fallback={<LoadingOverlay visible />}>
+            <MessageEditor key={key} ref={messageEditorRef} content={content} onChange={handleChange} />
+        </React.Suspense>
+    )
 })
 
 type AsideProps = {
@@ -311,12 +317,16 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             }
         >
-            <Chat
-                className={css.content}
-                data={chat}
-                generatingMessageID={generatingMessageID}
-                renderMessage={(id: MessageID) => <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />}
-            />
+            <React.Suspense fallback={<LoadingOverlay visible />}>
+                <Chat
+                    className={css.content}
+                    data={chat}
+                    generatingMessageID={generatingMessageID}
+                    renderMessage={(id: MessageID) => (
+                        <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
+                    )}
+                />
+            </React.Suspense>
             <div className={css.bottom}>
                 <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>

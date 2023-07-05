@@ -43,33 +43,29 @@ const ChatGuard = React.memo(
 )
 
 const BotArea = ({ botName }: BotAreaProps) => {
-    const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings", "BotChatArchive"])
+    const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings"])
     const botList = useAtomValue(botListAtom)
-
-    const contentView = React.useMemo(
-        () =>
-            match(route)
-                .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
-                .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
-                .with({ name: "BotSettings" }, ({ params }) => <BotSettings botName={params.botName} />)
-                .with({ name: "BotChat" }, ({ params }) => {
-                    const { botName, chatID } = params
-                    if (!isChatID(chatID)) {
-                        return <Redirect to="/404" />
-                    }
-                    return (
-                        <ChatGuard botName={botName} chatID={chatID}>
-                            <ChatDetail botName={botName} chatID={chatID} />
-                        </ChatGuard>
-                    )
-                })
-                .otherwise(() => null),
-        [route],
-    )
 
     return (
         <RootLayout nav={<BotList items={botList} selected={botName} />}>
-            <React.Suspense>{contentView}</React.Suspense>
+            <React.Suspense>
+                {match(route)
+                    .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
+                    .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
+                    .with({ name: "BotSettings" }, ({ params }) => <BotSettings botName={params.botName} />)
+                    .with({ name: "BotChat" }, ({ params }) => {
+                        const { botName, chatID } = params
+                        if (!isChatID(chatID)) {
+                            return <Redirect to="/404" />
+                        }
+                        return (
+                            <ChatGuard botName={botName} chatID={chatID}>
+                                <ChatDetail botName={botName} chatID={chatID} />
+                            </ChatGuard>
+                        )
+                    })
+                    .otherwise(() => null)}
+            </React.Suspense>
         </RootLayout>
     )
 }

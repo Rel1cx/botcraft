@@ -15,7 +15,7 @@ import * as css from "./App.css"
 const BotArea = React.lazy(() => import("@/pages/BotArea/BotArea"))
 const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 
-const BotGuard = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
+const BotGuard = React.memo(({ botName, children }: { botName: string; children: React.ReactNode }) => {
     const [bot] = useBot(botName)
 
     if (!bot) {
@@ -23,7 +23,7 @@ const BotGuard = ({ botName, children }: { botName: string; children: React.Reac
     }
 
     return children
-}
+})
 
 const App = ({ locale }: { locale: Locales }) => {
     const route = Router.useRoute(["Home", "BotArea", "NotFound"])

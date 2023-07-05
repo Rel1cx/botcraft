@@ -17,7 +17,7 @@ export const Layout = ({ aside, asideHeader, children, header }: LayoutProps) =>
             </aside>
             <main className={css.main}>
                 <header className={css.header}>{header}</header>
-                {children}
+                <React.Suspense>{children}</React.Suspense>
             </main>
         </div>
     )
