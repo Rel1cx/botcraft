@@ -19,7 +19,7 @@ export const DEFAULT_INTRO = "Hello! How can I assist you today?"
 export const DEFAULT_SYSTEM_MESSAGE = ""
 
 export const DEFAULT_CHAT_TITLE_COMPLETION_PROMPT: Record<Locales, string> = {
-    "zh-CN": "为本次聊天生成一个简短的标题, 可以选一个合适的 emoji 开头\n只回复标题, 不要包含除标题外的任何其他文本",
     // eslint-disable-next-line max-len
-    en: "Generate a short title for this chat, you can choose a suitable emoji to start\nOnly reply with the title, do not include any other text except the title",
+    en: "Generate a short title for this chat\nOnly reply with the title, do not include any other text except the title",
+    "zh-CN": "为本次聊天生成一个简短的标题\n只回复标题, 不要包含除标题外的任何其他文本",
 }
