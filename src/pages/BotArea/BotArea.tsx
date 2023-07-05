@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai"
-import { useTransientAtom } from "jotai-game"
 import * as React from "react"
 import { match } from "ts-pattern"
 
@@ -30,17 +29,17 @@ const RedirectChat = React.memo(({ botName }: { botName: string }) => {
     return null
 })
 
-const ChatGuard = React.memo(
-    ({ botName, chatID, children }: { botName: string; chatID: string; children: React.ReactNode }) => {
-        const [getBot] = useTransientAtom(botsDb.item(botName))
+const ChatGuard = React.memo(({ botName, chatID }: { botName: string; chatID: string }) => {
+    const bot = useAtomValue(botsDb.item(botName))
 
-        if (!isChatID(chatID) || !getBot()?.chats.includes(chatID)) {
-            return <Redirect to="/404" />
-        }
+    const notFound = !isChatID(chatID) || !bot?.chats.includes(chatID)
 
-        return children
-    },
-)
+    if (notFound) {
+        return <Redirect to="/404" />
+    }
+
+    return <ChatDetail botName={botName} chatID={chatID} />
+})
 
 const BotArea = ({ botName }: BotAreaProps) => {
     const route = Router.useRoute(["BotRoot", "BotChat", "BotNewChat", "BotSettings"])
@@ -49,22 +48,19 @@ const BotArea = ({ botName }: BotAreaProps) => {
     return (
         <RootLayout nav={<BotList items={botList} selected={botName} />}>
             <React.Suspense>
-                {match(route)
-                    .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
-                    .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
-                    .with({ name: "BotSettings" }, ({ params }) => <BotSettings botName={params.botName} />)
-                    .with({ name: "BotChat" }, ({ params }) => {
-                        const { botName, chatID } = params
-                        if (!isChatID(chatID)) {
-                            return <Redirect to="/404" />
-                        }
-                        return (
-                            <ChatGuard botName={botName} chatID={chatID}>
-                                <ChatDetail botName={botName} chatID={chatID} />
-                            </ChatGuard>
-                        )
-                    })
-                    .otherwise(() => null)}
+                {React.useMemo(
+                    () =>
+                        match(route)
+                            .with({ name: "BotRoot" }, ({ params }) => <RedirectChat botName={params.botName} />)
+                            .with({ name: "BotNewChat" }, ({ params }) => <RedirectChat botName={params.botName} />)
+                            .with({ name: "BotSettings" }, ({ params }) => <BotSettings botName={params.botName} />)
+                            .with({ name: "BotChat" }, ({ params }) => {
+                                const { botName, chatID } = params
+                                return <ChatGuard botName={botName} chatID={chatID} />
+                            })
+                            .otherwise(() => null),
+                    [route],
+                )}
             </React.Suspense>
         </RootLayout>
     )

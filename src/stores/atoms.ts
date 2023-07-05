@@ -70,7 +70,7 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
         }
     })
 
-    await set(chatsDb.delete, id)
+    // await set(chatsDb.delete, id)
 
     if (!isLastChat) {
         return
