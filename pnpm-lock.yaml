@@ -111,17 +111,17 @@ dependencies:
     specifier: 10.0.2
     version: 10.0.2
   jotai:
-    specifier: 2.2.1
-    version: 2.2.1(react@18.3.0-canary-035a41c4e-20230704)
+    specifier: 2.2.2
+    version: 2.2.2(react@18.3.0-canary-035a41c4e-20230704)
   jotai-game:
     specifier: 0.1.0
-    version: 0.1.0(jotai@2.2.1)(react@18.3.0-canary-035a41c4e-20230704)
+    version: 0.1.0(jotai@2.2.2)(react@18.3.0-canary-035a41c4e-20230704)
   jotai-immer:
     specifier: 0.2.0
-    version: 0.2.0(immer@10.0.2)(jotai@2.2.1)(react@18.3.0-canary-035a41c4e-20230704)
+    version: 0.2.0(immer@10.0.2)(jotai@2.2.2)(react@18.3.0-canary-035a41c4e-20230704)
   jotai-minidb:
     specifier: 0.0.6
-    version: 0.0.6(jotai@2.2.1)
+    version: 0.0.6(jotai@2.2.2)
   katex:
     specifier: 0.16.8
     version: 0.16.8
@@ -5490,17 +5490,17 @@ packages:
     hasBin: true
     dev: true
 
-  /jotai-game@0.1.0(jotai@2.2.1)(react@18.3.0-canary-035a41c4e-20230704):
+  /jotai-game@0.1.0(jotai@2.2.2)(react@18.3.0-canary-035a41c4e-20230704):
     resolution: {integrity: sha512-Ey5tFXgmjc3dfW4xqxZa4k9xFTr2zMAiQXHW0PfyKGRi1tQzJTBoy70RMKNKJRj86G6Hf4oLZHkJbLdeHtXzFQ==}
     peerDependencies:
       jotai: '>=1.11.0'
       react: '>=17.0.0'
     dependencies:
-      jotai: 2.2.1(react@18.3.0-canary-035a41c4e-20230704)
+      jotai: 2.2.2(react@18.3.0-canary-035a41c4e-20230704)
       react: 18.3.0-canary-035a41c4e-20230704
     dev: false
 
-  /jotai-immer@0.2.0(immer@10.0.2)(jotai@2.2.1)(react@18.3.0-canary-035a41c4e-20230704):
+  /jotai-immer@0.2.0(immer@10.0.2)(jotai@2.2.2)(react@18.3.0-canary-035a41c4e-20230704):
     resolution: {integrity: sha512-hahK8EPiROS9RoNWmX/Z8rY9WkAijspX4BZ1O7umpcwI4kPNkbcCpu/PhiQ8FMcpEcF6KmbpbMpSSj/GFmo8NA==}
     peerDependencies:
       immer: '*'
@@ -5508,22 +5508,22 @@ packages:
       react: '>=17.0.0'
     dependencies:
       immer: 10.0.2
-      jotai: 2.2.1(react@18.3.0-canary-035a41c4e-20230704)
+      jotai: 2.2.2(react@18.3.0-canary-035a41c4e-20230704)
       react: 18.3.0-canary-035a41c4e-20230704
     dev: false
 
-  /jotai-minidb@0.0.6(jotai@2.2.1):
+  /jotai-minidb@0.0.6(jotai@2.2.2):
     resolution: {integrity: sha512-k78wEJw9ZxNTbprEduI18DKN4xg8YN/akShlI7noGWM9VxnvoZxCEhliTffbh1ZlafR/HWS+sXsZMQEuEqh7lQ==}
     peerDependencies:
       jotai: '>=1.10.0'
     dependencies:
       '@rocicorp/resolver': 1.0.0
       idb-keyval: 6.2.1
-      jotai: 2.2.1(react@18.3.0-canary-035a41c4e-20230704)
+      jotai: 2.2.2(react@18.3.0-canary-035a41c4e-20230704)
     dev: false
 
-  /jotai@2.2.1(react@18.3.0-canary-035a41c4e-20230704):
-    resolution: {integrity: sha512-Gz4tpbRQy9OiFgBwF9F7TieDn0UTE3C0IFSDuxHjOIvgn2tACH30UKz6p/wIlfoZROXSTCIxEvYEa7Y25WM+8g==}
+  /jotai@2.2.2(react@18.3.0-canary-035a41c4e-20230704):
+    resolution: {integrity: sha512-Cn8hnBg1sc5ppFwEgVGTfMR5WSM0hbAasd/bdAwIwTaum0j3OUPqBSC4tyk3jtB95vicML+RRWgKFOn6gtfN0A==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       react: '>=17.0.0'

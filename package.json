@@ -52,7 +52,7 @@
         "highlight.js": "11.8.0",
         "idb-keyval": "6.2.1",
         "immer": "10.0.2",
-        "jotai": "2.2.1",
+        "jotai": "2.2.2",
         "jotai-game": "0.1.0",
         "jotai-immer": "0.2.0",
         "jotai-minidb": "0.0.6",
