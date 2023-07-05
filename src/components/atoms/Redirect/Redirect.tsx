@@ -1,20 +1,25 @@
-/* eslint-disable functional/no-this-expressions */
-import { replaceUnsafe } from "@swan-io/chicane"
+import { replaceUnsafe, useLocation } from "@swan-io/chicane"
 import * as React from "react"
 
 type RedirectProps = {
     to: string
 }
 
-class Redirect extends React.Component<RedirectProps> {
-    public override componentDidMount() {
-        const { to } = this.props
-        replaceUnsafe(to)
-    }
+// Modified version of https://github.com/swan-io/chicane/blob/main/example/src/Redirect.tsx
+const Redirect = React.memo<RedirectProps>(
+    ({ to }) => {
+        const location = useLocation().toString()
 
-    public override render() {
+        React.useInsertionEffect(() => {
+            if (location === to) {
+                return
+            }
+            replaceUnsafe(to)
+        }, [location, to])
+
         return null
-    }
-}
+    },
+    () => false,
+)
 
 export default Redirect
