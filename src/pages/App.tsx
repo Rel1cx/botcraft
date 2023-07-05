@@ -15,14 +15,6 @@ import * as css from "./App.css"
 const BotArea = React.lazy(() => import("@/pages/BotArea/BotArea"))
 const NotFound = React.lazy(() => import("@/pages/NotFound/NotFound"))
 
-// const BotProvider = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
-//     const botStore = React.useMemo(() => botsStore.get(botName) ?? createStore(), [botName])
-
-//     useHydrateAtoms([[botNameAtom, botName]], { store: botStore })
-
-//     return <AtomProvider store={botStore}>{children}</AtomProvider>
-// }
-
 const BotGuard = ({ botName, children }: { botName: string; children: React.ReactNode }) => {
     const [bot] = useBot(botName)
 
