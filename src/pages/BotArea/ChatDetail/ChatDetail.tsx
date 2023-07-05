@@ -11,6 +11,7 @@ import { match, P } from "ts-pattern"
 
 import type { MessageData } from "@/bot"
 import Icon from "@/components/atoms/Icon/Icon"
+import Redirect from "@/components/atoms/Redirect/Redirect"
 import TitleInput from "@/components/atoms/TitleInput/TitleInput"
 import { isContainTarget } from "@/lib/browser"
 import { Router } from "@/router"
@@ -282,7 +283,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     )
 
     if (!chat) {
-        return null
+        return <Redirect to="/404" />
     }
 
     return (
