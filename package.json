@@ -135,8 +135,8 @@
             "@codemirror/language-data": "latest",
             "@codemirror/state": "latest",
             "@codemirror/view": "latest",
-            "react": "canary",
-            "react-dom": "canary",
+            "react": "18.2.0",
+            "react-dom": "18.2.0",
             "typescript": "latest"
         }
     }

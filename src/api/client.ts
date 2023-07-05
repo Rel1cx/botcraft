@@ -24,6 +24,8 @@ export const getChatCompletion = async (
                 json: {
                     messages,
                     ...options,
+                    // TODO: Remove this once token counting is implemented
+                    max_tokens: undefined,
                     stream: false,
                 },
             })
