@@ -115,28 +115,23 @@ const TextEditor = React.memo(
         return (
             <div className={clsx(css.root, className)}>
                 <ErrorBoundary fallback={<div>Something went wrong</div>}>
-                    {React.useMemo(
-                        () => (
-                            <MemoizedCodeMirror
-                                id="markdown-editor"
-                                ref={ref}
-                                className={css.content}
-                                aria-label="markdown-editor"
-                                width="100%"
-                                maxHeight="320px"
-                                placeholder={placeholder}
-                                theme={basicLight}
-                                basicSetup={setupOptions}
-                                extensions={extensions}
-                                onFocus={onFocus}
-                                onBlur={onBlur}
-                                onCompositionEnd={handleCompositionEnd}
-                                value={defaultValue}
-                                onChange={handleChange}
-                            />
-                        ),
-                        [defaultValue, handleChange, handleCompositionEnd, onBlur, onFocus, placeholder],
-                    )}
+                    <MemoizedCodeMirror
+                        id="markdown-editor"
+                        ref={ref}
+                        className={css.content}
+                        aria-label="markdown-editor"
+                        width="100%"
+                        maxHeight="320px"
+                        placeholder={placeholder}
+                        theme={basicLight}
+                        basicSetup={setupOptions}
+                        extensions={extensions}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onCompositionEnd={handleCompositionEnd}
+                        value={defaultValue}
+                        onChange={handleChange}
+                    />
                 </ErrorBoundary>
             </div>
         )
