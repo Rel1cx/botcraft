@@ -9,8 +9,11 @@ Local-first, customizable ChatGPT Web UI.
 ## TODO
 
 - [x] Auto title
+- [x] Delete chat
+- [x] Restore chat
 - [x] Delete message
 - [x] Regenerate message
+- [ ] Edit message
 - [ ] Token counting
 - [ ] Share chat
 - [ ] Create custom bot
