@@ -71,12 +71,39 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
     })
 
     // await set(chatsDb.delete, id)
+    await set(chatsDb.set, id, (prev) => {
+        invariant(prev, `Chat ${id} not found`)
+        return {
+            ...prev,
+            deleted: true,
+        }
+    })
 
     if (!isLastChat) {
         return
     }
 
     await set(addChatAtom, botName)
+})
+
+export const restoreChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
+    const bot = get(botsDb.item(botName))
+    invariant(bot, `Bot ${botName} not found`)
+    await set(chatsDb.set, id, (prev) => {
+        invariant(prev, `Chat ${id} not found`)
+        return {
+            ...prev,
+            deleted: false,
+        }
+    })
+
+    await set(botsDb.set, botName, (prev) => {
+        invariant(prev, `Bot ${botName} not found`)
+        return {
+            ...prev,
+            chats: [...prev.chats, id],
+        }
+    })
 })
 
 export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: MessageData) => {

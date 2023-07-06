@@ -1,6 +1,8 @@
-import { LoadingOverlay } from "@mantine/core"
+import { Button } from "@ariakit/react"
+import { LoadingOverlay, Overlay } from "@mantine/core"
 import { Chat as ChatIcon, ChatDots } from "@phosphor-icons/react"
 import { Option as O } from "@swan-io/boxed"
+import clsx from "clsx"
 import { produce } from "immer"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { sortBy } from "rambda"
@@ -21,12 +23,14 @@ import {
     chatCompletionTaskAtom,
     removeChatAtom,
     removeMessageAtom,
+    restoreChatAtom,
     updateChatCompletionAtom,
     useChat,
     useChats,
     useMessage,
 } from "@/stores"
 import { draftsDb, messagesDb } from "@/stores/db"
+import { tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
@@ -53,6 +57,24 @@ type ChatIconPresenterProps = {
     selected: boolean
 }
 
+type AsideProps = {
+    botName: string
+    selectedChatID: ChatID
+    onAddChatClick: () => void
+    onRemoveChatClick: (id: string) => void
+}
+
+type ChatMessagePresenterProps = {
+    botName: string
+    chatID: ChatID
+    id: MessageID
+}
+
+type MessageEditorPresenterProps = {
+    botName: string
+    chatID: ChatID
+}
+
 const ChatIconPresenter = React.memo(({ id, selected }: ChatIconPresenterProps) => {
     const [chat] = useChat(id)
 
@@ -71,12 +93,6 @@ const ChatIconPresenter = React.memo(({ id, selected }: ChatIconPresenterProps) 
     )
 })
 
-type ChatMessagePresenterProps = {
-    botName: string
-    chatID: ChatID
-    id: MessageID
-}
-
 const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePresenterProps) => {
     const [data] = useMessage(id)
     const setDraft = useSetAtom(draftsDb.set)
@@ -88,12 +104,12 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
     }, [chatID, id, removeMessage])
 
     const handleRegenerateClick = React.useCallback(() => {
-        match(data)
+        void match(data)
             .with({ role: "assistant" }, () => {
-                void updateChatCompletion(botName, chatID, id)
+                return updateChatCompletion(botName, chatID, id)
             })
             .with({ role: "user" }, (data) => {
-                void setDraft(chatID, {
+                return setDraft(chatID, {
                     messageID: O.Some(id),
                     content: data.content,
                 })
@@ -115,11 +131,6 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
         </React.Suspense>
     )
 })
-
-type MessageEditorPresenterProps = {
-    botName: string
-    chatID: ChatID
-}
 
 const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPresenterProps) => {
     const messageEditorRef = React.useRef<HTMLInputElement>(null)
@@ -220,13 +231,6 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
     )
 })
 
-type AsideProps = {
-    botName: string
-    selectedChatID: ChatID
-    onAddChatClick: () => void
-    onRemoveChatClick: (id: string) => void
-}
-
 const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: AsideProps) => {
     const chatsMeta = useChats(botName)
 
@@ -256,6 +260,7 @@ const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: A
 const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const addChat = useSetAtom(addChatAtom)
     const removeChat = useSetAtom(removeChatAtom)
+    const restoreChat = useSetAtom(restoreChatAtom)
     const chatCompletionTask = useAtomValue(chatCompletionTaskAtom)
     const [chat, setChat] = useChat(chatID)
     const [removing, setRemoving] = React.useState(O.None<ChatID>())
@@ -331,6 +336,17 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
             <div className={css.bottom}>
                 <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
+            {!!chat.deleted && (
+                <Overlay blur={2} opacity={0.15} center>
+                    <Button
+                        as="button"
+                        className={clsx(tappable, "rounded-xl bg-red-500 p-2 text-white")}
+                        onClick={() => restoreChat(botName, chatID)}
+                    >
+                        This chat has been deleted. Click to restore it.
+                    </Button>
+                </Overlay>
+            )}
             <ConfirmDialog
                 title="Remove chat"
                 description="Are you sure you want to remove this chat?"

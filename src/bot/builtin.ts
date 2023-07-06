@@ -47,6 +47,7 @@ export const initChat = () => (bot: Bot): ChatData => {
         intro: bot.intro,
         content: [firstMessage],
         updatedAt: Date.now(),
+        deleted: false,
     }
 }
 

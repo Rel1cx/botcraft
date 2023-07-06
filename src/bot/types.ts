@@ -2,6 +2,7 @@ import type { ChatCompletionOptions } from "@/api"
 import type {
     ContentProtocol,
     CreatableProtocol,
+    DeletableProtocol,
     IconProtocol,
     IDProtocol,
     NameProtocol,
@@ -18,7 +19,11 @@ export type MessageData = IDProtocol &
         id: MessageID
     }
 
-export type ChatData = (IDProtocol & TitleProtocol & CreatableProtocol & ContentProtocol<MessageData[]>) & {
+export type ChatData = (IDProtocol &
+    TitleProtocol &
+    CreatableProtocol &
+    DeletableProtocol &
+    ContentProtocol<MessageData[]>) & {
     id: ChatID
     intro: string
 }

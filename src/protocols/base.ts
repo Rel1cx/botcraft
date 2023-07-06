@@ -34,3 +34,7 @@ export type CreatableProtocol = {
     // createdBy: Role
     // updatedBy: Role
 }
+
+export type DeletableProtocol = {
+    deleted: boolean
+}
