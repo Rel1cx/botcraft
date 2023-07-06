@@ -43,7 +43,7 @@
         "clsx": "1.2.1",
         "cm6-theme-basic-light": "0.2.0",
         "codemirror": "6.0.1",
-        "core-js": "3.31.0",
+        "core-js": "3.31.1",
         "date-fns": "2.30.0",
         "deep-weak-map": "1.1.0",
         "dnum": "2.7.0",
