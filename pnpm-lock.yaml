@@ -236,8 +236,8 @@ devDependencies:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.24)
   consola:
-    specifier: 3.2.2
-    version: 3.2.2
+    specifier: 3.2.3
+    version: 3.2.3
   core-dts:
     specifier: 0.0.3
     version: 0.0.3
@@ -3500,8 +3500,8 @@ packages:
     resolution: {integrity: sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==}
     dev: true
 
-  /consola@3.2.2:
-    resolution: {integrity: sha512-r921u0vbF4lQsoIqYvSSER+yZLPQGijOHrYcWoCNVNBZmn/bRR+xT/DgerTze/nLD9TTGzdDa378TVhx7RDOYg==}
+  /consola@3.2.3:
+    resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
     dev: true
 
@@ -4060,7 +4060,7 @@ packages:
       eslint: '>=8.43.0'
       typescript: '>=5.1.6'
     dependencies:
-      consola: 3.2.2
+      consola: 3.2.3
       eslint: 8.44.0
       eslint-config-relicx: 0.0.10(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2)
       eslint-config-typed-fp: 5.1.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(typescript@5.1.6)

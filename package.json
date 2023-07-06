@@ -95,7 +95,7 @@
         "@vitejs/plugin-basic-ssl": "1.0.1",
         "@vitejs/plugin-react": "4.0.1",
         "autoprefixer": "10.4.14",
-        "consola": "3.2.2",
+        "consola": "3.2.3",
         "core-dts": "0.0.3",
         "dpdm": "3.13.1",
         "esbuild": "0.18.11",
