@@ -117,18 +117,23 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
             .run()
     }, [botName, chatID, data, id, setDraft, updateChatCompletion])
 
-    if (!data) {
-        return null
-    }
-
-    if (data.role === "system") {
-        return null
-    }
-
-    return (
-        <React.Suspense>
-            <Message data={data} onRemoveClick={handleRemoveClick} onRegenerateClick={handleRegenerateClick} />
-        </React.Suspense>
+    return React.useMemo(
+        () =>
+            match(data)
+                .with(P.nullish, () => null)
+                .with({ role: "system" }, () => null)
+                .otherwise((data) => {
+                    return (
+                        <React.Suspense>
+                            <Message
+                                data={data}
+                                onRemoveClick={handleRemoveClick}
+                                onRegenerateClick={handleRegenerateClick}
+                            />
+                        </React.Suspense>
+                    )
+                }),
+        [data, handleRegenerateClick, handleRemoveClick],
     )
 })
 
