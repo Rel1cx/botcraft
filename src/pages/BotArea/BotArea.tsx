@@ -25,7 +25,7 @@ const RedirectChat = React.memo(({ botName }: { botName: string }) => {
         return <Redirect to={`/bots/${botName}/${firstChat.id}`} />
     }
 
-    return null
+    return <Redirect to="/404" />
 })
 
 const BotArea = ({ botName }: BotAreaProps) => {

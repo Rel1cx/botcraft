@@ -64,5 +64,7 @@ export const withComposition = <T extends Props>(WrappedComponent: React.Compone
         })
     }
 
+    Inner.displayName = "inner"
+
     return Inner
 }
