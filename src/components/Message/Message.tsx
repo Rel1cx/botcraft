@@ -32,7 +32,7 @@ const Message = React.memo(
         return (
             <div className={clsx(css.root[role], className)} {...rest}>
                 <Markdown className={css.content[role]} content={deferredContent} />
-                {displayMenu && (
+                {displayMenu ? (
                     <MessageMenu
                         position="bottom-start"
                         onRemoveClick={onRemoveClick}
@@ -42,7 +42,7 @@ const Message = React.memo(
                             <Icon as={DotsThree} size={24} fill={vars.colors.black70} />
                         </Button>
                     </MessageMenu>
-                )}
+                ) : null}
             </div>
         )
     },

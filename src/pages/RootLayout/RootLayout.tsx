@@ -1,4 +1,4 @@
-import * as React from "react"
+import type * as React from "react"
 import { Toaster } from "react-hot-toast"
 
 import TailwindIndicator from "@/components/atoms/TailwindIndicator/TailwindIndicator"

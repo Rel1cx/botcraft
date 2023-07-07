@@ -251,8 +251,8 @@ devDependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-with-tsconfig:
-    specifier: 1.8.0
-    version: 1.8.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
+    specifier: 1.9.1
+    version: 1.9.1(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
   hkt-toolbelt:
     specifier: 0.22.0-beta.1
     version: 0.22.0-beta.1
@@ -3993,8 +3993,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /eslint-config-relicx@0.2.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2):
-    resolution: {integrity: sha512-BWHxLU72MAKlHNE0oltpkf75Csyp6KKmyM5Qa/aA4R/0A77G8pPcByoQQ/5WtdKAYN0rcAhRGADOjNETBp5KCg==}
+  /eslint-config-relicx@0.3.1(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-5k83LVC5ytAF57MsBxJnSCDUC2LEkYM0mjHRkiHJ2VRIgYB2GIsvp4VEfjWhLJaUpvNwT8JWMK6VsE6IJj5Fug==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4055,8 +4055,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /eslint-config-with-tsconfig@1.8.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
-    resolution: {integrity: sha512-GBIBdWkuTiM4ih9vs/kG5TGykoc/VzeDtQ3IccPehtapX4jee73rQuQJkLA6tYHmGxuv3fVJDR5nK09WtM/c6w==}
+  /eslint-config-with-tsconfig@1.9.1(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-P7FfUe8krHKW4tsj00KiQojnEcP58s8tcE+g7sKELSuvkHFCEEpAJpFqhVqFaGwWW2lY+hGNOvVm3aZlJc5gkQ==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4064,7 +4064,7 @@ packages:
     dependencies:
       consola: 3.2.3
       eslint: 8.44.0
-      eslint-config-relicx: 0.2.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2)
+      eslint-config-relicx: 0.3.1(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2)
       eslint-config-typed-fp: 5.1.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-case-police: 0.6.1(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-expect-type: 0.2.3(eslint@8.44.0)(typescript@5.1.6)
