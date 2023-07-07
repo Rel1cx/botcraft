@@ -232,6 +232,7 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
                         const messageEl = document.querySelector(`#${messageID}`)
                         invariant(messageEl, "message element not found")
                         messageEl.scrollIntoView({
+                            behavior: "smooth",
                             block: "end",
                         })
                     })
