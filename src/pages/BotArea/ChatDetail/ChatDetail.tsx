@@ -30,7 +30,7 @@ import {
     useMessage,
 } from "@/stores"
 import { draftsDb, messagesDb } from "@/stores/db"
-import { tappable } from "@/theme/base.css"
+import { floatingBox, tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id"
 
@@ -346,10 +346,10 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
             {!!chat.deleted && (
-                <Overlay blur={2} opacity={0.15} center>
+                <Overlay blur={2} opacity={0.08} center>
                     <Button
                         as="button"
-                        className={clsx(tappable, "rounded-xl bg-red-500 p-2 text-white")}
+                        className={clsx(tappable, floatingBox, "rounded-xl bg-red-500 p-2 text-white")}
                         onClick={() => restoreChat(botName, chatID)}
                     >
                         This chat has been deleted. Click to restore it.
