@@ -1,4 +1,5 @@
 import type { Option as O } from "@swan-io/boxed"
+import { getDefaultStore } from "jotai"
 import { MiniDb } from "jotai-minidb"
 
 import type { Bot, MessageData } from "@/bot/types"
@@ -32,3 +33,14 @@ export const draftsDb = new MiniDb<{
     name: "drafts",
     version: 0,
 })
+
+const store = getDefaultStore()
+
+export const suspendBeforeDbInit = async () => {
+    await Promise.all([
+        store.get(botsDb.suspendBeforeInit),
+        store.get(chatsDb.suspendBeforeInit),
+        store.get(messagesDb.suspendBeforeInit),
+        store.get(draftsDb.suspendBeforeInit),
+    ])
+}
