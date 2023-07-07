@@ -1,4 +1,4 @@
-/* Fix for Mantine Slider label rendering issue in webkit */
+// Fix for Mantine Slider label rendering issue in webkit
 .mantine-Slider-label {
     transform: translate3d(0, 0, 0);
 }
@@ -15,21 +15,4 @@
 .cm-editor.cm-focused {
     border: none;
     outline: none;
-}
-
-.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
-    color: #fff;
-    background: #2653eb
-}
-
-.p-tree .p-tree-container .p-treenode .p-treenode-content .p-tree-toggler:focus {
-    outline: 0.15rem solid #2653eb;
-    outline-offset: 0;
-    box-shadow: none
-}
-
-.p-tree .p-tree-container .p-treenode .p-treenode-content:focus {
-    outline: 0.15rem solid #2653eb;
-    outline-offset: -0.15rem;
-    box-shadow: none;
 }

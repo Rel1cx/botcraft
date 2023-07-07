@@ -23,6 +23,5 @@ export const plus = style([
         justifyContent: "center",
         alignItems: "center",
         color: vars.colors.overlay,
-        outlineWidth: "1.5px",
     },
 ])

@@ -48,7 +48,7 @@ const ConfirmDialog = React.memo(
                 {!isNil(description) && <DialogDescription>{description}</DialogDescription>}
                 <div className={css.buttons}>
                     {Boolean(confirmLabel) && (
-                        <DialogDismiss className={clsx(css.button, danger && css.danger)} onClick={onConfirm}>
+                        <DialogDismiss className={clsx(css.button, danger && "bg-red-500")} onClick={onConfirm}>
                             {confirmLabel}
                         </DialogDismiss>
                     )}

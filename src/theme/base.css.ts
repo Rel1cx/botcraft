@@ -18,5 +18,5 @@ export const tappable = style({
 })
 
 export const floatingBox = style({
-    outline: `2px solid ${vars.colors.overlay}`,
+    outline: `1.5px solid ${vars.colors.overlay}`,
 })

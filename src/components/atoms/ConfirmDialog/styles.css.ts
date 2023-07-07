@@ -1,42 +1,35 @@
 import { style } from "@vanilla-extract/css"
 
-import { floatingBox } from "@/theme/base.css"
+import { floatingBox, tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
-export const button = style({
-    display: "flex",
-    height: "2.5rem",
-    touchAction: "none",
-    userSelect: "none",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "0.25rem",
-    whiteSpace: "nowrap",
-    borderRadius: "0.5rem",
-    borderStyle: "none",
-    backgroundColor: "hsl(204 100% 40%)",
-    paddingLeft: "1rem",
-    paddingRight: "1rem",
-    fontSize: "1rem",
-    lineHeight: "1.5rem",
-    color: "hsl(204 20% 100%)",
-    textDecorationLine: "none",
+export const button = style([
+    tappable,
+    {
+        display: "flex",
+        height: "2.5rem",
+        touchAction: "none",
+        userSelect: "none",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.25rem",
+        whiteSpace: "nowrap",
+        borderRadius: "0.5rem",
+        borderStyle: "none",
+        paddingLeft: "1rem",
+        paddingRight: "1rem",
+        fontSize: "1rem",
+        lineHeight: "1.5rem",
+        color: "hsl(204 20% 100%)",
+        textDecorationLine: "none",
 
-    ":hover": {
-        backgroundColor: "hsl(204 100% 32%)",
-    },
-
-    ":focus-visible": {
-        outline: "2px solid hsl(204 100% 40%)",
-        outlineOffset: "2px",
-    },
-
-    "@media": {
-        "(min-width: 640px)": {
-            gap: "0.5rem",
+        "@media": {
+            "(min-width: 640px)": {
+                gap: "0.5rem",
+            },
         },
     },
-})
+])
 
 export const secondary = style({
     backgroundColor: "transparent",
@@ -44,14 +37,6 @@ export const secondary = style({
 
     ":hover": {
         backgroundColor: "hsl(204 10% 10% / 0.05)",
-    },
-})
-
-export const danger = style({
-    backgroundColor: "hsl(357 56% 50%)",
-
-    ":hover": {
-        backgroundColor: "hsl(357 56% 42%)",
     },
 })
 

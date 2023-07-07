@@ -13,7 +13,7 @@ import { generateChatCompletionStream, generateChatTitle, initChat, type Message
 import { DEFAULT_API_ENDPOINT } from "@/constants"
 import type { Locales } from "@/i18n/i18n-types"
 import { localStorageGetItem } from "@/lib/browser"
-import type { ChatCompletionTask, ChatItem } from "@/types"
+import type { ChatCompletionTask } from "@/types"
 import { type ChatID, makeMessageID, type MessageID } from "@/zod/id"
 
 import { botsDb, chatsDb, messagesDb } from "./db"
