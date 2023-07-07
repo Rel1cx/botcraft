@@ -150,13 +150,15 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
 
     const updateMessage = React.useCallback(
         (messageID: MessageID, content: string) => {
-            return setMessage(messageID, (prev) => {
-                invariant(prev, "message not found")
-                return {
-                    ...prev,
-                    content,
-                }
-            })
+            return setMessage(
+                messageID,
+                produce((draft) => {
+                    if (!draft) {
+                        return
+                    }
+                    draft.content = content
+                }),
+            )
         },
         [setMessage],
     )
@@ -320,7 +322,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     onChange={(evt) => {
                         void setChat(
                             produce((draft) => {
-                                invariant(draft, "Chat must be defined")
+                                if (!draft) {
+                                    return
+                                }
                                 draft.title = evt.target.value
                             }),
                         )

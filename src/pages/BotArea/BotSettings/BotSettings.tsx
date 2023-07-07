@@ -5,7 +5,6 @@ import { from, toNumber } from "dnum"
 import { produce } from "immer"
 import { useAtom } from "jotai"
 import * as React from "react"
-import invariant from "tiny-invariant"
 
 import type { Model } from "@/api"
 import type { MessageData } from "@/bot/types"
@@ -152,7 +151,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 }
                                 void setBot(
                                     produce((draft) => {
-                                        invariant(draft, "bot is undefined")
+                                        if (!draft) {
+                                            return
+                                        }
                                         draft.options.model = value
                                     }),
                                 )
@@ -165,7 +166,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.options.temperature = toNumber(from(value), 1)
                                         }),
                                     )
@@ -182,7 +185,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.options.max_tokens = toNumber(from(value), 0)
                                         }),
                                     )
@@ -199,7 +204,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.options.frequency_penalty = toNumber(from(value), 1)
                                         }),
                                     )
@@ -216,7 +223,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.options.presence_penalty = toNumber(from(value), 1)
                                         }),
                                     )
@@ -234,7 +243,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.systemMessage = value
                                         }),
                                     )
@@ -249,7 +260,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                 onChange={(value) => {
                                     void setBot(
                                         produce((draft) => {
-                                            invariant(draft, "bot is undefined")
+                                            if (!draft) {
+                                                return
+                                            }
                                             draft.intro = value
                                         }),
                                     )

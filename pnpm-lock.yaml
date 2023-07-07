@@ -251,8 +251,8 @@ devDependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-with-tsconfig:
-    specifier: 1.7.0
-    version: 1.7.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
+    specifier: 1.8.0
+    version: 1.8.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
   hkt-toolbelt:
     specifier: 0.22.0-beta.1
     version: 0.22.0-beta.1
@@ -419,16 +419,6 @@ packages:
       eslint-visitor-keys: 2.1.0
     dev: true
 
-  /@babel/generator@7.22.5:
-    resolution: {integrity: sha512-+lcUbnTRhd0jOewtFSedLyiPsD5tswKkbgcezOqqWFUVNEwoUTlpPOBmvhG7OXWLR4jMdv0czPGH5XbflnD1EA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.22.5
-      '@jridgewell/gen-mapping': 0.3.3
-      '@jridgewell/trace-mapping': 0.3.18
-      jsesc: 2.5.2
-    dev: true
-
   /@babel/generator@7.22.7:
     resolution: {integrity: sha512-p+jPjMG+SI8yvIaxGgeW24u7q9+5+TGpZh8/CuB7RhBKd7RCy8FayNEFNNKrNK/eUcY/4ExQqLmyrvBXKsIcwQ==}
     engines: {node: '>=6.9.0'}
@@ -553,14 +543,6 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
 
-  /@babel/parser@7.22.6:
-    resolution: {integrity: sha512-EIQu22vNkceq3LbjAq7knDf/UmtI2qbcNI8GRBlijez6TpQLvSodJPYfydQmNA5buwkxxxa/PVI44jjYZ+/cLw==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.22.5
-    dev: true
-
   /@babel/parser@7.22.7:
     resolution: {integrity: sha512-7NF8pOkHP5o2vpmGgNGcfAeCvOYhGLyA3Z4eBQkT1RJlWu47n63bCs93QfJ2hIAFCil7L5P2IWhs1oToVgrL0Q==}
     engines: {node: '>=6.0.0'}
@@ -682,24 +664,6 @@ packages:
       '@babel/code-frame': 7.22.5
       '@babel/parser': 7.22.7
       '@babel/types': 7.22.5
-    dev: true
-
-  /@babel/traverse@7.22.6:
-    resolution: {integrity: sha512-53CijMvKlLIDlOTrdWiHileRddlIiwUIyCKqYa7lYnnPldXCG5dUSN38uT0cA6i7rHWNKJLH0VU/Kxdr1GzB3w==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.22.5
-      '@babel/generator': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
-      '@babel/helper-function-name': 7.22.5
-      '@babel/helper-hoist-variables': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.22.6
-      '@babel/types': 7.22.5
-      debug: 4.3.4
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@babel/traverse@7.22.8:
@@ -2032,8 +1996,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@next/eslint-plugin-next@13.4.8:
-    resolution: {integrity: sha512-cmfVHpxWjjcETFt2WHnoFU6EmY69QcPJRlRNAooQlNe53Ke90vg1Ci/dkPffryJZaxxiRziP9bQrV8lDVCn3Fw==}
+  /@next/eslint-plugin-next@13.4.9:
+    resolution: {integrity: sha512-nDtGpa992tNyAkT/KmSMy7QkHfNZmGCBYhHtafU97DubqxzNdvLsqRtliQ4FU04CysRCtvP2hg8rRC1sAKUTUA==}
     dependencies:
       glob: 7.1.7
     dev: true
@@ -4029,8 +3993,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /eslint-config-relicx@0.1.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2):
-    resolution: {integrity: sha512-qLTwLF2tx8EvuV5TxATM9jc5TaDotbiHbK+Cfm2fF7WeLFAlSAVGkPCXU66uolLvJIlVecYZBFWd6TMstrAdpA==}
+  /eslint-config-relicx@0.2.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-BWHxLU72MAKlHNE0oltpkf75Csyp6KKmyM5Qa/aA4R/0A77G8pPcByoQQ/5WtdKAYN0rcAhRGADOjNETBp5KCg==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4038,7 +4002,7 @@ packages:
       '@babel/core': 7.22.8
       '@babel/eslint-parser': 7.22.7(@babel/core@7.22.8)(eslint@8.44.0)
       '@babel/preset-react': 7.22.5(@babel/core@7.22.8)
-      '@next/eslint-plugin-next': 13.4.8
+      '@next/eslint-plugin-next': 13.4.9
       '@rizzzse/bimap': 1.2.1
       '@swan-io/boxed': 1.0.2
       '@typescript-eslint/eslint-plugin': 5.61.0(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(typescript@5.1.6)
@@ -4091,8 +4055,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /eslint-config-with-tsconfig@1.7.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
-    resolution: {integrity: sha512-cYGAq2ASq06Qm4XO+3gmgws1VVrMmoy1/2Ne82QZkXFdpIVBdVq/umIo+oQDWchUxLSQi5pYS/hBhTda4DYUwQ==}
+  /eslint-config-with-tsconfig@1.8.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-GBIBdWkuTiM4ih9vs/kG5TGykoc/VzeDtQ3IccPehtapX4jee73rQuQJkLA6tYHmGxuv3fVJDR5nK09WtM/c6w==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4100,7 +4064,7 @@ packages:
     dependencies:
       consola: 3.2.3
       eslint: 8.44.0
-      eslint-config-relicx: 0.1.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2)
+      eslint-config-relicx: 0.2.0(eslint-plugin-i@2.27.5-4)(eslint@8.44.0)(tailwindcss@3.3.2)
       eslint-config-typed-fp: 5.1.0(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-case-police: 0.6.1(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-expect-type: 0.2.3(eslint@8.44.0)(typescript@5.1.6)
@@ -7372,8 +7336,8 @@ packages:
     resolution: {integrity: sha512-omv1DIv5z1kV+zDAEjaDjWSkx8w5TbFp5NZoPwUipwzYVcor/4So9ZU3bUyQ1c8lxY5Q0Es/ztWW7PGjY7to0Q==}
     hasBin: true
     dependencies:
-      '@babel/parser': 7.22.6
-      '@babel/traverse': 7.22.6
+      '@babel/parser': 7.22.7
+      '@babel/traverse': 7.22.8
       '@babel/types': 7.22.5
       bent: 7.3.12
       chalk: 4.1.2

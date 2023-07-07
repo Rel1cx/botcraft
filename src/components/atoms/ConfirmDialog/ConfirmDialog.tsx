@@ -1,5 +1,6 @@
 import { Dialog, DialogDescription, DialogDismiss, DialogHeading, useDialogStore } from "@ariakit/react"
 import clsx from "clsx"
+import { isNil } from "rambda"
 import * as React from "react"
 
 import * as css from "./styles.css"
@@ -43,15 +44,15 @@ const ConfirmDialog = React.memo(
                 store={dialog}
                 backdrop={<div className={clsx(css.backdrop, "duration-120 animate-in fade-in")} />}
             >
-                {title && <DialogHeading className={css.heading}>{title}</DialogHeading>}
-                {!!description && <DialogDescription>{description}</DialogDescription>}
+                {!isNil(title) && <DialogHeading className={css.heading}>{title}</DialogHeading>}
+                {!isNil(description) && <DialogDescription>{description}</DialogDescription>}
                 <div className={css.buttons}>
-                    {!!confirmLabel && (
+                    {Boolean(confirmLabel) && (
                         <DialogDismiss className={clsx(css.button, danger && css.danger)} onClick={onConfirm}>
                             {confirmLabel}
                         </DialogDismiss>
                     )}
-                    {!!cancelLabel && (
+                    {!isNil(cancelLabel) && (
                         <DialogDismiss className={clsx(css.button, css.secondary)} onClick={onCancel}>
                             {cancelLabel}
                         </DialogDismiss>
