@@ -1,6 +1,8 @@
 import { replaceUnsafe, useLocation } from "@swan-io/chicane"
 import * as React from "react"
 
+import { useConst } from "@/lib/hooks/use-const"
+
 type RedirectProps = {
     to: string
 }
@@ -8,14 +10,16 @@ type RedirectProps = {
 // Modified version of https://github.com/swan-io/chicane/blob/main/example/src/Redirect.tsx
 const Redirect = React.memo<RedirectProps>(
     ({ to }) => {
-        const location = useLocation().toString()
+        const location = useConst(useLocation().toString())
+        const dist = useConst(to)
 
-        React.useInsertionEffect(() => {
-            if (location === to) {
+        React.useLayoutEffect(() => {
+            if (location === dist) {
                 return
             }
+
             replaceUnsafe(to)
-        }, [location, to])
+        }, [dist, location, to])
 
         return null
     },

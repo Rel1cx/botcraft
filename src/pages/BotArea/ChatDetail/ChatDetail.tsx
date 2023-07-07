@@ -362,10 +362,10 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
             {!!chat.deleted && (
-                <Overlay blur={2} opacity={0.08} center>
+                <Overlay blur={6} opacity={0.08} center>
                     <Button
                         as="button"
-                        className={clsx(tappable, floatingBox, "rounded-xl bg-red-500 p-2 text-white")}
+                        className={clsx(tappable, floatingBox, "mt-24 self-start rounded-xl bg-red-500 p-2 text-white")}
                         onClick={() => restoreChat(botName, chatID)}
                     >
                         This chat has been deleted. Click to restore it.
