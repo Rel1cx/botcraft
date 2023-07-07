@@ -1,6 +1,6 @@
 {
     "name": "botcraft",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "type": "module",
     "scripts": {
         "build": "pnpm run i18n && vite build",

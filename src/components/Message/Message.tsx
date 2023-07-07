@@ -18,7 +18,7 @@ export type MessageProps = {
     showMenu?: boolean
     onRegenerateClick?: () => void
     onRemoveClick?: () => void
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
 const Message = React.memo(
     ({ className, data, onRegenerateClick = noop, onRemoveClick = noop, showMenu = true, ...rest }: MessageProps) => {

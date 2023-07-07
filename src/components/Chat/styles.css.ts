@@ -6,6 +6,8 @@ export const root = style({
     flexFlow: "column nowrap",
     alignItems: "stretch",
     width: "100%",
+    overflowX: "hidden",
+    overflowY: "auto",
 })
 
 export const content = style({

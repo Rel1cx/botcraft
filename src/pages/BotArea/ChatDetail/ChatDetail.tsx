@@ -126,6 +126,7 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
                     return (
                         <React.Suspense>
                             <Message
+                                id={id}
                                 data={data}
                                 onRemoveClick={handleRemoveClick}
                                 onRegenerateClick={handleRegenerateClick}
@@ -133,7 +134,7 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
                         </React.Suspense>
                     )
                 }),
-        [data, handleRegenerateClick, handleRemoveClick],
+        [id, data, handleRegenerateClick, handleRemoveClick],
     )
 })
 
@@ -219,9 +220,21 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
 
             await messageID.match({
                 None: async () => {
+                    requestAnimationFrame(() => {
+                        const chatEl = document.querySelector(`#${chatID}`)
+                        invariant(chatEl, "chat element not found")
+                        chatEl.scrollTop = chatEl.scrollHeight
+                    })
                     await onMessageCreate(trimmedContent)
                 },
                 Some: async (messageID) => {
+                    requestAnimationFrame(() => {
+                        const messageEl = document.querySelector(`#${messageID}`)
+                        invariant(messageEl, "message element not found")
+                        messageEl.scrollIntoView({
+                            block: "end",
+                        })
+                    })
                     await updateMessage(messageID, trimmedContent)
                 },
             })
@@ -334,6 +347,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
         >
             <React.Suspense fallback={<LoadingOverlay visible />}>
                 <Chat
+                    id={chatID}
                     className={css.content}
                     data={chat}
                     generatingMessageID={generatingMessageID}
