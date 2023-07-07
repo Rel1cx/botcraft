@@ -6,6 +6,6 @@ await Promise.allSettled([
     $`pnpm rome format .`,
     $`pnpm rome check .`,
     $`pnpm tsc --noEmit`,
-    $`pnpm eslint --color src`,
+    $`pnpm eslint --cache --color src`,
     $`dpdm "./**/*.(ts|tsx)"`,
 ])

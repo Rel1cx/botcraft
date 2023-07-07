@@ -23,7 +23,7 @@ export default defineConfig({
         basicSSL(),
         checker({
             eslint: {
-                lintCommand: "eslint --color src",
+                lintCommand: "eslint --cache --color src",
             },
             typescript: true,
         }),
