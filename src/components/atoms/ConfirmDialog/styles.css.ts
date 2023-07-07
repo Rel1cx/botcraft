@@ -1,5 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
+import { floatingBox } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const button = style({
@@ -59,34 +60,36 @@ export const backdrop = style({
     backdropFilter: "blur(3px)",
 })
 
-export const dialog = style({
-    position: "fixed",
-    inset: "0.75rem",
-    padding: "1rem",
-    overflow: "auto",
-    maxHeight: "calc(100vh - 2 * 0.75rem)",
-    margin: "auto",
-    height: "fit-content",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    color: "hsl(204 10% 10%)",
-    borderRadius: "0.75rem",
-    backgroundColor: vars.colors.lightGray,
-    outline: `2px solid ${vars.colors.overlay}`,
-    zIndex: 1000,
+export const dialog = style([
+    floatingBox,
+    {
+        position: "fixed",
+        inset: "0.75rem",
+        padding: "1rem",
+        overflow: "auto",
+        maxHeight: "calc(100vh - 2 * 0.75rem)",
+        margin: "auto",
+        height: "fit-content",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        color: "hsl(204 10% 10%)",
+        borderRadius: "0.75rem",
+        backgroundColor: vars.colors.lightGray,
+        zIndex: 1000,
 
-    "@media": {
-        "(min-width: 640px)": {
-            top: "10vh",
-            bottom: "10vh",
-            maxHeight: "80vh",
-            width: "420px",
-            borderRadius: "1rem",
-            padding: "1.5rem",
+        "@media": {
+            "(min-width: 640px)": {
+                top: "10vh",
+                bottom: "10vh",
+                maxHeight: "80vh",
+                width: "420px",
+                borderRadius: "1rem",
+                padding: "1.5rem",
+            },
         },
     },
-})
+])
 
 export const heading = style({
     margin: "0px",

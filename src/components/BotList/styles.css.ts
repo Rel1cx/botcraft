@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css"
 
-import { tappable } from "@/theme/base.css"
+import { floatingBox, tappable } from "@/theme/base.css"
 import { vars } from "@/theme/vars.css"
 
 export const root = style({
@@ -13,6 +13,7 @@ export const root = style({
 
 export const plus = style([
     tappable,
+    floatingBox,
     {
         width: "44px",
         height: "44px",
@@ -22,6 +23,6 @@ export const plus = style([
         justifyContent: "center",
         alignItems: "center",
         color: vars.colors.overlay,
-        outline: `1.5px dashed ${vars.colors.overlay}`,
+        outlineWidth: "1.5px",
     },
 ])
