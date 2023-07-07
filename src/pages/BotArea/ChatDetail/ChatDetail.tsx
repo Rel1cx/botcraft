@@ -164,7 +164,7 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
         [setMessage],
     )
 
-    const onMessageCreate = React.useCallback(
+    const createMessage = React.useCallback(
         async (content: string) => {
             const message: MessageData = {
                 id: makeMessageID(),
@@ -174,10 +174,8 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
             }
 
             await addMessage(chatID, message)
-
-            await requestChatCompletion(botName, chatID)
         },
-        [addMessage, botName, chatID, requestChatCompletion],
+        [addMessage, chatID],
     )
 
     const handleChange = React.useCallback(
@@ -215,17 +213,20 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
 
             evt.preventDefault()
 
-            await deleteDraft(chatID)
+            void deleteDraft(chatID)
             setKey((prev) => prev + 1)
 
             await messageID.match({
                 None: async () => {
+                    await createMessage(trimmedContent)
+
                     requestAnimationFrame(() => {
                         const chatEl = document.querySelector(`#${chatID}`)
                         invariant(chatEl, "chat element not found")
                         chatEl.scrollTop = chatEl.scrollHeight
                     })
-                    await onMessageCreate(trimmedContent)
+
+                    await requestChatCompletion(botName, chatID)
                 },
                 Some: async (messageID) => {
                     requestAnimationFrame(() => {

@@ -45,27 +45,3 @@ export const useSortedChats = (botName: string) => {
 export const useFirstChatMeta = (botName: string) => {
     return useSortedChats(botName)[0]
 }
-
-// export const useChatTokens = (botName: string, chatID: ChatID) => {
-//     const [bot] = useBot(botName)
-//     const [chat] = useChat(chatID)
-//     const [getMessages] = useTransientAtom(messagesDb.items)
-
-//     return React.useMemo(() => {
-//         const allMessages = getMessages()
-
-//         if (!chat?.messages || !allMessages) {
-//             return 0
-//         }
-
-//         const messageList = chat.messages.reduce<MessageData[]>((acc, id) => {
-//             const message = allMessages[id]
-//             if (message) {
-//                 acc.push(message)
-//             }
-//             return acc
-//         }, [])
-
-//         return estimateTokenCount(messageList)(bot)
-//     }, [bot, chat?.messages, getMessages])
-// }

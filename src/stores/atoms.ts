@@ -113,10 +113,11 @@ export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: Mess
     await set(
         chatsDb.set,
         id,
-        produce((draft: ChatItem) => {
+        produce((draft) => {
+            invariant(draft, `Chat ${id} not found`)
             draft.messages.push(data.id)
             draft.updatedAt = Date.now()
-        })(chat),
+        }),
     )
 })
 
@@ -126,10 +127,11 @@ export const removeMessageAtom = atom(null, async (get, set, chatID: ChatID, id:
     await set(
         chatsDb.set,
         chatID,
-        produce((draft: ChatItem) => {
+        produce((draft) => {
+            invariant(draft, `Chat ${chatID} not found`)
             draft.messages = draft.messages.filter((messageID) => messageID !== id)
             draft.updatedAt = Date.now()
-        })(chat),
+        }),
     )
 
     await set(messagesDb.delete, id)
