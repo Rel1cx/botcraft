@@ -144,6 +144,7 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
     const addMessage = useSetAtom(addMessageAtom);
     const setMessage = useSetAtom(messagesDb.set);
     const requestChatCompletion = useSetAtom(updateChatCompletionAtom);
+    const isGenerating = useAtomValue(chatCompletionTaskAtom)[chatID]?.type === "pending";
     const [key, setKey] = React.useState(0);
     const [draft, setDraft] = useAtom(draftsDb.item(chatID));
     const content = draft?.content ?? "";
@@ -198,10 +199,9 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
     useHotkeys(
         "ctrl+enter",
         async (evt) => {
-            invariant(draft, "draft not found");
             const { target } = evt;
             const container = messageEditorRef.current;
-            if (!container || !target || !isContainTarget(target, container)) {
+            if (!container || !target || !isContainTarget(target, container) || isGenerating) {
                 return;
             }
 
