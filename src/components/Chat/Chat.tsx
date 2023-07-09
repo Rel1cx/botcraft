@@ -24,11 +24,12 @@ export type MessageComponentProps = {
 
 export type ChatProps = {
     data: ChatItem;
+    isGenerating: boolean;
     generatingMessageID: O<MessageID>;
     renderMessage?: (id: MessageID) => React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: ChatProps) => {
+const Chat = ({ className, data, isGenerating, generatingMessageID, renderMessage, ...rest }: ChatProps) => {
     const { id: chatID, intro, messages } = data;
 
     const rootRef = React.useRef<HTMLDivElement>(null);
@@ -47,12 +48,12 @@ const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: 
     const lastMessageID = React.useMemo(() => messages[messages.length - 1], [messages]);
 
     const autoScrollEnabled = React.useMemo(() => {
-        if (generatingMessageID.isNone()) {
+        if (generatingMessageID.isNone() || !isGenerating) {
             return false;
         }
 
         return generatingMessageID.toNull() === lastMessageID;
-    }, [generatingMessageID, lastMessageID]);
+    }, [generatingMessageID, isGenerating, lastMessageID]);
 
     useResizeObserver(
         contentRef,

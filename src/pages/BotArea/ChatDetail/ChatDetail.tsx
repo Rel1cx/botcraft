@@ -20,7 +20,7 @@ import { Router } from "@/router";
 import {
     addChatAtom,
     addMessageAtom,
-    chatCompletionTaskAtom,
+    chatCompletionTasksAtom,
     removeChatAtom,
     removeMessageAtom,
     restoreChatAtom,
@@ -144,11 +144,12 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
     const addMessage = useSetAtom(addMessageAtom);
     const setMessage = useSetAtom(messagesDb.set);
     const requestChatCompletion = useSetAtom(updateChatCompletionAtom);
-    const isGenerating = useAtomValue(chatCompletionTaskAtom)[chatID]?.type === "pending";
+    const task = useAtomValue(chatCompletionTasksAtom)[chatID];
     const [key, setKey] = React.useState(0);
     const [draft, setDraft] = useAtom(draftsDb.item(chatID));
     const content = draft?.content ?? "";
     const messageID = draft?.messageID ?? O.None();
+    const isGenerating = task?.type === "sending" || task?.type === "replying";
 
     const updateMessage = React.useCallback(
         (messageID: MessageID, content: string) => {
@@ -283,19 +284,13 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const addChat = useSetAtom(addChatAtom);
     const removeChat = useSetAtom(removeChatAtom);
     const restoreChat = useSetAtom(restoreChatAtom);
-    const chatCompletionTask = useAtomValue(chatCompletionTaskAtom);
+    const task = useAtomValue(chatCompletionTasksAtom)[chatID];
     const [chat, setChat] = useChat(chatID);
     const [removing, setRemoving] = React.useState(O.None<ChatID>());
 
-    const isGenerating = chatCompletionTask[chatID]?.type === "pending";
+    const isGenerating = task?.type === "sending" || task?.type === "replying";
 
-    const generatingMessageID = React.useMemo<O<MessageID>>(() => {
-        if (!isGenerating) {
-            return O.None();
-        }
-
-        return O.fromNullable(chatCompletionTask[chatID]?.messageID);
-    }, [chatCompletionTask, chatID, isGenerating]);
+    const generatingMessageID = O.fromNullable(task?.messageID);
 
     const onAddChatClick = React.useCallback(() => {
         void addChat(botName);
@@ -352,6 +347,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     id={chatID}
                     className={css.content}
                     data={chat}
+                    isGenerating={isGenerating}
                     generatingMessageID={generatingMessageID}
                     renderMessage={(id: MessageID) => (
                         <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />

@@ -17,20 +17,21 @@ export type ChatItem = StrictOmit<ChatData, "content"> & {
 
 export type ChatCompletionTask =
     | {
-          type: "init";
-          messageID: MessageID;
-      }
-    | {
-          type: "pending";
+          type: "sending";
           messageID: MessageID;
           abort: () => void;
       }
     | {
-          type: "done";
+          type: "replying";
+          messageID: MessageID;
+          abort: () => void;
+      }
+    | {
+          type: "completed";
           messageID: MessageID;
       }
     | {
-          type: "error";
+          type: "errored";
           messageID: MessageID;
           error: Error;
       };

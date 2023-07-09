@@ -137,7 +137,7 @@ export const removeMessageAtom = atom(null, async (get, set, chatID: ChatID, id:
     await set(messagesDb.delete, id);
 });
 
-export const chatCompletionTaskAtom = atomWithImmer<Record<ChatID, ChatCompletionTask>>({});
+export const chatCompletionTasksAtom = atomWithImmer<Record<ChatID, ChatCompletionTask>>({});
 
 export const updateChatCompletionAtom = atom(
     null,
@@ -177,9 +177,9 @@ export const updateChatCompletionAtom = atom(
             })
             .exhaustive();
 
-        set(chatCompletionTaskAtom, (draft) => {
+        set(chatCompletionTasksAtom, (draft) => {
             draft[id] = {
-                type: "pending",
+                type: "sending",
                 messageID: completionMessageID,
                 abort: () => {
                     abortController.abort();
@@ -192,9 +192,9 @@ export const updateChatCompletionAtom = atom(
 
             toast.error(`Failed to generate chat completion: Error: ${error.name}\nMessage: ${error.message}`);
 
-            set(chatCompletionTaskAtom, (draft) => {
+            set(chatCompletionTasksAtom, (draft) => {
                 draft[id] = {
-                    type: "error",
+                    type: "errored",
                     messageID: completionMessageID,
                     error,
                 };
@@ -239,6 +239,16 @@ export const updateChatCompletionAtom = atom(
             })
             .exhaustive();
 
+        set(chatCompletionTasksAtom, (draft) => {
+            draft[id] = {
+                type: "replying",
+                messageID: completionMessageID,
+                abort: () => {
+                    abortController.abort();
+                },
+            };
+        });
+
         const stream = result.get();
 
         stream
@@ -259,8 +269,8 @@ export const updateChatCompletionAtom = atom(
                     handleError(err);
                 },
                 async complete() {
-                    set(chatCompletionTaskAtom, (draft) => {
-                        draft[id] = { type: "done", messageID: completionMessageID };
+                    set(chatCompletionTasksAtom, (draft) => {
+                        draft[id] = { type: "completed", messageID: completionMessageID };
                     });
 
                     const chat = get(chatsDb.item(id));
