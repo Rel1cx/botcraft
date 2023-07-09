@@ -16,17 +16,11 @@ export const root = style([
     },
 ]);
 
-export const sending = style({
+export const content = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "0.5rem",
-});
-
-export const failed = style({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
 });
 
 export const dot = style({

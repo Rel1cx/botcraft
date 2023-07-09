@@ -5,7 +5,7 @@ import { AnimatePresence, m } from "framer-motion";
 import * as React from "react";
 
 import type { MessageData } from "@/bot/types";
-import type { ChatItem } from "@/types";
+import type { ChatCompletionTask, ChatItem } from "@/types";
 import type { ChatID, MessageID } from "@/zod/id";
 import { makeMessageID } from "@/zod/id";
 
@@ -26,10 +26,21 @@ export type ChatProps = {
     data: ChatItem;
     isGenerating: boolean;
     generatingMessageID: O<MessageID>;
+    generatingStatus: O<ChatCompletionTask["type"]>;
+    onStopGenerating?: () => void;
     renderMessage?: (id: MessageID) => React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Chat = ({ className, data, isGenerating, generatingMessageID, renderMessage, ...rest }: ChatProps) => {
+const Chat = ({
+    className,
+    data,
+    isGenerating,
+    generatingMessageID,
+    generatingStatus,
+    renderMessage,
+    onStopGenerating,
+    ...rest
+}: ChatProps) => {
     const { id: chatID, intro, messages } = data;
 
     const rootRef = React.useRef<HTMLDivElement>(null);
@@ -45,7 +56,7 @@ const Chat = ({ className, data, isGenerating, generatingMessageID, renderMessag
         [intro],
     );
 
-    const lastMessageID = React.useMemo(() => messages[messages.length - 1], [messages]);
+    const lastMessageID = messages[messages.length - 1];
 
     const autoScrollEnabled = React.useMemo(() => {
         if (generatingMessageID.isNone() || !isGenerating) {
@@ -94,7 +105,16 @@ const Chat = ({ className, data, isGenerating, generatingMessageID, renderMessag
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                 {renderMessage?.(id)}
-                                {generatingMessageID.toNull() === id && <MessageIndicator status="sending" />}
+                                {!!(
+                                    isGenerating &&
+                                    generatingStatus.isSome() &&
+                                    generatingMessageID.toNull() === id
+                                ) && (
+                                    <MessageIndicator
+                                        status={generatingStatus.get()}
+                                        onClick={() => onStopGenerating?.()}
+                                    />
+                                )}
                             </m.div>
                         ))}
                     </AnimatePresence>

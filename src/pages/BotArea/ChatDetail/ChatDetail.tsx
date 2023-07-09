@@ -349,6 +349,7 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     data={chat}
                     isGenerating={isGenerating}
                     generatingMessageID={generatingMessageID}
+                    generatingStatus={O.fromNullable(task?.type)}
                     renderMessage={(id: MessageID) => (
                         <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
                     )}

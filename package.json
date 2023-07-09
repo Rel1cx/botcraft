@@ -7,6 +7,7 @@
         "check": "tsx ./scripts/check.ts",
         "clean": "rm -rf docs dist node_modules pnpm-lock.yaml",
         "dev": "vite",
+        "docs": "typedoc --options ./typedoc.json",
         "format": "rome format . --write && pnpm check",
         "i18n": "typesafe-i18n --no-watch",
         "preinstall": "npx only-allow pnpm",
@@ -14,8 +15,7 @@
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
         "prepare": "husky install",
         "preview": "vite preview",
-        "typecheck": "tsc --noEmit --extendedDiagnostics -p .",
-        "docs": "typedoc --options ./typedoc.json"
+        "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
     "browserslist": [
         "defaults and supports es6-module"
