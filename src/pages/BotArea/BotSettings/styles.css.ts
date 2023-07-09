@@ -1,14 +1,14 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const asideContent = style({
     padding: "0.25rem 0",
     width: "100%",
     height: "100%",
     overflowY: "auto",
-})
+});
 
 export const title = style({
     padding: "0.5rem 1rem",
@@ -16,7 +16,7 @@ export const title = style({
     fontWeight: "normal",
     color: vars.colors.black,
     textTransform: "uppercase",
-})
+});
 
 export const section = style({
     padding: "0 1rem",
@@ -24,7 +24,7 @@ export const section = style({
     display: "flex",
     flexFlow: "column nowrap",
     gap: "1rem",
-})
+});
 
 export const asideHeader = style({
     padding: "1rem",
@@ -35,7 +35,7 @@ export const asideHeader = style({
     justifyContent: "space-between",
     alignItems: "center",
     gap: "1rem",
-})
+});
 
 export const button = style([
     tappable,
@@ -48,7 +48,7 @@ export const button = style([
         borderRadius: "0.5rem",
         backgroundColor: vars.colors.lightGray,
     },
-])
+]);
 
 export const textarea = style({
     padding: "0.25rem 0.5rem",
@@ -60,8 +60,8 @@ export const textarea = style({
     ":focus-within": {
         border: `1px solid ${vars.colors.black40}`,
     },
-})
+});
 
 export const content = style({
     padding: "0 1rem",
-})
+});

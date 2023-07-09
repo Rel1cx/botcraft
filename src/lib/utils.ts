@@ -1,11 +1,11 @@
 export type Remap<T> = {
-    [P in keyof T]: T[P]
-} & {}
+    [P in keyof T]: T[P];
+} & {};
 
-export type UnionFromTuple<T> = T extends (infer U)[] ? U : never
+export type UnionFromTuple<T> = T extends (infer U)[] ? U : never;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
+export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
 
 /**
  * Infers embedded primitive type of any type
@@ -22,15 +22,15 @@ export type Narrow<TType> =
     | (TType extends string | number | boolean | bigint ? TType : never)
     | (TType extends [] ? [] : never)
     | {
-          [K in keyof TType]: Narrow<TType[K]>
-      }
+          [K in keyof TType]: Narrow<TType[K]>;
+      };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const noop = () => {}
+export const noop = () => {};
 
-export const identity = <T>(a: T) => a
+export const identity = <T>(a: T) => a;
 
-export const asConst = <const T>(a: T) => a
+export const asConst = <const T>(a: T) => a;
 
 /**
  * Infers embedded primitive type of any type
@@ -42,4 +42,4 @@ export const asConst = <const T>(a: T) => a
  * @example
  * const result = narrow(['foo', 'bar', 1])
  */
-export const narrow = <TType>(a: Narrow<TType>) => a
+export const narrow = <TType>(a: Narrow<TType>) => a;

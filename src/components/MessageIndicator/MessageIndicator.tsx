@@ -1,15 +1,15 @@
-import { m } from "framer-motion"
-import * as React from "react"
-import { match } from "ts-pattern"
+import { m } from "framer-motion";
+import * as React from "react";
+import { match } from "ts-pattern";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
-const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
+const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"));
 
 type MessageIndicatorProps = {
-    status: "sending" | "sent" | "failed"
-    onClick?: () => void
-}
+    status: "sending" | "sent" | "failed";
+    onClick?: () => void;
+};
 
 const MessageIndicator = React.memo(({ status, onClick }: MessageIndicatorProps) => {
     return (
@@ -28,7 +28,7 @@ const MessageIndicator = React.memo(({ status, onClick }: MessageIndicatorProps)
                     .exhaustive()}
             </m.div>
         </Animation>
-    )
-})
+    );
+});
 
-export default MessageIndicator
+export default MessageIndicator;

@@ -1,7 +1,7 @@
-import RootLayout from "../RootLayout/RootLayout"
+import RootLayout from "../RootLayout/RootLayout";
 
 const Home = () => {
-    return <RootLayout />
-}
+    return <RootLayout />;
+};
 
-export default Home
+export default Home;

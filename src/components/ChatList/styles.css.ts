@@ -1,7 +1,7 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     flex: "1 1 auto",
@@ -9,12 +9,12 @@ export const root = style({
     display: "flex",
     flexFlow: "column nowrap",
     overflowY: "auto",
-})
+});
 
 export const listAction = style({
     marginBottom: "0.5rem",
     padding: "0 0.5rem",
-})
+});
 
 export const listActionButton = style({
     position: "relative",
@@ -43,7 +43,7 @@ export const listActionButton = style({
         filter: "opacity(0.5)",
         cursor: "not-allowed",
     },
-})
+});
 
 export const item = style([
     tappable,
@@ -63,7 +63,7 @@ export const item = style([
             },
         },
     },
-])
+]);
 
 export const itemTitle = style({
     width: "100%",
@@ -72,13 +72,13 @@ export const itemTitle = style({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     textTransform: "capitalize",
-})
+});
 
 export const itemActions = style({
     display: "flex",
     flexFlow: "row nowrap",
     alignItems: "center",
-})
+});
 
 export const itemActionButton = style({
     padding: "4px",
@@ -93,7 +93,7 @@ export const itemActionButton = style({
     ":focus-visible": {
         outline: `1px dashed ${vars.colors.tealLight}`,
     },
-})
+});
 
 export const sectionTitle = style({
     margin: "0",
@@ -101,4 +101,4 @@ export const sectionTitle = style({
     fontWeight: "400",
     fontSize: "12x",
     textTransform: "capitalize",
-})
+});

@@ -1,26 +1,26 @@
-import { globalStyle, style } from "@vanilla-extract/css"
+import { globalStyle, style } from "@vanilla-extract/css";
 
-import { vars } from "@/theme/vars.css"
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     flex: "1 1 auto",
     display: "flex",
     flexFlow: "column nowrap",
-})
+});
 
 export const content = style({
     flex: "1 1 auto",
     display: "flex",
     flexFlow: "column nowrap",
     padding: "0 0.5rem",
-})
+});
 
 export const itemList = style({
     flex: "1 1 auto",
     display: "flex",
     flexFlow: "column nowrap",
     width: "100%",
-})
+});
 
 export const item = style({
     padding: "0 0.5rem",
@@ -35,9 +35,9 @@ export const item = style({
     background: "#fff",
     borderRadius: "0.25rem",
     cursor: "pointer",
-})
+});
 
 globalStyle(`${itemList} [data-selected='true']`, {
     color: "#fff",
     background: vars.colors.primary,
-})
+});

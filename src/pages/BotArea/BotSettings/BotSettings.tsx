@@ -1,31 +1,31 @@
-import { Button } from "@ariakit/react"
-import { Input, Select, Slider, TextInput } from "@mantine/core"
-import { ArrowLeft } from "@phosphor-icons/react"
-import { from, toNumber } from "dnum"
-import { produce } from "immer"
-import { useAtom } from "jotai"
-import * as React from "react"
+import { Button } from "@ariakit/react";
+import { Input, Select, Slider, TextInput } from "@mantine/core";
+import { ArrowLeft } from "@phosphor-icons/react";
+import { from, toNumber } from "dnum";
+import { produce } from "immer";
+import { useAtom } from "jotai";
+import * as React from "react";
 
-import type { Model } from "@/api"
-import type { MessageData } from "@/bot/types"
-import Icon from "@/components/atoms/Icon/Icon"
-import type { Locales } from "@/i18n/i18n-types"
-import { isLocale } from "@/i18n/i18n-util"
-import { Router } from "@/router"
-import { apiKeyAtom, endpointAtom, titleLocaleAtom, useBot } from "@/stores"
-import type { Role } from "@/zod"
-import { isModel } from "@/zod"
+import type { Model } from "@/api";
+import type { MessageData } from "@/bot/types";
+import Icon from "@/components/atoms/Icon/Icon";
+import type { Locales } from "@/i18n/i18n-types";
+import { isLocale } from "@/i18n/i18n-util";
+import { Router } from "@/router";
+import { apiKeyAtom, endpointAtom, titleLocaleAtom, useBot } from "@/stores";
+import type { Role } from "@/zod";
+import { isModel } from "@/zod";
 
-import { Layout } from "../Layout/Layout"
-import * as css from "./styles.css"
+import { Layout } from "../Layout/Layout";
+import * as css from "./styles.css";
 
-const Message = React.lazy(() => import("@/components/Message/Message"))
+const Message = React.lazy(() => import("@/components/Message/Message"));
 
-const TextEditor = React.lazy(() => import("@/components/atoms/TextEditor/TextEditor"))
+const TextEditor = React.lazy(() => import("@/components/atoms/TextEditor/TextEditor"));
 
 type BotSettingsProps = {
-    botName: string
-}
+    botName: string;
+};
 
 const models: { value: Model; label: Model }[] = [
     { value: "gpt-3.5-turbo", label: "gpt-3.5-turbo" },
@@ -36,15 +36,15 @@ const models: { value: Model; label: Model }[] = [
     { value: "gpt-4-0613", label: "gpt-4-0613" },
     { value: "gpt-4-32k", label: "gpt-4-32k" },
     { value: "gpt-4-32k-0613", label: "gpt-4-32k-0613" },
-]
+];
 
 const titleLocales: { value: Locales; label: string }[] = [
     { value: "en", label: "English" },
     { value: "zh-CN", label: "简体中文" },
-]
+];
 
 const ChatMessagePresenter = React.memo(({ content, role }: { role: Role; content: string }) => {
-    const dummyID = React.useId()
+    const dummyID = React.useId();
 
     const data = React.useMemo<MessageData>(
         () => ({
@@ -54,27 +54,27 @@ const ChatMessagePresenter = React.memo(({ content, role }: { role: Role; conten
             updatedAt: Date.now(),
         }),
         [content, dummyID, role],
-    )
+    );
 
     if (!content) {
-        return null
+        return null;
     }
 
     return (
         <React.Suspense>
             <Message data={data} showMenu={false} />
         </React.Suspense>
-    )
-})
+    );
+});
 
 const BotSettings = ({ botName }: BotSettingsProps) => {
-    const [bot, setBot] = useBot(botName)
-    const [apiKey, setApiKey] = useAtom(apiKeyAtom)
-    const [endpoint, setEndpoint] = useAtom(endpointAtom)
-    const [titleLocale, setTitleLocale] = useAtom(titleLocaleAtom)
+    const [bot, setBot] = useBot(botName);
+    const [apiKey, setApiKey] = useAtom(apiKeyAtom);
+    const [endpoint, setEndpoint] = useAtom(endpointAtom);
+    const [titleLocale, setTitleLocale] = useAtom(titleLocaleAtom);
 
     if (!bot) {
-        return null
+        return null;
     }
 
     return (
@@ -88,7 +88,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                         clickOnEnter
                         clickOnSpace
                         onClick={() => {
-                            Router.push("BotRoot", { botName })
+                            Router.push("BotRoot", { botName });
                         }}
                     >
                         <Icon as={ArrowLeft} />
@@ -104,7 +104,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             label="API Key"
                             value={apiKey}
                             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                setApiKey(evt.target.value)
+                                setApiKey(evt.target.value);
                             }}
                         />
                         <TextInput
@@ -112,7 +112,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             label="Endpoint"
                             value={endpoint}
                             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                setEndpoint(evt.target.value)
+                                setEndpoint(evt.target.value);
                             }}
                         />
                         <Select
@@ -122,9 +122,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             value={titleLocale}
                             onChange={(value) => {
                                 if (!value || !isLocale(value)) {
-                                    return
+                                    return;
                                 }
-                                setTitleLocale(value)
+                                setTitleLocale(value);
                             }}
                         />
                     </section>
@@ -147,16 +147,16 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             value={bot.options.model}
                             onChange={(value) => {
                                 if (!value || !isModel(value)) {
-                                    return
+                                    return;
                                 }
                                 void setBot(
                                     produce((draft) => {
                                         if (!draft) {
-                                            return
+                                            return;
                                         }
-                                        draft.options.model = value
+                                        draft.options.model = value;
                                     }),
-                                )
+                                );
                             }}
                         />
                         <Input.Wrapper label="Temperature">
@@ -167,11 +167,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.options.temperature = toNumber(from(value), 1)
+                                            draft.options.temperature = toNumber(from(value), 1);
                                         }),
-                                    )
+                                    );
                                 }}
                                 min={0}
                                 max={2}
@@ -186,11 +186,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.options.max_tokens = toNumber(from(value), 0)
+                                            draft.options.max_tokens = toNumber(from(value), 0);
                                         }),
-                                    )
+                                    );
                                 }}
                                 min={100}
                                 max={16384}
@@ -205,11 +205,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.options.frequency_penalty = toNumber(from(value), 1)
+                                            draft.options.frequency_penalty = toNumber(from(value), 1);
                                         }),
-                                    )
+                                    );
                                 }}
                                 min={0}
                                 max={1}
@@ -224,11 +224,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.options.presence_penalty = toNumber(from(value), 1)
+                                            draft.options.presence_penalty = toNumber(from(value), 1);
                                         }),
-                                    )
+                                    );
                                 }}
                                 min={0}
                                 max={1}
@@ -244,11 +244,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.systemMessage = value
+                                            draft.systemMessage = value;
                                         }),
-                                    )
+                                    );
                                 }}
                             />
                         </Input.Wrapper>
@@ -261,11 +261,11 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                                     void setBot(
                                         produce((draft) => {
                                             if (!draft) {
-                                                return
+                                                return;
                                             }
-                                            draft.intro = value
+                                            draft.intro = value;
                                         }),
-                                    )
+                                    );
                                 }}
                             />
                         </Input.Wrapper>
@@ -278,7 +278,7 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                 <ChatMessagePresenter role="assistant" content={bot.intro} />
             </div>
         </Layout>
-    )
-}
+    );
+};
 
-export default BotSettings
+export default BotSettings;

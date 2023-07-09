@@ -1,15 +1,15 @@
-import type * as React from "react"
-import { Toaster } from "react-hot-toast"
+import type * as React from "react";
+import { Toaster } from "react-hot-toast";
 
-import TailwindIndicator from "@/components/atoms/TailwindIndicator/TailwindIndicator"
+import TailwindIndicator from "@/components/atoms/TailwindIndicator/TailwindIndicator";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 export type RootLayoutProps = React.PropsWithChildren<{
-    nav?: React.ReactNode
-    navHeader?: React.ReactNode
-    navFooter?: React.ReactNode
-}>
+    nav?: React.ReactNode;
+    navHeader?: React.ReactNode;
+    navFooter?: React.ReactNode;
+}>;
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children, nav, navFooter, navHeader }) => {
     return (
@@ -23,7 +23,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children, nav, navFooter, navHe
             <Toaster position="bottom-right" />
             <TailwindIndicator />
         </div>
-    )
-}
+    );
+};
 
-export default RootLayout
+export default RootLayout;

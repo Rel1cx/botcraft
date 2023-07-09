@@ -1,9 +1,9 @@
-import { globalStyle, style } from "@vanilla-extract/css"
+import { globalStyle, style } from "@vanilla-extract/css";
 
 export const root = style({
     lineHeight: "1.5",
     wordBreak: "break-word",
-})
+});
 
 globalStyle(`${root} pre`, {
     marginTop: "0.5rem",
@@ -13,16 +13,16 @@ globalStyle(`${root} pre`, {
     wordWrap: "break-word",
     fontSize: "1rem",
     fontFamily: "iosevka, monospace",
-})
+});
 
 globalStyle(`${root} code.hljs`, {
     padding: 0,
-})
+});
 
 globalStyle(`${root} ol`, {
     listStyle: "decimal",
-})
+});
 
 globalStyle(`${root} ul`, {
     listStyle: "disc",
-})
+});

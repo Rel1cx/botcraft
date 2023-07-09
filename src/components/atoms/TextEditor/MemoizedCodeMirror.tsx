@@ -1,12 +1,12 @@
-import CodeMirror from "@uiw/react-codemirror"
-import { shallowEqual } from "fast-equals"
-import { omit } from "rambda"
-import * as React from "react"
+import CodeMirror from "@uiw/react-codemirror";
+import { shallowEqual } from "fast-equals";
+import { omit } from "rambda";
+import * as React from "react";
 
-const propsToOmit = ["value"]
+const propsToOmit = ["value"];
 
 const MemoizedCodeMirror = React.memo(CodeMirror, (prevProps, nextProps) => {
-    return shallowEqual(omit(propsToOmit, prevProps), omit(propsToOmit, nextProps))
-})
+    return shallowEqual(omit(propsToOmit, prevProps), omit(propsToOmit, nextProps));
+});
 
-export default MemoizedCodeMirror
+export default MemoizedCodeMirror;

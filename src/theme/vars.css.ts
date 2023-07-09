@@ -1,4 +1,4 @@
-import { createGlobalTheme } from "@vanilla-extract/css"
+import { createGlobalTheme } from "@vanilla-extract/css";
 
 export const vars = createGlobalTheme(":root", {
     desktopBreakpoint: "768px",
@@ -82,4 +82,4 @@ export const vars = createGlobalTheme(":root", {
         transitionDuration: "120ms",
         transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
     },
-})
+});

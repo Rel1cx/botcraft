@@ -1,4 +1,4 @@
-import type { ChatCompletionOptions } from "@/api"
+import type { ChatCompletionOptions } from "@/api";
 import type {
     ContentProtocol,
     CreatableProtocol,
@@ -8,34 +8,34 @@ import type {
     NameProtocol,
     RoleProtocol,
     TitleProtocol,
-} from "@/protocols"
-import type { ChatMessage } from "@/zod"
-import type { ChatID, MessageID } from "@/zod/id"
+} from "@/protocols";
+import type { ChatMessage } from "@/zod";
+import type { ChatID, MessageID } from "@/zod/id";
 
 export type MessageData = IDProtocol &
     CreatableProtocol &
     RoleProtocol &
     ChatMessage & {
-        id: MessageID
-    }
+        id: MessageID;
+    };
 
 export type ChatData = (IDProtocol &
     TitleProtocol &
     CreatableProtocol &
     DeletableProtocol &
     ContentProtocol<MessageData[]>) & {
-    id: ChatID
-    intro: string
-}
+    id: ChatID;
+    intro: string;
+};
 
 export type Bot = (NameProtocol & IconProtocol) & {
-    intro: string
+    intro: string;
 
-    prompt: string
+    prompt: string;
 
-    systemMessage: string
+    systemMessage: string;
 
-    options: ChatCompletionOptions
+    options: ChatCompletionOptions;
 
-    chats: ChatID[]
-}
+    chats: ChatID[];
+};

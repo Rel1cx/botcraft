@@ -1,27 +1,27 @@
-import "highlight.js/styles/nord.css"
-import "katex/dist/katex.min.css"
+import "highlight.js/styles/nord.css";
+import "katex/dist/katex.min.css";
 
-import { clsx } from "clsx"
-import * as React from "react"
-import { ErrorBoundary } from "react-error-boundary"
-import type { PluggableList } from "react-markdown/lib/react-markdown"
-import rehypeHighlight from "rehype-highlight"
-import rehypeKatex from "rehype-katex"
-import remarkBreaks from "remark-breaks"
-import remarkGfm from "remark-gfm"
-import remarkMath from "remark-math"
+import { clsx } from "clsx";
+import * as React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import type { PluggableList } from "react-markdown/lib/react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import rehypeKatex from "rehype-katex";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 
-import MemoizedReactMarkdown from "./MemoizedReactMarkdown"
-import * as css from "./styles.css"
+import MemoizedReactMarkdown from "./MemoizedReactMarkdown";
+import * as css from "./styles.css";
 
 export type MarkdownProps = {
-    className?: string
-    content?: string
-}
+    className?: string;
+    content?: string;
+};
 
-const remarkExtensions = [remarkGfm, remarkBreaks, remarkMath]
+const remarkExtensions = [remarkGfm, remarkBreaks, remarkMath];
 
-const rehypeExtensions: PluggableList = [[rehypeHighlight, { ignoreMissing: true }], rehypeKatex]
+const rehypeExtensions: PluggableList = [[rehypeHighlight, { ignoreMissing: true }], rehypeKatex];
 
 const Markdown = React.memo(({ className, content = "" }: MarkdownProps) => {
     return (
@@ -34,7 +34,7 @@ const Markdown = React.memo(({ className, content = "" }: MarkdownProps) => {
                 {content}
             </MemoizedReactMarkdown>
         </ErrorBoundary>
-    )
-})
+    );
+});
 
-export default Markdown
+export default Markdown;

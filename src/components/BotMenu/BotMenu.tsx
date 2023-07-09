@@ -1,16 +1,16 @@
-import { Menu } from "@mantine/core"
-import { FileArrowDown, FileArrowUp, Gear, Trash } from "@phosphor-icons/react"
-import * as React from "react"
+import { Menu } from "@mantine/core";
+import { FileArrowDown, FileArrowUp, Gear, Trash } from "@phosphor-icons/react";
+import * as React from "react";
 
-import { Router } from "@/router"
+import { Router } from "@/router";
 
-import Icon from "../atoms/Icon/Icon"
-import * as css from "./styles.css"
+import Icon from "../atoms/Icon/Icon";
+import * as css from "./styles.css";
 
 type BotMenuProps = {
-    botName: string
-    children: React.ReactNode
-}
+    botName: string;
+    children: React.ReactNode;
+};
 
 const BotMenu = React.memo(({ botName, children }: BotMenuProps) => {
     return (
@@ -21,7 +21,7 @@ const BotMenu = React.memo(({ botName, children }: BotMenuProps) => {
                 <Menu.Item
                     icon={<Icon as={Gear} />}
                     onClick={() => {
-                        Router.push("BotSettings", { botName })
+                        Router.push("BotSettings", { botName });
                     }}
                 >
                     Settings
@@ -35,7 +35,7 @@ const BotMenu = React.memo(({ botName, children }: BotMenuProps) => {
                 </Menu.Item>
             </Menu.Dropdown>
         </Menu>
-    )
-})
+    );
+});
 
-export default BotMenu
+export default BotMenu;

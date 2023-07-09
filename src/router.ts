@@ -1,4 +1,4 @@
-import { createGroup, createRouter } from "@swan-io/chicane"
+import { createGroup, createRouter } from "@swan-io/chicane";
 
 const routes = {
     // bot list
@@ -28,6 +28,6 @@ const routes = {
         // Workflow detail
         Workflow: "/:workflowID",
     }),
-} as const
+} as const;
 
-export const Router = createRouter(routes)
+export const Router = createRouter(routes);

@@ -1,16 +1,16 @@
-import { Menu } from "@mantine/core"
-import type { FloatingPosition } from "@mantine/core/lib/Floating"
-import { Repeat, Trash } from "@phosphor-icons/react"
-import * as React from "react"
+import { Menu } from "@mantine/core";
+import type { FloatingPosition } from "@mantine/core/lib/Floating";
+import { Repeat, Trash } from "@phosphor-icons/react";
+import * as React from "react";
 
-import Icon from "../atoms/Icon/Icon"
-import * as css from "./styles.css"
+import Icon from "../atoms/Icon/Icon";
+import * as css from "./styles.css";
 
 type MessageMenuProps = React.PropsWithChildren<{
-    position?: FloatingPosition
-    onRegenerateClick?: () => void
-    onRemoveClick?: () => void
-}>
+    position?: FloatingPosition;
+    onRegenerateClick?: () => void;
+    onRemoveClick?: () => void;
+}>;
 
 const MessageMenu = React.memo(
     ({ children, onRegenerateClick, onRemoveClick, position = "bottom" }: MessageMenuProps) => {
@@ -26,8 +26,8 @@ const MessageMenu = React.memo(
                     </Menu.Item>
                 </Menu.Dropdown>
             </Menu>
-        )
+        );
     },
-)
+);
 
-export default MessageMenu
+export default MessageMenu;

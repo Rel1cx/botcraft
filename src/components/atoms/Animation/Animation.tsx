@@ -1,9 +1,9 @@
-import { domAnimation, LazyMotion, MotionConfig } from "framer-motion"
-import * as React from "react"
+import { domAnimation, LazyMotion, MotionConfig } from "framer-motion";
+import * as React from "react";
 
 type AnimationProps = {
-    children: React.ReactNode
-}
+    children: React.ReactNode;
+};
 
 const Animation = React.memo(({ children }: AnimationProps) => {
     return (
@@ -12,7 +12,7 @@ const Animation = React.memo(({ children }: AnimationProps) => {
                 {children}
             </LazyMotion>
         </MotionConfig>
-    )
-})
+    );
+});
 
-export default Animation
+export default Animation;

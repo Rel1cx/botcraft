@@ -1,7 +1,7 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { floatingBox, tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { floatingBox, tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const button = style([
     tappable,
@@ -29,7 +29,7 @@ export const button = style([
             },
         },
     },
-])
+]);
 
 export const secondary = style({
     backgroundColor: "transparent",
@@ -38,12 +38,12 @@ export const secondary = style({
     ":hover": {
         backgroundColor: "hsl(204 10% 10% / 0.05)",
     },
-})
+});
 
 export const backdrop = style({
     backgroundColor: "hsl(204 10% 10% / 0.1)",
     backdropFilter: "blur(3px)",
-})
+});
 
 export const dialog = style([
     floatingBox,
@@ -74,28 +74,28 @@ export const dialog = style([
             },
         },
     },
-])
+]);
 
 export const heading = style({
     margin: "0px",
     fontSize: "1.25rem",
     lineHeight: "1.75rem",
     fontWeight: 600,
-})
+});
 
 export const dismiss = style({
     height: "2.5rem",
     width: "2.5rem",
     padding: "0px",
-})
+});
 
 export const buttons = style({
     display: "flex",
     gap: "0.5rem",
-})
+});
 
 export const header = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-})
+});

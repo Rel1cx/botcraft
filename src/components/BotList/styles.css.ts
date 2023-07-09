@@ -1,7 +1,7 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { floatingBox, tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { floatingBox, tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     height: "100%",
@@ -9,7 +9,7 @@ export const root = style({
     flexFlow: "column",
     alignItems: "center",
     gap: "1rem",
-})
+});
 
 export const plus = style([
     tappable,
@@ -24,4 +24,4 @@ export const plus = style([
         alignItems: "center",
         color: vars.colors.overlay,
     },
-])
+]);

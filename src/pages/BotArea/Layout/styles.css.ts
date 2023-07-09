@@ -1,12 +1,12 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { vars } from "@/theme/vars.css"
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     height: "100%",
     display: "flex",
     background: "#fff",
-})
+});
 
 export const main = style({
     flex: "1 1 auto",
@@ -15,7 +15,7 @@ export const main = style({
     position: "relative",
     display: "flex",
     flexDirection: "column",
-})
+});
 
 export const aside = style({
     width: "240px",
@@ -30,7 +30,7 @@ export const aside = style({
             display: "none",
         },
     },
-})
+});
 
 export const header = style({
     height: "44px",
@@ -39,6 +39,6 @@ export const header = style({
     alignItems: "center",
     justifyContent: "center",
     borderBottom: `1px solid ${vars.colors.border}`,
-})
+});
 
-export const asideHeader = style([header, {}])
+export const asideHeader = style([header, {}]);

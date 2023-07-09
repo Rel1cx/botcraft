@@ -1,16 +1,16 @@
-import * as React from "react"
+import * as React from "react";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 type TitleInputProps = {
-    id?: string
-    value?: string
-    placeholder?: string
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+    id?: string;
+    value?: string;
+    placeholder?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, ...rest }: TitleInputProps) => {
-    const deferredValue = React.useDeferredValue(value)
+    const deferredValue = React.useDeferredValue(value);
 
     return (
         <div id={id} className={css.root}>
@@ -28,7 +28,7 @@ const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, 
                 {...rest}
             />
         </div>
-    )
-})
+    );
+});
 
-export default TitleInput
+export default TitleInput;

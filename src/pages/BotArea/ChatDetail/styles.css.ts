@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
 export const content = style({
     flex: "1 1 auto",
@@ -7,7 +7,7 @@ export const content = style({
     overflow: "hidden",
     overflowY: "auto",
     backgroundColor: "white",
-})
+});
 
 export const bottom = style({
     position: "sticky",
@@ -16,4 +16,4 @@ export const bottom = style({
     right: "0",
     margin: "1rem",
     marginBottom: "0",
-})
+});

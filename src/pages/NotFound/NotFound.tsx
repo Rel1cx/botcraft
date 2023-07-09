@@ -1,9 +1,9 @@
-import { Button } from "@ariakit/react"
-import { Container, Group, Text, Title } from "@mantine/core"
+import { Button } from "@ariakit/react";
+import { Container, Group, Text, Title } from "@mantine/core";
 
-import { Router } from "@/router"
+import { Router } from "@/router";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 const NotFound = () => {
     return (
@@ -21,14 +21,14 @@ const NotFound = () => {
                     clickOnEnter
                     clickOnSpace
                     onClick={() => {
-                        Router.replace("Home")
+                        Router.replace("Home");
                     }}
                 >
                     Take me back to home page
                 </Button>
             </Group>
         </Container>
-    )
-}
+    );
+};
 
-export default NotFound
+export default NotFound;

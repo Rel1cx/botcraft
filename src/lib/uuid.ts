@@ -1,3 +1,3 @@
-import ShortUniqueId from "short-unique-id"
+import ShortUniqueId from "short-unique-id";
 
-export const uid = new ShortUniqueId({ length: 12 })
+export const uid = new ShortUniqueId({ length: 12 });

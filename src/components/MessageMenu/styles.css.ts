@@ -1,6 +1,6 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { floatingBox } from "@/theme/base.css"
+import { floatingBox } from "@/theme/base.css";
 
 export const root = style([
     floatingBox,
@@ -9,4 +9,4 @@ export const root = style([
         backdropFilter: "blur(16px)",
         border: "none",
     },
-])
+]);

@@ -1,14 +1,14 @@
-import * as React from "react"
+import * as React from "react";
 
-import { noop } from "@/lib/utils"
+import { noop } from "@/lib/utils";
 
-import TextEditor from "../atoms/TextEditor/TextEditor"
-import * as css from "./styles.css"
+import TextEditor from "../atoms/TextEditor/TextEditor";
+import * as css from "./styles.css";
 
 type MessageEditorProps = {
-    content?: string
-    onChange?: (content: string) => void
-}
+    content?: string;
+    onChange?: (content: string) => void;
+};
 
 const MessageEditor = React.memo(
     React.forwardRef<HTMLInputElement, MessageEditorProps>(({ content = "", onChange = noop }, ref) => {
@@ -22,8 +22,8 @@ const MessageEditor = React.memo(
                 /> */}
                 <TextEditor className={css.content} value={content} onChange={onChange} />
             </div>
-        )
+        );
     }),
-)
+);
 
-export default MessageEditor
+export default MessageEditor;

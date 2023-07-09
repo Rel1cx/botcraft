@@ -1,12 +1,12 @@
-import * as React from "react"
+import * as React from "react";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 type LayoutProps = React.PropsWithChildren<{
-    header?: React.ReactNode
-    aside?: React.ReactNode
-    asideHeader?: React.ReactNode
-}>
+    header?: React.ReactNode;
+    aside?: React.ReactNode;
+    asideHeader?: React.ReactNode;
+}>;
 
 export const Layout = ({ aside, asideHeader, children, header }: LayoutProps) => {
     return (
@@ -20,5 +20,5 @@ export const Layout = ({ aside, asideHeader, children, header }: LayoutProps) =>
                 <React.Suspense>{children}</React.Suspense>
             </main>
         </div>
-    )
-}
+    );
+};

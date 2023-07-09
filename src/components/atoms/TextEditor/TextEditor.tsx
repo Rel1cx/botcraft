@@ -1,27 +1,27 @@
 // import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 // import { languages } from "@codemirror/language-data"
-import { Annotation } from "@codemirror/state"
-import { EditorView } from "@codemirror/view"
-import type { BasicSetupOptions, ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror"
-import clsx from "clsx"
-import { basicLight } from "cm6-theme-basic-light"
-import * as React from "react"
-import { ErrorBoundary } from "react-error-boundary"
-import invariant from "tiny-invariant"
+import { Annotation } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
+import type { BasicSetupOptions, ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import clsx from "clsx";
+import { basicLight } from "cm6-theme-basic-light";
+import * as React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import invariant from "tiny-invariant";
 
-import { noop } from "@/lib/utils"
+import { noop } from "@/lib/utils";
 
-import MemoizedCodeMirror from "./MemoizedCodeMirror"
-import * as css from "./styles.css"
+import MemoizedCodeMirror from "./MemoizedCodeMirror";
+import * as css from "./styles.css";
 
 type TextEditorProps = {
-    className?: string
-    value?: string
-    placeholder?: string
-    onFocus?: () => void
-    onBlur?: () => void
-    onChange?: (value: string) => void
-}
+    className?: string;
+    value?: string;
+    placeholder?: string;
+    onFocus?: () => void;
+    onBlur?: () => void;
+    onChange?: (value: string) => void;
+};
 
 const setupOptions: BasicSetupOptions = {
     lineNumbers: false,
@@ -43,14 +43,14 @@ const setupOptions: BasicSetupOptions = {
     completionKeymap: false,
     lintKeymap: false,
     tabSize: 4,
-}
+};
 
-const SkipUpdate = Annotation.define<boolean>()
+const SkipUpdate = Annotation.define<boolean>();
 
-const defaultPlaceholder = "Ctrl+Enter to send, Enter to add new line"
+const defaultPlaceholder = "Ctrl+Enter to send, Enter to add new line";
 
 // const extensions = [markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]
-const extensions = [EditorView.lineWrapping]
+const extensions = [EditorView.lineWrapping];
 
 const TextEditor = React.memo(
     ({
@@ -61,45 +61,45 @@ const TextEditor = React.memo(
         placeholder = defaultPlaceholder,
         value = "",
     }: TextEditorProps) => {
-        const ref = React.useRef<ReactCodeMirrorRef>(null)
-        const defaultValue = React.useRef(value).current
+        const ref = React.useRef<ReactCodeMirrorRef>(null);
+        const defaultValue = React.useRef(value).current;
 
         const handleChange = React.useCallback<NonNullable<ReactCodeMirrorProps["onChange"]>>(
             (value, viewUpdate) => {
                 if (!viewUpdate.docChanged) {
-                    return
+                    return;
                 }
 
                 if (viewUpdate.transactions.some((tr) => tr.annotation(SkipUpdate))) {
-                    return
+                    return;
                 }
 
                 if (viewUpdate.view.composing) {
-                    return
+                    return;
                 }
 
-                onChange(value)
+                onChange(value);
             },
             [onChange],
-        )
+        );
 
         const handleCompositionEnd = React.useCallback(() => {
-            const view = ref.current?.view
-            invariant(view, "view is not defined")
-            onChange(view.state.doc.toString())
-        }, [onChange])
+            const view = ref.current?.view;
+            invariant(view, "view is not defined");
+            onChange(view.state.doc.toString());
+        }, [onChange]);
 
         React.useInsertionEffect(() => {
-            const view = ref.current?.view
+            const view = ref.current?.view;
 
             if (!view) {
-                return
+                return;
             }
 
-            const valueOfView = view.state.doc.toString()
+            const valueOfView = view.state.doc.toString();
 
             if (valueOfView === value) {
-                return
+                return;
             }
 
             view.dispatch({
@@ -109,8 +109,8 @@ const TextEditor = React.memo(
                     insert: value,
                 },
                 annotations: SkipUpdate.of(true),
-            })
-        }, [value])
+            });
+        }, [value]);
 
         return (
             <div className={clsx(css.root, className)}>
@@ -134,8 +134,8 @@ const TextEditor = React.memo(
                     />
                 </ErrorBoundary>
             </div>
-        )
+        );
     },
-)
+);
 
-export default TextEditor
+export default TextEditor;

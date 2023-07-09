@@ -1,18 +1,18 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { vars } from "@/theme/vars.css"
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     position: "relative",
     height: "100%",
     display: "flex",
     backgroundColor: "#fff",
-})
+});
 
 export const main = style({
     flex: "1 1 auto",
     height: "100%",
-})
+});
 
 export const navContainer = style({
     flexShrink: 0,
@@ -29,7 +29,7 @@ export const navContainer = style({
             display: "none",
         },
     },
-})
+});
 
 export const navHeader = style({
     flexShrink: 0,
@@ -39,7 +39,7 @@ export const navHeader = style({
     justifyContent: "center",
     alignItems: "center",
     borderBottom: `1px solid ${vars.colors.border}`,
-})
+});
 
 export const navContent = style({
     flex: "1 1 auto",
@@ -48,7 +48,7 @@ export const navContent = style({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-})
+});
 
 export const navFooter = style({
     width: "100%",
@@ -56,4 +56,4 @@ export const navFooter = style({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-})
+});

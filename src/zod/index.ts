@@ -1,19 +1,19 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const Env = z.object({
     DEV: z.optional(z.boolean()).default(false),
     PROD: z.optional(z.boolean()).default(true),
-})
+});
 
-export type Env = z.infer<typeof Env>
+export type Env = z.infer<typeof Env>;
 
-export const Role = z.union([z.literal("user"), z.literal("assistant"), z.literal("system")])
+export const Role = z.union([z.literal("user"), z.literal("assistant"), z.literal("system")]);
 
-export type Role = z.infer<typeof Role>
+export type Role = z.infer<typeof Role>;
 
 export const isRole = (value: unknown): value is Role => {
-    return Role.safeParse(value).success
-}
+    return Role.safeParse(value).success;
+};
 
 export const Model = z.union([
     z.literal("gpt-3.5-turbo"),
@@ -24,24 +24,24 @@ export const Model = z.union([
     z.literal("gpt-4-0613"),
     z.literal("gpt-4-32k"),
     z.literal("gpt-4-32k-0613"),
-])
+]);
 
-export type Model = z.infer<typeof Model>
+export type Model = z.infer<typeof Model>;
 
 export const isModel = (value: unknown): value is Model => {
-    return Model.safeParse(value).success
-}
+    return Model.safeParse(value).success;
+};
 
 export const ChatMessage = z.object({
     role: Role,
     content: z.string(),
-})
+});
 
-export type ChatMessage = z.infer<typeof ChatMessage>
+export type ChatMessage = z.infer<typeof ChatMessage>;
 
 export const isChatMessage = (value: unknown): value is ChatMessage => {
-    return ChatMessage.safeParse(value).success
-}
+    return ChatMessage.safeParse(value).success;
+};
 
 export const ChatCompletionData = z.object({
     id: z.string(),
@@ -63,13 +63,13 @@ export const ChatCompletionData = z.object({
         completion_tokens: z.number(),
         total_tokens: z.number(),
     }),
-})
+});
 
-export type ChatCompletionData = z.infer<typeof ChatCompletionData>
+export type ChatCompletionData = z.infer<typeof ChatCompletionData>;
 
 export const isChatCompletionData = (value: unknown): value is ChatCompletionData => {
-    return ChatCompletionData.safeParse(value).success
-}
+    return ChatCompletionData.safeParse(value).success;
+};
 
 export const ChatCompletionChunk = z.object({
     id: z.string(),
@@ -86,13 +86,13 @@ export const ChatCompletionChunk = z.object({
             finish_reason: z.null().or(z.string()),
         }),
     ),
-})
+});
 
-export type ChatCompletionChunk = z.infer<typeof ChatCompletionChunk>
+export type ChatCompletionChunk = z.infer<typeof ChatCompletionChunk>;
 
 export const isChatCompletionChunk = (value: unknown): value is ChatCompletionChunk => {
-    return ChatCompletionChunk.safeParse(value).success
-}
+    return ChatCompletionChunk.safeParse(value).success;
+};
 
 export const ChatCompletionError = z.object({
     error: z.object({
@@ -101,10 +101,10 @@ export const ChatCompletionError = z.object({
         param: z.string(),
         code: z.string(),
     }),
-})
+});
 
-export type ChatCompletionError = z.infer<typeof ChatCompletionError>
+export type ChatCompletionError = z.infer<typeof ChatCompletionError>;
 
 export const isChatCompletionError = (value: unknown): value is ChatCompletionError => {
-    return ChatCompletionError.safeParse(value).success
-}
+    return ChatCompletionError.safeParse(value).success;
+};

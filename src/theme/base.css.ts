@@ -1,6 +1,6 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
-import { vars } from "./vars.css"
+import { vars } from "./vars.css";
 
 export const tappable = style({
     cursor: "pointer",
@@ -15,8 +15,8 @@ export const tappable = style({
     ":active": {
         filter: "brightness(0.88)",
     },
-})
+});
 
 export const floatingBox = style({
     outline: `1.5px solid ${vars.colors.overlay}`,
-})
+});

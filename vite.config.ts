@@ -1,14 +1,14 @@
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin"
-import basicSSL from "@vitejs/plugin-basic-ssl"
-import react from "@vitejs/plugin-react"
-import { resolve } from "path"
-import { defineConfig } from "vite"
-import checker from "vite-plugin-checker"
-import preload from "vite-plugin-preload"
-import topLevelAwait from "vite-plugin-top-level-await"
-import wasm from "vite-plugin-wasm"
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import basicSSL from "@vitejs/plugin-basic-ssl";
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
+import preload from "vite-plugin-preload";
+import topLevelAwait from "vite-plugin-top-level-await";
+import wasm from "vite-plugin-wasm";
 
-const isDev = process.env.NODE_ENV === "development"
+const isDev = process.env.NODE_ENV === "development";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -52,4 +52,4 @@ export default defineConfig({
         },
         sourcemap: false,
     },
-})
+});

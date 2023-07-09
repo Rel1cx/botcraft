@@ -1,10 +1,10 @@
-import * as React from "react"
+import * as React from "react";
 
-import { PROD } from "@/env"
+import { PROD } from "@/env";
 
 const TailwindIndicator = React.memo(() => {
     if (PROD) {
-        return null
+        return null;
     }
 
     return (
@@ -17,7 +17,7 @@ const TailwindIndicator = React.memo(() => {
             <div className="hidden xl:block 2xl:hidden">xl</div>
             <div className="hidden 2xl:block">2xl</div>
         </div>
-    )
-})
+    );
+});
 
-export default TailwindIndicator
+export default TailwindIndicator;

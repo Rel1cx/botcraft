@@ -1,5 +1,5 @@
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 export const Layout = () => {
-    return <div className={css.root} />
-}
+    return <div className={css.root} />;
+};

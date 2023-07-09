@@ -1,7 +1,7 @@
-import { keyframes, style } from "@vanilla-extract/css"
+import { keyframes, style } from "@vanilla-extract/css";
 
-import { tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const root = style([
     tappable,
@@ -14,20 +14,20 @@ export const root = style([
         borderRadius: "1rem",
         backgroundColor: vars.colors.lightGray,
     },
-])
+]);
 
 export const sending = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "0.5rem",
-})
+});
 
 export const failed = style({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-})
+});
 
 export const dot = style({
     height: "0.5rem",
@@ -55,4 +55,4 @@ export const dot = style({
             })} 1s linear 0.66s infinite`,
         },
     },
-})
+});

@@ -1,6 +1,6 @@
-import { $ } from "zx"
+import { $ } from "zx";
 
-await $`pnpm run i18n`
+await $`pnpm run i18n`;
 
 await Promise.allSettled([
     $`pnpm rome format .`,
@@ -8,4 +8,4 @@ await Promise.allSettled([
     $`pnpm tsc --noEmit`,
     $`pnpm eslint --cache --color src`,
     $`dpdm "./**/*.(ts|tsx)"`,
-])
+]);

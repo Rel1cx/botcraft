@@ -1,30 +1,30 @@
-import { Button } from "@ariakit/react"
-import { Plus, X } from "@phosphor-icons/react"
-import { BiMap } from "@rizzzse/bimap"
-import { formatDistanceToNow } from "date-fns"
-import * as React from "react"
+import { Button } from "@ariakit/react";
+import { Plus, X } from "@phosphor-icons/react";
+import { BiMap } from "@rizzzse/bimap";
+import { formatDistanceToNow } from "date-fns";
+import * as React from "react";
 
-import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols"
+import type { CreatableProtocol, ListItemProtocol, ListProtocol, TitleProtocol } from "@/protocols";
 
-import Icon from "../atoms/Icon/Icon"
-import List, { ListItem } from "../atoms/List/List"
-import * as css from "./styles.css"
+import Icon from "../atoms/Icon/Icon";
+import List, { ListItem } from "../atoms/List/List";
+import * as css from "./styles.css";
 
 type ChatListProps = ListProtocol<ListItemProtocol & CreatableProtocol> & {
-    selected?: string
-    newItemName?: string
-    disableMutation?: boolean
-    onItemClick?: (id: string) => void
-    onItemAdd?: () => void
-    onItemRemove?: (id: string) => void
+    selected?: string;
+    newItemName?: string;
+    disableMutation?: boolean;
+    onItemClick?: (id: string) => void;
+    onItemAdd?: () => void;
+    onItemRemove?: (id: string) => void;
     // onItemPin?: (id: string) => void
     // onItemUnpin?: (id: string) => void
-    renderItemIcon?: (id: string) => React.ReactNode
-}
+    renderItemIcon?: (id: string) => React.ReactNode;
+};
 
 const SectionTitle = ({ title }: TitleProtocol) => {
-    return <span className={css.sectionTitle}>{title}</span>
-}
+    return <span className={css.sectionTitle}>{title}</span>;
+};
 
 const NewItemButton = ({
     disabled = false,
@@ -43,8 +43,8 @@ const NewItemButton = ({
             <Icon as={Plus} />
             <span>{title}</span>
         </Button>
-    )
-}
+    );
+};
 
 const ChatList = React.memo(
     ({
@@ -60,24 +60,24 @@ const ChatList = React.memo(
         selected,
     }: ChatListProps) => {
         const markers = React.useMemo(() => {
-            const markers = new BiMap<string, number>()
+            const markers = new BiMap<string, number>();
 
             for (const [index, chat] of items.entries()) {
-                const dateAgo = formatDistanceToNow(chat.updatedAt, { addSuffix: true })
+                const dateAgo = formatDistanceToNow(chat.updatedAt, { addSuffix: true });
 
                 if (markers.has(dateAgo)) {
-                    continue
+                    continue;
                 }
 
-                markers.inverse.set(index, dateAgo)
+                markers.inverse.set(index, dateAgo);
             }
 
-            return markers
-        }, [items])
+            return markers;
+        }, [items]);
 
-        const handleItemAdd = React.useCallback(() => onItemAdd?.(), [onItemAdd])
+        const handleItemAdd = React.useCallback(() => onItemAdd?.(), [onItemAdd]);
 
-        const handleItemRemove = React.useCallback((id: string) => onItemRemove?.(id), [onItemRemove])
+        const handleItemRemove = React.useCallback((id: string) => onItemRemove?.(id), [onItemRemove]);
 
         return (
             <div className={css.root}>
@@ -113,8 +113,8 @@ const ChatList = React.memo(
                     )}
                 />
             </div>
-        )
+        );
     },
-)
+);
 
-export default ChatList
+export default ChatList;

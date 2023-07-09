@@ -1,6 +1,6 @@
-import { type MantineThemeOverride } from "@mantine/core"
+import { type MantineThemeOverride } from "@mantine/core";
 
-import { vars } from "./vars.css"
+import { vars } from "./vars.css";
 
 export const colors = {
     blue: [
@@ -15,7 +15,7 @@ export const colors = {
         "#1c345d",
         "#1c345d",
     ],
-} satisfies MantineThemeOverride["colors"]
+} satisfies MantineThemeOverride["colors"];
 
 export const mantineTheme: MantineThemeOverride = {
     fontFamily: vars.font.family.fontFamilyBody,
@@ -29,4 +29,4 @@ export const mantineTheme: MantineThemeOverride = {
         lg: "12px",
         xl: "16px",
     },
-}
+};

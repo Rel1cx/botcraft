@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
 export const root = style({
     flex: "1 1 auto",
@@ -8,12 +8,12 @@ export const root = style({
     width: "100%",
     overflowX: "hidden",
     overflowY: "auto",
-})
+});
 
 export const content = style({
     padding: "0 1rem",
-})
+});
 
-export const intro = style({})
+export const intro = style({});
 
-export const message = style({})
+export const message = style({});

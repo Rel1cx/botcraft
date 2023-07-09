@@ -10,6 +10,6 @@ const config = {
         require("tailwindcss-animate"),
         // ...
     ],
-}
+};
 
-module.exports = config
+module.exports = config;

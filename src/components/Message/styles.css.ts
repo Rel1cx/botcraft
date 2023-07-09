@@ -1,7 +1,7 @@
-import { style, styleVariants } from "@vanilla-extract/css"
+import { style, styleVariants } from "@vanilla-extract/css";
 
-import { tappable } from "@/theme/base.css"
-import { vars } from "@/theme/vars.css"
+import { tappable } from "@/theme/base.css";
+import { vars } from "@/theme/vars.css";
 
 export const baseRoot = style({
     margin: "1rem 0",
@@ -15,7 +15,7 @@ export const baseRoot = style({
             "--tooltip-opacity": "1",
         },
     },
-})
+});
 
 export const baseContent = style({
     padding: "0.5rem 1rem",
@@ -23,13 +23,13 @@ export const baseContent = style({
     overflow: "hidden",
     background: vars.colors.lightGray,
     borderRadius: "1rem",
-})
+});
 
 export const root = styleVariants({
     system: [baseRoot, { justifyContent: "center" }],
     user: [baseRoot, { flexDirection: "row-reverse" }],
     assistant: [baseRoot, { flexDirection: "row" }],
-})
+});
 
 export const content = styleVariants({
     system: [
@@ -59,7 +59,7 @@ export const content = styleVariants({
             background: vars.colors.lightGray,
         },
     ],
-})
+});
 
 export const actionButton = style([
     tappable,
@@ -80,4 +80,4 @@ export const actionButton = style([
             background: vars.colors.lightGray,
         },
     },
-])
+]);

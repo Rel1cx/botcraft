@@ -2,6 +2,7 @@
     "root": true,
     "extends": ["with-tsconfig"],
     "rules": {
+        "semi": ["error", "always"],
         "sonarjs/no-duplicate-string": "warn",
         "import/namespace": "off",
         "import/no-default-export": "off",

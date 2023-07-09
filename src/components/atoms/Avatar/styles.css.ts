@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
 export const root = style({
     display: "flex",
@@ -11,4 +11,4 @@ export const root = style({
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",
     backgroundColor: "#fff",
-})
+});

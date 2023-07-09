@@ -1,10 +1,10 @@
-import { pick } from "rambda"
+import { pick } from "rambda";
 
-import type { Message } from "@/api"
-import type { Role } from "@/zod"
+import type { Message } from "@/api";
+import type { Role } from "@/zod";
 
-export const extractMessages = (data: Message[]) => data.map(pick(["role", "content"]))
+export const extractMessages = (data: Message[]) => data.map(pick(["role", "content"]));
 
-export const filterMessages = (data: Message[]) => data.filter((item) => item.content.trim() !== "")
+export const filterMessages = (data: Message[]) => data.filter((item) => item.content.trim() !== "");
 
-export const excludeMessages = (role: Role) => (data: Message[]) => data.filter((item) => item.role !== role)
+export const excludeMessages = (role: Role) => (data: Message[]) => data.filter((item) => item.role !== role);

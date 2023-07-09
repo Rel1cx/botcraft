@@ -1,5 +1,5 @@
 const WorkflowArea = () => {
-    return null
-}
+    return null;
+};
 
-export default WorkflowArea
+export default WorkflowArea;

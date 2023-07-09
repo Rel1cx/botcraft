@@ -1,11 +1,11 @@
-import { style } from "@vanilla-extract/css"
+import { style } from "@vanilla-extract/css";
 
 export const root = style({
     width: "100%",
     maxWidth: "75%",
     display: "flex",
     justifyContent: "center",
-})
+});
 
 export const input = style({
     textAlign: "center",
@@ -21,4 +21,4 @@ export const input = style({
         boxShadow: "none",
         borderColor: "transparent",
     },
-})
+});

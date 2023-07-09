@@ -1,7 +1,7 @@
-import { Result as R } from "@swan-io/boxed"
-import ky, { type HTTPError, type KyResponse } from "ky"
+import { Result as R } from "@swan-io/boxed";
+import ky, { type HTTPError, type KyResponse } from "ky";
 
-import type { ChatCompletionOptions, Message } from "./types"
+import type { ChatCompletionOptions, Message } from "./types";
 
 export const getChatCompletion = async (
     apiKey: string,
@@ -14,7 +14,7 @@ export const getChatCompletion = async (
     const headers: HeadersInit = {
         Authorization: `Bearer ${apiKey}`,
         ...customHeaders,
-    }
+    };
 
     return R.fromPromise<KyResponse, HTTPError>(
         ky
@@ -30,8 +30,8 @@ export const getChatCompletion = async (
                 },
             })
             .json(),
-    )
-}
+    );
+};
 
 export const getChatCompletionStream = async (
     apiKey: string,
@@ -44,7 +44,7 @@ export const getChatCompletionStream = async (
     const headers: HeadersInit = {
         Authorization: `Bearer ${apiKey}`,
         ...customHeaders,
-    }
+    };
 
     const result = await R.fromPromise<KyResponse, HTTPError>(
         ky.post(endpoint, {
@@ -57,7 +57,7 @@ export const getChatCompletionStream = async (
                 stream: true,
             },
         }),
-    )
+    );
 
-    return result.map((r) => r.body)
-}
+    return result.map((r) => r.body);
+};

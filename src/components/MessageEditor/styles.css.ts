@@ -1,10 +1,10 @@
-import { globalStyle, style } from "@vanilla-extract/css"
+import { globalStyle, style } from "@vanilla-extract/css";
 
-import { vars } from "@/theme/vars.css"
+import { vars } from "@/theme/vars.css";
 
 export const root = style({
     marginBottom: "1rem",
-})
+});
 
 export const content = style({
     fontSize: "16px",
@@ -14,13 +14,13 @@ export const content = style({
             fontSize: "14px",
         },
     },
-})
+});
 
 globalStyle(`${content} .cm-editor`, {
     padding: "0.5rem",
     outline: "none",
     backgroundColor: vars.colors.lightGray,
-})
+});
 
 export const toolbar = style({
     display: "flex",
@@ -32,7 +32,7 @@ export const toolbar = style({
     fontSize: "12px",
     opacity: "0",
     transition: "opacity 120ms ease-out",
-})
+});
 
 export const info = style({
     display: "block",
@@ -42,4 +42,4 @@ export const info = style({
     borderRadius: "0.25rem",
     background: vars.colors.lightGray,
     fontFamily: "iosevka, monospace",
-})
+});

@@ -1,38 +1,38 @@
-import { useResizeObserver } from "@react-hookz/web"
-import type { Option as O } from "@swan-io/boxed"
-import clsx from "clsx"
-import { AnimatePresence, m } from "framer-motion"
-import * as React from "react"
+import { useResizeObserver } from "@react-hookz/web";
+import type { Option as O } from "@swan-io/boxed";
+import clsx from "clsx";
+import { AnimatePresence, m } from "framer-motion";
+import * as React from "react";
 
-import type { MessageData } from "@/bot/types"
-import type { ChatItem } from "@/types"
-import type { ChatID, MessageID } from "@/zod/id"
-import { makeMessageID } from "@/zod/id"
+import type { MessageData } from "@/bot/types";
+import type { ChatItem } from "@/types";
+import type { ChatID, MessageID } from "@/zod/id";
+import { makeMessageID } from "@/zod/id";
 
-import MessageIndicator from "../MessageIndicator/MessageIndicator"
-import * as css from "./styles.css"
+import MessageIndicator from "../MessageIndicator/MessageIndicator";
+import * as css from "./styles.css";
 
-const Message = React.lazy(() => import("@/components/Message/Message"))
+const Message = React.lazy(() => import("@/components/Message/Message"));
 
-const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"))
+const Animation = React.lazy(() => import("@/components/atoms/Animation/Animation"));
 
 export type MessageComponentProps = {
-    chatID: ChatID
-    id: MessageID
-    className?: string
-}
+    chatID: ChatID;
+    id: MessageID;
+    className?: string;
+};
 
 export type ChatProps = {
-    data: ChatItem
-    generatingMessageID: O<MessageID>
-    renderMessage?: (id: MessageID) => React.ReactNode
-} & React.HTMLAttributes<HTMLDivElement>
+    data: ChatItem;
+    generatingMessageID: O<MessageID>;
+    renderMessage?: (id: MessageID) => React.ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: ChatProps) => {
-    const { id: chatID, intro, messages } = data
+    const { id: chatID, intro, messages } = data;
 
-    const rootRef = React.useRef<HTMLDivElement>(null)
-    const contentRef = React.useRef<HTMLDivElement>(null)
+    const rootRef = React.useRef<HTMLDivElement>(null);
+    const contentRef = React.useRef<HTMLDivElement>(null);
 
     const introMessage = React.useMemo<MessageData>(
         () => ({
@@ -42,45 +42,45 @@ const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: 
             updatedAt: Date.now(),
         }),
         [intro],
-    )
+    );
 
-    const lastMessageID = React.useMemo(() => messages[messages.length - 1], [messages])
+    const lastMessageID = React.useMemo(() => messages[messages.length - 1], [messages]);
 
     const autoScrollEnabled = React.useMemo(() => {
         if (generatingMessageID.isNone()) {
-            return false
+            return false;
         }
 
-        return generatingMessageID.toNull() === lastMessageID
-    }, [generatingMessageID, lastMessageID])
+        return generatingMessageID.toNull() === lastMessageID;
+    }, [generatingMessageID, lastMessageID]);
 
     useResizeObserver(
         contentRef,
         (entry) => {
-            const root = rootRef.current
+            const root = rootRef.current;
 
             if (!root) {
-                return
+                return;
             }
 
-            const atBottomOffset = 300
+            const atBottomOffset = 300;
 
-            const { clientHeight, scrollHeight, scrollTop } = root
+            const { clientHeight, scrollHeight, scrollTop } = root;
 
-            const isAtBottom = scrollTop + clientHeight >= scrollHeight - atBottomOffset
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight - atBottomOffset;
 
             if (!isAtBottom) {
-                return
+                return;
             }
 
-            const { height } = entry.contentRect
+            const { height } = entry.contentRect;
 
             root.scrollTo({
                 top: height,
-            })
+            });
         },
         autoScrollEnabled,
-    )
+    );
 
     return (
         <div ref={rootRef} className={clsx(css.root, className)} {...rest}>
@@ -100,7 +100,7 @@ const Chat = ({ className, data, generatingMessageID, renderMessage, ...rest }: 
                 </Animation>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Chat
+export default Chat;

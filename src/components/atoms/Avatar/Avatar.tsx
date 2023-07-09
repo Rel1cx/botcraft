@@ -1,13 +1,13 @@
-import * as React from "react"
+import * as React from "react";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 type AvatarProps = React.PropsWithChildren<{
-    title?: string
-    bg?: string
-    size?: number
-    radius?: string | number
-}>
+    title?: string;
+    bg?: string;
+    size?: number;
+    radius?: string | number;
+}>;
 
 const Avatar = React.memo(
     React.forwardRef<HTMLDivElement, AvatarProps>(({ bg, children, radius = "0.5rem", size = 44 }, ref) => {
@@ -24,8 +24,8 @@ const Avatar = React.memo(
             >
                 {children}
             </div>
-        )
+        );
     }),
-)
+);
 
-export default Avatar
+export default Avatar;

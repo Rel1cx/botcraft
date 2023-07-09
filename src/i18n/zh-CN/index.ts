@@ -1,4 +1,4 @@
-import { type Translation } from "../i18n-types.js"
+import { type Translation } from "../i18n-types.js";
 
 export default {
     ABOUT: "关于",
@@ -13,4 +13,4 @@ export default {
     START_AT_LOGIN: "开机启动",
     THEME: "主题",
     VERSION: "版本",
-} satisfies Translation
+} satisfies Translation;

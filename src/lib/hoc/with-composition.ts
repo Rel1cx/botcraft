@@ -1,10 +1,10 @@
-import type { InputHTMLAttributes } from "react"
-import React, { useState } from "react"
-import { match } from "ts-pattern"
+import type { InputHTMLAttributes } from "react";
+import React, { useState } from "react";
+import { match } from "ts-pattern";
 
-export type Props = InputHTMLAttributes<HTMLInputElement>
+export type Props = InputHTMLAttributes<HTMLInputElement>;
 
-type InputType = "input" | "textarea"
+type InputType = "input" | "textarea";
 
 /**
  * HOC that enhances an input component with composition event handling.
@@ -19,40 +19,40 @@ export const withComposition = <T extends Props>(WrappedComponent: React.Compone
      * @returns {React.ReactElement} - The wrapped component with enhanced props
      */
     const Inner: React.FC<T & Props> = (props) => {
-        const composing = React.useRef(false)
-        const [text, setText] = useState(props.value)
+        const composing = React.useRef(false);
+        const [text, setText] = useState(props.value);
 
         const onComposition = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { currentTarget, type } = e
-            const { value } = currentTarget
+            const { currentTarget, type } = e;
+            const { value } = currentTarget;
 
             match(type)
                 .with("compositionstart", () => {
-                    composing.current = true
+                    composing.current = true;
                 })
                 .with("compositionend", () => {
-                    composing.current = false
-                    setText(value)
-                    props.onChange?.(e)
+                    composing.current = false;
+                    setText(value);
+                    props.onChange?.(e);
                 })
-                .run()
-        }
+                .run();
+        };
 
         const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-            setText(e.currentTarget.value)
+            setText(e.currentTarget.value);
 
             if (composing.current) {
-                return
+                return;
             }
-            props.onChange?.(e)
-        }
+            props.onChange?.(e);
+        };
 
         const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
             if (composing.current) {
-                return
+                return;
             }
-            props.onKeyDown?.(e)
-        }
+            props.onKeyDown?.(e);
+        };
 
         return React.createElement(WrappedComponent, {
             ...props,
@@ -61,10 +61,10 @@ export const withComposition = <T extends Props>(WrappedComponent: React.Compone
             onCompositionStart: onComposition,
             onCompositionEnd: onComposition,
             onKeyDown,
-        })
-    }
+        });
+    };
 
-    Inner.displayName = "inner"
+    Inner.displayName = "inner";
 
-    return Inner
-}
+    return Inner;
+};

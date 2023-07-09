@@ -1,40 +1,40 @@
-import type { Role } from "@/api"
+import type { Role } from "@/api";
 
 export type IDProtocol = {
-    id: string
-}
+    id: string;
+};
 
 export type RoleProtocol = {
-    role: Role
-}
+    role: Role;
+};
 
 export type TitleProtocol = {
-    title: string
-}
+    title: string;
+};
 
 export type IconProtocol = {
-    icon: string
-}
+    icon: string;
+};
 
 export type NameProtocol = {
-    name: string
-}
+    name: string;
+};
 
 export type ContentProtocol<T> = {
-    content: T
-}
+    content: T;
+};
 
 export type VersionProtocol = {
-    version: string
-}
+    version: string;
+};
 
 export type CreatableProtocol = {
     // createdAt: number
-    updatedAt: number
+    updatedAt: number;
     // createdBy: Role
     // updatedBy: Role
-}
+};
 
 export type DeletableProtocol = {
-    deleted: boolean
-}
+    deleted: boolean;
+};

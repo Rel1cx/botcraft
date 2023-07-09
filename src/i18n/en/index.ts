@@ -1,4 +1,4 @@
-import { type BaseTranslation } from "../i18n-types.js"
+import { type BaseTranslation } from "../i18n-types.js";
 
 export default {
     ABOUT: "About",
@@ -13,4 +13,4 @@ export default {
     START_AT_LOGIN: "Start at login",
     THEME: "Theme",
     VERSION: "Version",
-} satisfies BaseTranslation
+} satisfies BaseTranslation;

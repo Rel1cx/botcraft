@@ -1,21 +1,21 @@
-import { Dialog, DialogDescription, DialogDismiss, DialogHeading, useDialogStore } from "@ariakit/react"
-import clsx from "clsx"
-import { isNil } from "rambda"
-import * as React from "react"
+import { Dialog, DialogDescription, DialogDismiss, DialogHeading, useDialogStore } from "@ariakit/react";
+import clsx from "clsx";
+import { isNil } from "rambda";
+import * as React from "react";
 
-import * as css from "./styles.css"
+import * as css from "./styles.css";
 
 type ConfirmDialogProps = {
-    title?: React.ReactNode
-    description?: React.ReactNode
-    cancelLabel?: React.ReactNode
-    confirmLabel?: React.ReactNode
-    danger?: boolean
-    open?: boolean
-    onClose?: () => void
-    onConfirm?: () => void
-    onCancel?: () => void
-}
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    cancelLabel?: React.ReactNode;
+    confirmLabel?: React.ReactNode;
+    danger?: boolean;
+    open?: boolean;
+    onClose?: () => void;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+};
 
 const ConfirmDialog = React.memo(
     ({
@@ -33,11 +33,11 @@ const ConfirmDialog = React.memo(
             open,
             setOpen(open) {
                 if (open) {
-                    return
+                    return;
                 }
-                onClose?.()
+                onClose?.();
             },
-        })
+        });
         return (
             <Dialog
                 className={css.dialog}
@@ -59,8 +59,8 @@ const ConfirmDialog = React.memo(
                     )}
                 </div>
             </Dialog>
-        )
+        );
     },
-)
+);
 
-export default ConfirmDialog
+export default ConfirmDialog;
