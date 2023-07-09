@@ -3,13 +3,14 @@ import "katex/dist/katex.min.css";
 
 import { clsx } from "clsx";
 import * as React from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import type { PluggableList } from "react-markdown/lib/react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
+
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
 
 import MemoizedReactMarkdown from "./MemoizedReactMarkdown";
 import * as css from "./styles.css";

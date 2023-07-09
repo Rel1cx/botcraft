@@ -6,9 +6,9 @@ import type { BasicSetupOptions, ReactCodeMirrorProps, ReactCodeMirrorRef } from
 import clsx from "clsx";
 import { basicLight } from "cm6-theme-basic-light";
 import * as React from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import invariant from "tiny-invariant";
 
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
 import { noop } from "@/lib/utils";
 
 import MemoizedCodeMirror from "./MemoizedCodeMirror";

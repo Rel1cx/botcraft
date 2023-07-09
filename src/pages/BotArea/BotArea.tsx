@@ -4,6 +4,7 @@ import { match } from "ts-pattern";
 
 import Redirect from "@/components/atoms/Redirect/Redirect";
 import { BotList } from "@/components/BotList/BotList";
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
 import { Router } from "@/router";
 import { botListAtom, useBot, useFirstChatMeta } from "@/stores";
 import { isChatID } from "@/zod/id";
@@ -58,7 +59,9 @@ const BotArea = ({ botName }: BotAreaProps) => {
 
     return (
         <RootLayout nav={<BotList items={botList} selected={botName} />}>
-            <React.Suspense>{contentView}</React.Suspense>
+            <ErrorBoundary fallback={<p className="p-2">Failed to render bot area.</p>}>
+                <React.Suspense>{contentView}</React.Suspense>
+            </ErrorBoundary>
         </RootLayout>
     );
 };
