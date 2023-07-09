@@ -125,7 +125,6 @@
         "vite-plugin-wasm": "3.2.2",
         "zx": "7.2.3"
     },
-    "//": "dedupe packages for pnpm",
     "pnpm": {
         "overrides": {
             "@mantine/core": "6.0.14",
@@ -135,8 +134,8 @@
             "@codemirror/language-data": "latest",
             "@codemirror/state": "latest",
             "@codemirror/view": "latest",
-            "react": "18.2.0",
-            "react-dom": "18.2.0",
+            "react": "latest",
+            "react-dom": "latest",
             "typescript": "latest"
         }
     }
