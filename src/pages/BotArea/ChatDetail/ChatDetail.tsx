@@ -378,12 +378,11 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 onClose={() => {
                     setRemoving(O.None());
                 }}
-                onConfirm={async () => {
-                    if (removing.isNone()) {
-                        return;
-                    }
-                    await onChatRemoveClick(removing.get());
-                    setRemoving(O.None());
+                onConfirm={() => {
+                    removing.map(async (id) => {
+                        await onChatRemoveClick(id);
+                        setRemoving(O.None());
+                    });
                 }}
             />
         </Layout>
