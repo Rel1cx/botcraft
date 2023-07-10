@@ -117,16 +117,16 @@ export const dotGenerating = style({
         },
         "&:nth-child(2)": {
             animation: `${keyframes({
-                "0%": { opacity: 0.5, transform: "scale(1)" },
+                "0%": { opacity: 0.75, transform: "scale(1)" },
                 "50%": { opacity: 1, transform: "scale(1.25)" },
-                "100%": { opacity: 0.5, transform: "scale(1)" },
+                "100%": { opacity: 0.75, transform: "scale(1)" },
             })} 1s linear 0.33s infinite`,
         },
         "&:nth-child(3)": {
             animation: `${keyframes({
-                "0%": { opacity: 0.5, transform: "scale(1)" },
+                "0%": { opacity: 0.75, transform: "scale(1)" },
                 "50%": { opacity: 1, transform: "scale(1.25)" },
-                "100%": { opacity: 0.5, transform: "scale(1)" },
+                "100%": { opacity: 0.75, transform: "scale(1)" },
             })} 1s linear 0.66s infinite`,
         },
     },

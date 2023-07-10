@@ -13,16 +13,17 @@
     <div id="root"></div>
     <script type="module">
         import { onFCP } from 'https://cdn.jsdelivr.net/npm/web-vitals@3.3.2/+esm';
-        import { Progress } from 'https://cdn.jsdelivr.net/npm/rsup-progress@3.1.1/dist/esm/index.js'
-        window.progress = new Progress({
+        import Progress from 'https://cdn.jsdelivr.net/npm/@badrap/bar-of-progress/+esm';
+        const progress = new Progress({
             color: "#1c345dcc",
-            height: 3
-        })
+            size: 3,
+            delay: 0
+        });
 
-        window.progress.start()
+        progress.start();
 
         onFCP(() => {
-            window.progress.end()
+            progress.finish();
         });
     </script>
     <script type="module" src="/src/main.ts"></script>
