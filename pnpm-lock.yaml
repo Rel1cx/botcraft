@@ -227,8 +227,8 @@ devDependencies:
     specifier: 1.0.1
     version: 1.0.1(vite@4.4.2)
   '@vitejs/plugin-react':
-    specifier: 4.0.2
-    version: 4.0.2(vite@4.4.2)
+    specifier: 4.0.3
+    version: 4.0.3(vite@4.4.2)
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.25)
@@ -2872,8 +2872,8 @@ packages:
       vite: 4.4.2(@types/node@20.4.1)(sass@1.63.6)
     dev: true
 
-  /@vitejs/plugin-react@4.0.2(vite@4.4.2):
-    resolution: {integrity: sha512-zbnVp3Esfg33zDaoLrjxG+p/dPiOtpvJA+1oOEQwSxMMTRL9zi1eghIcd2WtLjkcKnPsa3S15LzS/OzDn2BOCA==}
+  /@vitejs/plugin-react@4.0.3(vite@4.4.2):
+    resolution: {integrity: sha512-pwXDog5nwwvSIzwrvYYmA2Ljcd/ZNlcsSG2Q9CNDBwnsd55UGAyr2doXtB5j+2uymRCnCfExlznzzSFbBRcoCg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0
