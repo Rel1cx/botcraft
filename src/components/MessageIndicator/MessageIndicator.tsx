@@ -18,23 +18,30 @@ const MessageIndicator = React.memo(({ status, onClick }: MessageIndicatorProps)
         <Animation>
             <m.div className={css.root} onClick={onClick} animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
                 {match(status)
+                    // .with("sending", () => (
+                    //     <div className={css.content}>
+                    //         <span className={css.connecting} />
+                    //     </div>
+                    // ))
+                    // .with("replying", () => (
+                    //     <div className={css.content}>
+                    //         <span className={css.generating} />
+                    //     </div>
+                    // ))
                     .with("sending", () => (
                         <div className={css.content}>
-                            <span className={css.connecting} />
+                            <div className={css.dotConnecting} />
+                            <div className={css.dotConnecting} />
+                            <div className={css.dotConnecting} />
                         </div>
                     ))
                     .with("replying", () => (
                         <div className={css.content}>
-                            <span className={css.generating} />
+                            <div className={css.dotGenerating} />
+                            <div className={css.dotGenerating} />
+                            <div className={css.dotGenerating} />
                         </div>
                     ))
-                    // .with("replying", () => (
-                    //     <div className={css.content}>
-                    //         <div className={css.dot} />
-                    //         <div className={css.dot} />
-                    //         <div className={css.dot} />
-                    //     </div>
-                    // ))
                     .otherwise(() => null)}
             </m.div>
         </Animation>

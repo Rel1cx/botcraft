@@ -73,7 +73,7 @@ export const generating = style({
     },
 });
 
-export const dot = style({
+export const dotConnecting = style({
     height: "0.5rem",
     width: "0.5rem",
     borderRadius: "50%",
@@ -96,6 +96,37 @@ export const dot = style({
             animation: `${keyframes({
                 "0%": { opacity: 1 },
                 "100%": { opacity: 0 },
+            })} 1s linear 0.66s infinite`,
+        },
+    },
+});
+
+export const dotGenerating = style({
+    height: "0.5rem",
+    width: "0.5rem",
+    borderRadius: "50%",
+    backgroundColor: vars.colors.secondary,
+
+    selectors: {
+        "&:nth-child(1)": {
+            animation: `${keyframes({
+                "0%": { opacity: 0.2, transform: "scale(1)" },
+                "50%": { opacity: 1, transform: "scale(1.25)" },
+                "100%": { opacity: 0.2, transform: "scale(1)" },
+            })} 1s linear infinite`,
+        },
+        "&:nth-child(2)": {
+            animation: `${keyframes({
+                "0%": { opacity: 0.5, transform: "scale(1)" },
+                "50%": { opacity: 1, transform: "scale(1.25)" },
+                "100%": { opacity: 0.5, transform: "scale(1)" },
+            })} 1s linear 0.33s infinite`,
+        },
+        "&:nth-child(3)": {
+            animation: `${keyframes({
+                "0%": { opacity: 0.5, transform: "scale(1)" },
+                "50%": { opacity: 1, transform: "scale(1.25)" },
+                "100%": { opacity: 0.5, transform: "scale(1)" },
             })} 1s linear 0.66s infinite`,
         },
     },
