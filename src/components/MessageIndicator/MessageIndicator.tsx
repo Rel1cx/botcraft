@@ -18,6 +18,11 @@ const MessageIndicator = React.memo(({ status, onClick }: MessageIndicatorProps)
         <Animation>
             <m.div className={css.root} onClick={onClick} animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
                 {match(status)
+                    .with("sending", () => (
+                        <div className={css.content}>
+                            <small className={css.connecting} />
+                        </div>
+                    ))
                     .with("replying", () => (
                         <div className={css.content}>
                             <div className={css.dot} />

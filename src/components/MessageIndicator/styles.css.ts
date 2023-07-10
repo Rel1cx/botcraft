@@ -6,7 +6,7 @@ import { vars } from "@/theme/vars.css";
 export const root = style([
     tappable,
     {
-        width: "4rem",
+        width: "fit-content",
         height: "1.5rem",
         display: "flex",
         alignItems: "center",
@@ -21,6 +21,25 @@ export const content = style({
     alignItems: "center",
     justifyContent: "center",
     gap: "0.5rem",
+    padding: "0.5rem",
+    minWidth: "4rem",
+});
+
+export const connecting = style({
+    color: vars.colors.text,
+    selectors: {
+        "&::after": {
+            display: "inline-block",
+            content: "Connecting   ",
+            whiteSpace: "pre",
+            animation: `${keyframes({
+                "0%": { content: "Connecting   " },
+                "25%": { content: "Connecting.  " },
+                "50%": { content: "Connecting.. " },
+                "75%": { content: "Connecting..." },
+            })} 1s linear infinite`,
+        },
+    },
 });
 
 export const dot = style({
