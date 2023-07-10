@@ -23,20 +23,51 @@ export const content = style({
     gap: "0.5rem",
     padding: "0.5rem",
     minWidth: "4rem",
+    color: vars.colors.black70,
+    fontSize: "14px",
+    fontWeight: 500,
+    fontFamily: vars.font.family.fontFamilyUI,
 });
 
 export const connecting = style({
-    color: vars.colors.text,
     selectors: {
         "&::after": {
             display: "inline-block",
             content: "Connecting   ",
             whiteSpace: "pre",
             animation: `${keyframes({
-                "0%": { content: "Connecting   " },
-                "25%": { content: "Connecting.  " },
-                "50%": { content: "Connecting.. " },
-                "75%": { content: "Connecting..." },
+                "0%": {
+                    opacity: 0.7,
+                    content: "Connecting   ",
+                },
+                "25%": {
+                    opacity: 1,
+                    content: "Connecting.  ",
+                },
+                "50%": {
+                    opacity: 0.7,
+                    content: "Connecting.. ",
+                },
+                "75%": {
+                    opacity: 1,
+                    content: "Connecting...",
+                },
+            })} 1s linear infinite`,
+        },
+    },
+});
+
+export const generating = style({
+    selectors: {
+        "&::after": {
+            display: "inline-block",
+            content: "Generating   ",
+            whiteSpace: "pre",
+            animation: `${keyframes({
+                "0%": { content: "Generating   " },
+                "25%": { content: "Generating.  " },
+                "50%": { content: "Generating.. " },
+                "75%": { content: "Generating..." },
             })} 1s linear infinite`,
         },
     },

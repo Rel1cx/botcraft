@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { createGlobalTheme } from "@vanilla-extract/css";
 
 export const vars = createGlobalTheme(":root", {
@@ -56,10 +57,10 @@ export const vars = createGlobalTheme(":root", {
     },
     font: {
         family: {
-            fontFamilyBody: `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji'`,
-            // fontFamilyHeading: 'Source Serif Pro'
+            fontFamilyBody: `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'`,
+            // fontFamilyHeading: "Source Serif Pro",
+            fontFamilyUI: `'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'`,
+            fontFamilyMono: `iosevka, Consolas, 'Liberation Mono', Menlo, monospace`,
         },
         size: {
             fontSizeRoot: "16px",
