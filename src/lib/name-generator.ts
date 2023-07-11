@@ -1,7 +1,8 @@
 import { generateMnemonic } from "@scure/bip39";
-import { wordlist } from "@scure/bip39/wordlists/english";
 
 import { capitalize } from "./string";
+
+const wordlist = await import("@scure/bip39/wordlists/english").then((m) => m.wordlist);
 
 export const getRandomWords = (length = 3) =>
     generateMnemonic(wordlist).split(" ").slice(0, length).map(capitalize).join(" ");

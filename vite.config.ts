@@ -43,7 +43,7 @@ export default defineConfig({
         target: ["es2021", "chrome113", "safari14"],
         chunkSizeWarningLimit: 600,
         rollupOptions: {
-            treeshake: "recommended"
+            treeshake: "recommended",
         },
         sourcemap: false,
     },
