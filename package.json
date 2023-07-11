@@ -26,6 +26,7 @@
         "@codemirror/language-data": "6.3.1",
         "@codemirror/state": "6.2.1",
         "@codemirror/view": "6.14.1",
+        "@ddietr/codemirror-themes": "1.4.1",
         "@dqbd/tiktoken": "1.0.7",
         "@floating-ui/react": "0.24.6",
         "@mantine/core": "6.0.16",
@@ -41,11 +42,9 @@
         "@uiw/react-codemirror": "4.21.7",
         "bind-event-listener": "3.0.0",
         "clsx": "1.2.1",
-        "cm6-theme-basic-light": "0.2.0",
         "codemirror": "6.0.1",
         "core-js": "3.31.1",
         "date-fns": "2.30.0",
-        "deep-weak-map": "1.1.0",
         "dnum": "2.7.0",
         "fast-equals": "5.0.1",
         "framer-motion": "10.12.18",
@@ -136,8 +135,8 @@
             "react": "latest",
             "react-dom": "latest",
             "typescript": "latest",
-            "@typescript-eslint/eslint-plugin": "6.0.0",
-            "@typescript-eslint/parser": "6.0.0"
+            "@typescript-eslint/eslint-plugin": "latest",
+            "@typescript-eslint/parser": "latest"
         }
     }
 }

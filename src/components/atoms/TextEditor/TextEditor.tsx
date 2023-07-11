@@ -2,9 +2,9 @@
 // import { languages } from "@codemirror/language-data"
 import { Annotation } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
+import { githubLight } from "@ddietr/codemirror-themes/github-light";
 import type { BasicSetupOptions, ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import clsx from "clsx";
-import { basicLight } from "cm6-theme-basic-light";
 import * as React from "react";
 import invariant from "tiny-invariant";
 
@@ -123,7 +123,7 @@ const TextEditor = React.memo(
                         width="100%"
                         maxHeight="320px"
                         placeholder={placeholder}
-                        theme={basicLight}
+                        theme={githubLight}
                         basicSetup={setupOptions}
                         extensions={extensions}
                         onFocus={onFocus}

@@ -15,8 +15,8 @@ overrides:
   react: latest
   react-dom: latest
   typescript: latest
-  '@typescript-eslint/eslint-plugin': 6.0.0
-  '@typescript-eslint/parser': 6.0.0
+  '@typescript-eslint/eslint-plugin': latest
+  '@typescript-eslint/parser': latest
 
 dependencies:
   '@ariakit/react':
@@ -34,6 +34,9 @@ dependencies:
   '@codemirror/view':
     specifier: latest
     version: 6.14.1
+  '@ddietr/codemirror-themes':
+    specifier: 1.4.1
+    version: 1.4.1
   '@dqbd/tiktoken':
     specifier: 1.0.7
     version: 1.0.7
@@ -79,9 +82,6 @@ dependencies:
   clsx:
     specifier: 1.2.1
     version: 1.2.1
-  cm6-theme-basic-light:
-    specifier: 0.2.0
-    version: 0.2.0(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.14.1)(@lezer/highlight@1.1.6)
   codemirror:
     specifier: 6.0.1
     version: 6.0.1(@lezer/common@1.0.3)
@@ -91,9 +91,6 @@ dependencies:
   date-fns:
     specifier: 2.30.0
     version: 2.30.0
-  deep-weak-map:
-    specifier: 1.1.0
-    version: 1.1.0
   dnum:
     specifier: 2.7.0
     version: 2.7.0
@@ -972,6 +969,15 @@ packages:
       '@codemirror/state': 6.2.1
       style-mod: 4.0.3
       w3c-keyname: 2.2.8
+    dev: false
+
+  /@ddietr/codemirror-themes@1.4.1:
+    resolution: {integrity: sha512-2exPoRk/VlJMIceQXLRHE6N+81JszN1mDO+exwakYvwfK4BhpyIYaKzN+uEsph0g1qLI0PdHXBI9Yqg5WxyKAw==}
+    dependencies:
+      '@codemirror/language': 6.8.0
+      '@codemirror/state': 6.2.1
+      '@codemirror/view': 6.14.1
+      '@lezer/highlight': 1.1.6
     dev: false
 
   /@dqbd/tiktoken@1.0.7:
@@ -3479,20 +3485,6 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /cm6-theme-basic-light@0.2.0(@codemirror/language@6.8.0)(@codemirror/state@6.2.1)(@codemirror/view@6.14.1)(@lezer/highlight@1.1.6):
-    resolution: {integrity: sha512-1prg2gv44sYfpHscP26uLT/ePrh0mlmVwMSoSd3zYKQ92Ab3jPRLzyCnpyOCQLJbK+YdNs4HvMRqMNYdy4pMhA==}
-    peerDependencies:
-      '@codemirror/language': ^6.0.0
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
-      '@lezer/highlight': ^1.0.0
-    dependencies:
-      '@codemirror/language': 6.8.0
-      '@codemirror/state': 6.2.1
-      '@codemirror/view': 6.14.1
-      '@lezer/highlight': 1.1.6
-    dev: false
-
   /codemirror@6.0.1(@lezer/common@1.0.3):
     resolution: {integrity: sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==}
     dependencies:
@@ -3738,10 +3730,6 @@ packages:
   /deep-object-diff@1.1.9:
     resolution: {integrity: sha512-Rn+RuwkmkDwCi2/oXOFS9Gsr5lJZu/yTGpK7wAaAIE75CC+LCGEZHpY6VQJa/RoJcrmaA/docWJZvYohlNkWPA==}
     dev: true
-
-  /deep-weak-map@1.1.0:
-    resolution: {integrity: sha512-mggZahglPfzZh0+jz843ICcQOP+MjmFFRrwi9MqkMXkgXR1t5N4WNLwc9p7kffiXO3wle9Jr+EGJNXoW04LAJw==}
-    dev: false
 
   /deepmerge-ts@5.1.0:
     resolution: {integrity: sha512-eS8dRJOckyo9maw9Tu5O5RUi/4inFLrnoLkBe3cPfDMx3WZioXtmOew4TXQaxq7Rhl4xjDtR7c6x8nNTxOvbFw==}
