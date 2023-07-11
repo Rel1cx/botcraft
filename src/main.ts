@@ -1,4 +1,3 @@
- 
 import "@/styles/base.css";
 import "@/styles/global.scss";
 import "@/styles/overrides.scss";
@@ -31,8 +30,10 @@ const main = () => {
 
     root.render(createElement(App, { locale }));
 
-    installAutoBlur();
-    installAutoTooltip();
+    requestAnimationFrame(() => {
+        installAutoBlur();
+        installAutoTooltip();
+    });
 };
 
 main();

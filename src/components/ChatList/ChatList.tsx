@@ -91,7 +91,7 @@ const ChatList = React.memo(
                     selectedID={selected}
                     renderItem={(item, selected, index) => (
                         <>
-                            {!!markers.inverse.has(index) && <SectionTitle title={markers.inverse.get(index) ?? ""} />}
+                            {markers.inverse.has(index) && <SectionTitle title={markers.inverse.get(index) ?? ""} />}
                             <ListItem asChild data-id={item.id} data-selected={selected}>
                                 <div className={css.item} onClick={() => onItemClick?.(item.id)}>
                                     {renderItemIcon?.(item.id)}
