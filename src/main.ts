@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 import "@/styles/base.css";
 import "@/styles/global.scss";
 import "@/styles/overrides.scss";
@@ -13,18 +13,13 @@ import { installAutoBlur, installAutoTooltip } from "./helper";
 import { detectLocale } from "./i18n/i18n-util";
 import { loadLocale } from "./i18n/i18n-util.sync";
 import App from "./pages/App";
-import { suspendBeforeDbInit } from "./stores";
 
 enableMapSet();
 
-const main = async () => {
+const main = () => {
     const locale = detectLocale(navigatorDetector);
 
     loadLocale(locale);
-
-    console.time("db init");
-    await suspendBeforeDbInit();
-    console.timeEnd("db init");
 
     const el = document.querySelector<HTMLDivElement>("#root");
 
@@ -40,4 +35,4 @@ const main = async () => {
     installAutoTooltip();
 };
 
-void main();
+main();

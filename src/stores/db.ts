@@ -43,4 +43,6 @@ export const suspendBeforeDbInit = async () => {
         store.get(messagesDb.suspendBeforeInit),
         store.get(draftsDb.suspendBeforeInit),
     ]);
+
+    return true;
 };
