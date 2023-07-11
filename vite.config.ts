@@ -40,15 +40,10 @@ export default defineConfig({
     },
     envPrefix: ["VITE_"],
     build: {
-        target: ["es2021", "firefox90", "chrome113", "safari14"],
+        target: ["es2021", "chrome113", "safari14"],
         chunkSizeWarningLimit: 600,
         rollupOptions: {
-            treeshake: "recommended",
-            output: {
-                manualChunks: {
-                    react: ["react", "react-dom"],
-                },
-            },
+            treeshake: "recommended"
         },
         sourcemap: false,
     },
