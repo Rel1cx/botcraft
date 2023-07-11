@@ -22,7 +22,7 @@ const App = ({ locale }: { locale: Locales }) => {
             <TypesafeI18n locale={locale}>
                 <MantineProvider theme={{ ...mantineTheme, colorScheme: "light" }}>
                     <div className={css.root}>
-                        <React.Suspense fallback={<RootLayout navHeader={<small>Loading...</small>} />}>
+                        <React.Suspense fallback={<RootLayout navHeader={<small className={css.loading} />} />}>
                             {React.useMemo(
                                 () =>
                                     match(route)
