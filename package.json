@@ -137,9 +137,6 @@
             "typescript": "latest",
             "@typescript-eslint/eslint-plugin": "latest",
             "@typescript-eslint/parser": "latest"
-        },
-        "patchedDependencies": {
-            "jotai-minidb@0.0.6": "patches/jotai-minidb@0.0.6.patch"
         }
     }
 }

@@ -18,11 +18,6 @@ overrides:
   '@typescript-eslint/eslint-plugin': latest
   '@typescript-eslint/parser': latest
 
-patchedDependencies:
-  jotai-minidb@0.0.6:
-    hash: 7mqifxzs6yfeyltfsjsiwmgz7a
-    path: patches/jotai-minidb@0.0.6.patch
-
 dependencies:
   '@ariakit/react':
     specifier: 0.2.12
@@ -125,7 +120,7 @@ dependencies:
     version: 0.2.0(immer@10.0.2)(jotai@2.2.2)(react@18.2.0)
   jotai-minidb:
     specifier: 0.0.6
-    version: 0.0.6(patch_hash=7mqifxzs6yfeyltfsjsiwmgz7a)(jotai@2.2.2)
+    version: 0.0.6(jotai@2.2.2)
   katex:
     specifier: 0.16.8
     version: 0.16.8
@@ -5616,7 +5611,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /jotai-minidb@0.0.6(patch_hash=7mqifxzs6yfeyltfsjsiwmgz7a)(jotai@2.2.2):
+  /jotai-minidb@0.0.6(jotai@2.2.2):
     resolution: {integrity: sha512-k78wEJw9ZxNTbprEduI18DKN4xg8YN/akShlI7noGWM9VxnvoZxCEhliTffbh1ZlafR/HWS+sXsZMQEuEqh7lQ==}
     peerDependencies:
       jotai: '>=1.10.0'
@@ -5625,7 +5620,6 @@ packages:
       idb-keyval: 6.2.1
       jotai: 2.2.2(react@18.2.0)
     dev: false
-    patched: true
 
   /jotai@2.2.2(react@18.2.0):
     resolution: {integrity: sha512-Cn8hnBg1sc5ppFwEgVGTfMR5WSM0hbAasd/bdAwIwTaum0j3OUPqBSC4tyk3jtB95vicML+RRWgKFOn6gtfN0A==}
