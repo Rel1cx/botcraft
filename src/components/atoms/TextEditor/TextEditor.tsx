@@ -92,7 +92,7 @@ const TextEditor = React.memo(
         React.useInsertionEffect(() => {
             const view = ref.current?.view;
 
-            if (!view) {
+            if (!view || view.hasFocus) {
                 return;
             }
 
