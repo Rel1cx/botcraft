@@ -99,8 +99,7 @@
         "dpdm": "3.13.1",
         "esbuild": "0.18.11",
         "eslint": "8.44.0",
-        "eslint-config-relicx": "0.4.1",
-        "eslint-config-with-tsconfig": "1.9.3",
+        "eslint-config-with-tsconfig": "1.9.4",
         "hkt-toolbelt": "0.22.0-beta.1",
         "husky": "8.0.3",
         "local-pkg": "0.4.3",
@@ -136,7 +135,9 @@
             "@codemirror/view": "latest",
             "react": "latest",
             "react-dom": "latest",
-            "typescript": "latest"
+            "typescript": "latest",
+            "@typescript-eslint/eslint-plugin": "6.0.0",
+            "@typescript-eslint/parser": "6.0.0"
         }
     }
 }
