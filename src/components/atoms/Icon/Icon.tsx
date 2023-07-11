@@ -7,7 +7,6 @@ import { vars } from "@/theme/vars.css";
 type IconProps = Remap<
     PhosphorProps & {
         as: React.ComponentType<PhosphorProps>;
-        strokeWidth?: number;
     }
 >;
 
