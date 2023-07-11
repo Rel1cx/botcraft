@@ -199,8 +199,8 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
 
     useHotkeys(
         "ctrl+enter",
-        async (evt) => {
-            const { target } = evt;
+        async (ev) => {
+            const { target } = ev;
             const container = messageEditorRef.current;
             if (!container || !target || !isContainTarget(target, container) || isGenerating) {
                 return;
@@ -212,7 +212,7 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
                 return;
             }
 
-            evt.preventDefault();
+            ev.preventDefault();
 
             void deleteDraft(chatID);
             setKey((prev) => prev + 1);
@@ -329,13 +329,13 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     id="chat-title"
                     value={chat.title}
                     placeholder="Untitled"
-                    onChange={(evt) => {
+                    onChange={(ev) => {
                         void setChat(
                             produce((draft) => {
                                 if (!draft) {
                                     return;
                                 }
-                                draft.title = evt.target.value;
+                                draft.title = ev.target.value;
                             }),
                         );
                     }}

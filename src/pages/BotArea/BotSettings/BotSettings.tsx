@@ -103,16 +103,16 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                             name="apiKey"
                             label="API Key"
                             value={apiKey}
-                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                setApiKey(evt.target.value);
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                setApiKey(ev.target.value);
                             }}
                         />
                         <TextInput
                             name="endpoint"
                             label="Endpoint"
                             value={endpoint}
-                            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                setEndpoint(evt.target.value);
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                setEndpoint(ev.target.value);
                             }}
                         />
                         <Select
@@ -134,9 +134,9 @@ const BotSettings = ({ botName }: BotSettingsProps) => {
                         name="botName"
                         label="Bot Name"
                         value={bot.name}
-                        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                        onChange={(ev: ChangeEvent<HTMLInputElement>) => {
                             setBot((draft) => {
-                                draft.name = evt.target.value
+                                draft.name = ev.target.value
                             })
                         }}
                     /> */}

@@ -22,6 +22,14 @@ export const isContainTarget = <T extends EventTarget | null>(target: T, contain
     return container.contains(target);
 };
 
+export const blurActiveElement = () => {
+    const { activeElement } = document;
+    if (!(activeElement instanceof HTMLElement)) {
+        return;
+    }
+    activeElement.blur();
+};
+
 export const localStorageGetItem = <T>(key: string, defaultValue: T): T => {
     const value = localStorage.getItem(key);
     if (value === null) {

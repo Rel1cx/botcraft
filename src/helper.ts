@@ -1,45 +1,44 @@
-import { tinykeys } from "tinykeys";
+import { bind, bindAll, type UnbindFn } from "bind-event-listener";
+import { match } from "ts-pattern";
 
-export const installAutoBlur = (target: HTMLElement | Window = window) => {
-    return tinykeys(
-        target,
-        {
-            Escape: (event) => {
-                event.preventDefault();
-                const { activeElement } = document;
-                if (!(activeElement instanceof HTMLElement)) {
-                    return;
-                }
-                activeElement.blur();
-            },
+import { blurActiveElement } from "./lib/browser";
+import { noop } from "./lib/utils";
+
+export const installAutoBlur = (target: HTMLElement | Window = window): UnbindFn => {
+    return bind(target, {
+        type: "keydown",
+        listener: (event) => {
+            match(event)
+                .with({ key: "Escape" }, (ev) => {
+                    ev.preventDefault();
+                    blurActiveElement();
+                })
+                .otherwise(noop);
         },
-        { event: "keydown" },
-    );
+    });
 };
 
-export const installAutoTooltip = (target: HTMLElement | Window = window) => {
-    const uninstallKeyDown = tinykeys(
-        target,
+export const installAutoTooltip = (target: HTMLElement | Window = window): UnbindFn => {
+    return bindAll(target, [
         {
-            Alt: () => {
-                document.documentElement.style.setProperty("--tooltip-opacity", "1");
+            type: "keydown",
+            listener: (event) => {
+                match(event)
+                    .with({ key: "Alt" }, () => {
+                        document.documentElement.style.setProperty("--tooltip-opacity", "1");
+                    })
+                    .otherwise(noop);
             },
         },
-        { event: "keydown" },
-    );
-
-    const uninstallKeyUp = tinykeys(
-        target,
         {
-            Alt: () => {
-                document.documentElement.style.setProperty("--tooltip-opacity", "0");
+            type: "keyup",
+            listener: (event) => {
+                match(event)
+                    .with({ key: "Alt" }, () => {
+                        document.documentElement.style.setProperty("--tooltip-opacity", "0");
+                    })
+                    .otherwise(noop);
             },
         },
-        { event: "keyup" },
-    );
-
-    return () => {
-        uninstallKeyDown();
-        uninstallKeyUp();
-    };
+    ]);
 };
