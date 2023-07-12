@@ -261,6 +261,13 @@ export const updateChatCompletionAtom = atom(
                 messageID: completionMessageID,
                 abort: () => {
                     abortController.abort();
+                    set(chatCompletionTasksAtom, (draft) => {
+                        draft[id] = {
+                            type: "errored",
+                            messageID: completionMessageID,
+                            error: new Error("UserInterrupted"),
+                        };
+                    });
                 },
             };
         });
