@@ -5,7 +5,8 @@ import { Option as O } from "@swan-io/boxed";
 import clsx from "clsx";
 import { produce } from "immer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { sortBy } from "rambda";
+import { useTransientAtom } from "jotai-game";
+import { F, sortBy, T } from "rambda";
 import * as React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import invariant from "tiny-invariant";
@@ -15,6 +16,8 @@ import type { MessageData } from "@/bot";
 import Icon from "@/components/atoms/Icon/Icon";
 import Redirect from "@/components/atoms/Redirect/Redirect";
 import TitleInput from "@/components/atoms/TitleInput/TitleInput";
+import MessageEditor from "@/components/MessageEditor/MessageEditor";
+import MessageIndicator from "@/components/MessageIndicator/MessageIndicator";
 import { isContainTarget } from "@/lib/browser";
 import { Router } from "@/router";
 import {
@@ -44,8 +47,6 @@ const Message = React.lazy(() => import("@/components/Message/Message"));
 const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"));
 
 const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"));
-
-const MessageEditor = React.lazy(() => import("@/components/MessageEditor/MessageEditor"));
 
 type ChatDetailProps = {
     botName: string;
@@ -98,12 +99,21 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
     const setDraft = useSetAtom(draftsDb.set);
     const removeMessage = useSetAtom(removeMessageAtom);
     const updateChatCompletion = useSetAtom(updateChatCompletionAtom);
+    const [getTasks] = useTransientAtom(chatCompletionTasksAtom);
 
     const handleRemoveClick = React.useCallback(() => {
         void removeMessage(chatID, id);
     }, [chatID, id, removeMessage]);
 
     const handleRegenerateClick = React.useCallback(() => {
+        const shouldSkip = match(getTasks()[chatID])
+            .with({ abort: P.instanceOf(Function) }, T)
+            .otherwise(F);
+
+        if (shouldSkip) {
+            return;
+        }
+
         void match(data)
             .with({ role: "assistant" }, () => {
                 return updateChatCompletion(botName, chatID, id);
@@ -115,7 +125,7 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
                 });
             })
             .run();
-    }, [botName, chatID, data, id, setDraft, updateChatCompletion]);
+    }, [botName, chatID, data, getTasks, id, setDraft, updateChatCompletion]);
 
     return React.useMemo(
         () =>
@@ -288,9 +298,9 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
     const [chat, setChat] = useChat(chatID);
     const [removing, setRemoving] = React.useState(O.None<ChatID>());
 
-    const isGenerating = task?.type === "sending" || task?.type === "replying";
-
     const generatingMessageID = O.fromNullable(task?.messageID);
+
+    const isChatGenerating = task?.type === "sending" || task?.type === "replying";
 
     const onAddChatClick = React.useCallback(() => {
         void addChat(botName);
@@ -347,12 +357,28 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                     id={chatID}
                     className={css.content}
                     data={chat}
-                    isGenerating={isGenerating}
-                    generatingMessageID={generatingMessageID}
-                    generatingStatus={O.fromNullable(task?.type)}
+                    autoScrollEnabled={isChatGenerating}
                     renderMessage={(id: MessageID) => (
                         <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
                     )}
+                    renderIndicator={(id: MessageID) => {
+                        if (!task || generatingMessageID.toNull() !== id) {
+                            return null;
+                        }
+
+                        return (
+                            <MessageIndicator
+                                status={task.type}
+                                onClick={() => {
+                                    match(task.type)
+                                        .with("replying", () => {
+                                            // TODO: implement stop generating
+                                        })
+                                        .run();
+                                }}
+                            />
+                        );
+                    }}
                 />
             </React.Suspense>
             <div className={css.bottom}>

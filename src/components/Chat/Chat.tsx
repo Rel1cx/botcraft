@@ -1,15 +1,13 @@
 import { useResizeObserver } from "@react-hookz/web";
-import type { Option as O } from "@swan-io/boxed";
 import clsx from "clsx";
 import { AnimatePresence, m } from "framer-motion";
 import * as React from "react";
 
 import type { MessageData } from "@/bot/types";
-import type { ChatCompletionTask, ChatItem } from "@/types";
+import type { ChatItem } from "@/types";
 import type { ChatID, MessageID } from "@/zod/id";
 import { makeMessageID } from "@/zod/id";
 
-import MessageIndicator from "../MessageIndicator/MessageIndicator";
 import * as css from "./styles.css";
 
 const Message = React.lazy(() => import("@/components/Message/Message"));
@@ -24,23 +22,12 @@ export type MessageComponentProps = {
 
 export type ChatProps = {
     data: ChatItem;
-    isGenerating: boolean;
-    generatingMessageID: O<MessageID>;
-    generatingStatus: O<ChatCompletionTask["type"]>;
-    onStopGenerating?: () => void;
+    autoScrollEnabled?: boolean;
     renderMessage?: (id: MessageID) => React.ReactNode;
+    renderIndicator?: (id: MessageID) => React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Chat = ({
-    className,
-    data,
-    isGenerating,
-    generatingMessageID,
-    generatingStatus,
-    renderMessage,
-    onStopGenerating,
-    ...rest
-}: ChatProps) => {
+const Chat = ({ className, data, autoScrollEnabled = false, renderMessage, renderIndicator, ...rest }: ChatProps) => {
     const { id: chatID, intro, messages } = data;
 
     const rootRef = React.useRef<HTMLDivElement>(null);
@@ -55,16 +42,6 @@ const Chat = ({
         }),
         [intro],
     );
-
-    const lastMessageID = messages[messages.length - 1];
-
-    const autoScrollEnabled = React.useMemo(() => {
-        if (generatingMessageID.isNone() || !isGenerating) {
-            return false;
-        }
-
-        return generatingMessageID.toNull() === lastMessageID;
-    }, [generatingMessageID, isGenerating, lastMessageID]);
 
     useResizeObserver(
         contentRef,
@@ -105,16 +82,7 @@ const Chat = ({
                         {messages.map((id) => (
                             <m.div key={id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                 {renderMessage?.(id)}
-                                {!!(
-                                    isGenerating &&
-                                    generatingStatus.isSome() &&
-                                    generatingMessageID.toNull() === id
-                                ) && (
-                                    <MessageIndicator
-                                        status={generatingStatus.get()}
-                                        onClick={() => onStopGenerating?.()}
-                                    />
-                                )}
+                                {renderIndicator?.(id)}
                             </m.div>
                         ))}
                     </AnimatePresence>
