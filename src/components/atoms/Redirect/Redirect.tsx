@@ -12,13 +12,17 @@ const Redirect = React.memo<RedirectProps>(
     ({ to }) => {
         const location = useConst(useLocation().toString());
         const dist = useConst(to);
+        const replaced = React.useRef(false);
 
         React.useLayoutEffect(() => {
-            if (location === dist) {
+            if (location === dist || replaced.current) {
                 return;
             }
 
+            // eslint-disable-next-line no-console
+            console.log(`Redirecting from [${location}] to [${to}]`);
             replaceUnsafe(to);
+            replaced.current = true;
         }, [dist, location, to]);
 
         return null;

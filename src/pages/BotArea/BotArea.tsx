@@ -23,7 +23,8 @@ const RedirectChat = React.memo(({ botName }: { botName: string }) => {
     const firstChat = useFirstChatMeta(botName);
 
     if (firstChat) {
-        return <Redirect to={`/bots/${botName}/${firstChat.id}`} />;
+        const to = `/bots/${botName}/${firstChat.id}`;
+        return <Redirect to={to} />;
     }
 
     return <Redirect to="/404" />;
