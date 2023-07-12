@@ -18,6 +18,7 @@ type TextEditorProps = {
     className?: string;
     value?: string;
     placeholder?: string;
+    autoFocus?: boolean;
     onFocus?: () => void;
     onBlur?: () => void;
     onChange?: (value: string) => void;
@@ -58,6 +59,7 @@ const TextEditor = React.memo(
         onBlur,
         onChange = noop,
         onFocus,
+        autoFocus = false,
         placeholder = defaultPlaceholder,
         value = "",
     }: TextEditorProps) => {
@@ -122,6 +124,7 @@ const TextEditor = React.memo(
                         aria-label="markdown-editor"
                         width="100%"
                         maxHeight="320px"
+                        autoFocus={autoFocus}
                         placeholder={placeholder}
                         theme={githubLight}
                         basicSetup={setupOptions}
