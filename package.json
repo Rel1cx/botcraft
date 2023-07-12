@@ -15,7 +15,7 @@
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
         "prepare": "husky install",
         "preview": "vite preview",
-        "todo": "leasot 'src/**/*.ts' 'src/**/*.tsx'",
+        "todo": "leasot 'src/**/*.ts' 'src/**/*.tsx' 'scripts/**/*.ts'",
         "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
     "browserslist": [
