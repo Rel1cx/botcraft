@@ -2,7 +2,6 @@
 /* eslint-disable unicorn/require-post-message-target-origin */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable promise/prefer-await-to-callbacks */
-/* eslint-disable func-style */
 /* eslint-disable promise/prefer-await-to-then */
 /* eslint-disable unicorn/no-useless-undefined */
 // https://github.com/11bit/jotai-minidb
@@ -50,6 +49,13 @@ type ConfigWithInitialData<Item> = Config & {
     initialData: Record<string, Item>;
 };
 
+type Setter<Item> = (oldVal: Item | undefined) => Item;
+type ValueOrSetter<Item> = Item | Setter<Item>;
+
+const isSetter = <Item>(value: ValueOrSetter<Item>): value is Setter<Item> => {
+    return typeof value === "function";
+};
+
 export type DatabaseConfig<Item> = Partial<ConfigWithInitialData<Item>>;
 
 export const DEFAULT_DB_NAME = "jotai-minidb";
@@ -68,6 +74,37 @@ const DEFAULT_CONFIG: Config = {
     onVersionMissmatch: () => {
         // ...
     },
+};
+
+// eslint-disable-next-line etc/no-misused-generics
+const atomWithThenable = <K = void>() => atom(() => pDefer<K>());
+
+const createStore = (
+    dbName: string,
+    storeName: string,
+    initialData: Record<string, unknown>,
+): { keyvalStorage: idb.UseStore; metaStorage: idb.UseStore } => {
+    const request = indexedDB.open(dbName);
+    const initialDataAddRequests: Promise<IDBValidKey>[] = [];
+    request.onupgradeneeded = (_) => {
+        const objectStore = request.result.createObjectStore(storeName);
+        request.result.createObjectStore("_meta");
+
+        for (const [key, value] of Object.entries(initialData)) {
+            initialDataAddRequests.push(idb.promisifyRequest(objectStore.add(value, key)));
+        }
+    };
+    const dbp = idb.promisifyRequest(request);
+
+    return {
+        keyvalStorage: async (txMode, callback) => {
+            const db = await dbp;
+            await Promise.all(initialDataAddRequests);
+            return callback(db.transaction(storeName, txMode).objectStore(storeName));
+        },
+        metaStorage: (txMode, callback) =>
+            dbp.then((db) => callback(db.transaction("_meta", txMode).objectStore("_meta"))),
+    };
 };
 
 export class MiniDb<Item> {
@@ -259,44 +296,4 @@ export class MiniDb<Item> {
             );
         }
     }
-}
-
-// eslint-disable-next-line etc/no-misused-generics
-function atomWithThenable<K = void>() {
-    return atom(() => pDefer<K>());
-}
-
-function createStore(
-    dbName: string,
-    storeName: string,
-    initialData: Record<string, unknown>,
-): { keyvalStorage: idb.UseStore; metaStorage: idb.UseStore } {
-    const request = indexedDB.open(dbName);
-    const initialDataAddRequests: Promise<IDBValidKey>[] = [];
-    request.onupgradeneeded = (_) => {
-        const objectStore = request.result.createObjectStore(storeName);
-        request.result.createObjectStore("_meta");
-
-        for (const [key, value] of Object.entries(initialData)) {
-            initialDataAddRequests.push(idb.promisifyRequest(objectStore.add(value, key)));
-        }
-    };
-    const dbp = idb.promisifyRequest(request);
-
-    return {
-        keyvalStorage: async (txMode, callback) => {
-            const db = await dbp;
-            await Promise.all(initialDataAddRequests);
-            return callback(db.transaction(storeName, txMode).objectStore(storeName));
-        },
-        metaStorage: (txMode, callback) =>
-            dbp.then((db) => callback(db.transaction("_meta", txMode).objectStore("_meta"))),
-    };
-}
-
-type Setter<Item> = (oldVal: Item | undefined) => Item;
-type ValueOrSetter<Item> = Item | Setter<Item>;
-
-function isSetter<Item>(value: ValueOrSetter<Item>): value is Setter<Item> {
-    return typeof value === "function";
 }
