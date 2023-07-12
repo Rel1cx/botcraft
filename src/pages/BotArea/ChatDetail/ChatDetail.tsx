@@ -272,13 +272,7 @@ const Aside = ({ botName, onAddChatClick, onRemoveChatClick, selectedChatID }: A
     return (
         <ChatList
             items={sortedChats}
-            renderItemIcon={(id) => (
-                <ChatIconPresenter
-                    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                    id={id as ChatID}
-                    selected={id === selectedChatID}
-                />
-            )}
+            renderItemIcon={(id) => <ChatIconPresenter id={id as ChatID} selected={id === selectedChatID} />}
             newItemName="New chat"
             selected={selectedChatID}
             onItemClick={(id) => {

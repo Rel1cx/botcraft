@@ -36,7 +36,6 @@ export const localStorageGetItem = <T>(key: string, defaultValue: T): T => {
         return defaultValue;
     }
     try {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return parse(value) as T;
     } catch {
         return defaultValue;

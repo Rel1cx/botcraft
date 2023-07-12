@@ -247,8 +247,8 @@ devDependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-with-tsconfig:
-    specifier: 1.9.4
-    version: 1.9.4(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
+    specifier: 1.9.5
+    version: 1.9.5(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6)
   hkt-toolbelt:
     specifier: 0.22.0-beta.1
     version: 0.22.0-beta.1
@@ -4157,8 +4157,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /eslint-config-with-tsconfig@1.9.4(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
-    resolution: {integrity: sha512-bF2jqAUmrVV8KS7E05q9wG1UgEXCGC7/j6xhpKLMc+EtS/dHSiMvX2PpiPdLtnMd/Lf+nYtQT5AwJYUGURPLKQ==}
+  /eslint-config-with-tsconfig@1.9.5(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.2)(typescript@5.1.6):
+    resolution: {integrity: sha512-xKXqydi5/aJlFTO6VlVkdLEK1JV+gRZSldzLh+yOk0Rl5qbrRdXEs9cNIDb/L4sgy3ywBgoCSXHsFIp5qsBGtw==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4175,7 +4175,6 @@ packages:
       eslint-plugin-case-police: 0.6.1(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-etc: 2.0.3(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-expect-type: 0.2.3(eslint@8.44.0)(typescript@5.1.6)
-      eslint-plugin-functional: 5.0.8(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-import: /eslint-plugin-i@2.27.5-4(@typescript-eslint/parser@6.0.0)(eslint@8.44.0)
       eslint-plugin-promise: 6.1.1(eslint@8.44.0)
       eslint-plugin-react: 7.32.2(eslint@8.44.0)
@@ -4188,13 +4187,14 @@ packages:
       eslint-plugin-sonarjs: 0.19.0(eslint@8.44.0)
       eslint-plugin-sort: 2.10.0(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-tailwindcss: 3.13.0(tailwindcss@3.3.2)
-      eslint-plugin-total-functions: 7.0.7(eslint@8.44.0)(typescript@5.1.6)
       eslint-plugin-unicorn: 47.0.0(eslint@8.44.0)
       get-tsconfig: 4.6.2
       typescript: 5.1.6
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
+      - eslint-plugin-functional
+      - eslint-plugin-total-functions
       - supports-color
       - tailwindcss
     dev: true
