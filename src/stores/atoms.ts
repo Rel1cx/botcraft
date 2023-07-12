@@ -48,13 +48,14 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
 
     await set(chatsDb.set, chat.id, chat);
 
-    await set(botsDb.set, botName, (prev) => {
-        invariant(prev, `Bot ${botName} not found`);
-        return {
-            ...prev,
-            chats: [...prev.chats, chat.id],
-        };
-    });
+    await set(
+        botsDb.set,
+        botName,
+        produce((draft) => {
+            invariant(draft, `Bot ${botName} not found`);
+            draft.chats.push(chat.id);
+        }),
+    );
 });
 
 export const removeChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
@@ -62,22 +63,24 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
     invariant(bot, `Bot ${botName} not found`);
     const isLastChat = bot.chats.length === 1;
 
-    await set(botsDb.set, botName, (prev) => {
-        invariant(prev, `Bot ${botName} not found`);
-        return {
-            ...prev,
-            chats: prev.chats.filter((chatID) => chatID !== id),
-        };
-    });
+    await set(
+        botsDb.set,
+        botName,
+        produce((draft) => {
+            invariant(draft, `Bot ${botName} not found`);
+            draft.chats = draft.chats.filter((chatID) => chatID !== id);
+        }),
+    );
 
     // await set(chatsDb.delete, id)
-    await set(chatsDb.set, id, (prev) => {
-        invariant(prev, `Chat ${id} not found`);
-        return {
-            ...prev,
-            deleted: true,
-        };
-    });
+    await set(
+        chatsDb.set,
+        id,
+        produce((draft) => {
+            invariant(draft, `Chat ${id} not found`);
+            draft.deleted = true;
+        }),
+    );
 
     if (!isLastChat) {
         return;
@@ -89,21 +92,24 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
 export const restoreChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
     const bot = get(botsDb.item(botName));
     invariant(bot, `Bot ${botName} not found`);
-    await set(chatsDb.set, id, (prev) => {
-        invariant(prev, `Chat ${id} not found`);
-        return {
-            ...prev,
-            deleted: false,
-        };
-    });
 
-    await set(botsDb.set, botName, (prev) => {
-        invariant(prev, `Bot ${botName} not found`);
-        return {
-            ...prev,
-            chats: [...prev.chats, id],
-        };
-    });
+    await set(
+        chatsDb.set,
+        id,
+        produce((draft) => {
+            invariant(draft, `Chat ${id} not found`);
+            draft.deleted = false;
+        }),
+    );
+
+    await set(
+        botsDb.set,
+        botName,
+        produce((draft) => {
+            invariant(draft, `Bot ${botName} not found`);
+            draft.chats.push(id);
+        }),
+    );
 });
 
 export const addMessageAtom = atom(null, async (get, set, id: ChatID, data: MessageData) => {
@@ -265,13 +271,14 @@ export const updateChatCompletionAtom = atom(
             .pipe(
                 observeOn(animationFrameScheduler),
                 concatMap(async (msg) => {
-                    await set(messagesDb.set, completionMessageID, (prev) => {
-                        invariant(prev, `Message ${completionMessageID} not found`);
-                        return {
-                            ...prev,
-                            content: prev.content + msg,
-                        };
-                    });
+                    await set(
+                        messagesDb.set,
+                        completionMessageID,
+                        produce((draft) => {
+                            invariant(draft, `Message ${completionMessageID} not found`);
+                            draft.content += msg;
+                        }),
+                    );
                 }),
             )
             .subscribe({
@@ -310,10 +317,14 @@ export const updateChatCompletionAtom = atom(
                         return;
                     }
 
-                    await set(chatsDb.set, id, {
-                        ...chat,
-                        title: result.get(),
-                    });
+                    await set(
+                        chatsDb.set,
+                        id,
+                        produce((draft) => {
+                            invariant(draft, `Chat ${id} not found`);
+                            draft.title = result.get();
+                        }),
+                    );
                 },
             });
     },
