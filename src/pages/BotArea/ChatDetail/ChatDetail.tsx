@@ -370,10 +370,12 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                             <MessageIndicator
                                 status={task.type}
                                 onClick={() => {
-                                    match(task.type)
-                                        .with("replying", () => {
-                                            // TODO: implement stop generating
+                                    match(task)
+                                        .with({ abort: P.instanceOf(Function) }, ({ abort }) => {
+                                            abort();
+                                            // TODO: implement feedback for aborting
                                         })
+                                        // TODO: implement rest of the cases
                                         .run();
                                 }}
                             />
