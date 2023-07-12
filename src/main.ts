@@ -3,7 +3,6 @@ import "@/styles/global.scss";
 import "@/styles/overrides.scss";
 import "./polyfill";
 
-import { enableMapSet } from "immer";
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { navigatorDetector } from "typesafe-i18n/detectors";
@@ -12,8 +11,6 @@ import { installAutoBlur, installAutoTooltip } from "./helper";
 import { detectLocale } from "./i18n/i18n-util";
 import { loadLocale } from "./i18n/i18n-util.sync";
 import App from "./pages/App";
-
-enableMapSet();
 
 const main = () => {
     const locale = detectLocale(navigatorDetector);
