@@ -65,6 +65,25 @@ const TextEditor = React.memo(
     }: TextEditorProps) => {
         const ref = React.useRef<ReactCodeMirrorRef>(null);
         const defaultValue = React.useRef(value).current;
+        const deferredValue = React.useDeferredValue(value);
+
+        const updateView = React.useCallback((value: string, emitUpdate = false) => {
+            const view = ref.current?.view;
+            invariant(view, "view is not defined");
+
+            if (view.state.doc.toString() === value) {
+                return;
+            }
+
+            view.dispatch({
+                changes: {
+                    from: 0,
+                    to: view.state.doc.length,
+                    insert: value,
+                },
+                annotations: emitUpdate ? [] : [SkipUpdate.of(true)],
+            });
+        }, []);
 
         const handleChange = React.useCallback<NonNullable<ReactCodeMirrorProps["onChange"]>>(
             (value, viewUpdate) => {
@@ -85,6 +104,11 @@ const TextEditor = React.memo(
             [onChange],
         );
 
+        const handleBlur = React.useCallback(() => {
+            updateView(deferredValue);
+            onBlur?.();
+        }, [deferredValue, onBlur, updateView]);
+
         const handleCompositionEnd = React.useCallback(() => {
             const view = ref.current?.view;
             invariant(view, "view is not defined");
@@ -98,21 +122,8 @@ const TextEditor = React.memo(
                 return;
             }
 
-            const valueOfView = view.state.doc.toString();
-
-            if (valueOfView === value) {
-                return;
-            }
-
-            view.dispatch({
-                changes: {
-                    from: 0,
-                    to: view.state.doc.length,
-                    insert: value,
-                },
-                annotations: SkipUpdate.of(true),
-            });
-        }, [value]);
+            updateView(deferredValue);
+        }, [deferredValue]);
 
         return (
             <div className={clsx(css.root, className)}>
@@ -130,7 +141,7 @@ const TextEditor = React.memo(
                         basicSetup={setupOptions}
                         extensions={extensions}
                         onFocus={onFocus}
-                        onBlur={onBlur}
+                        onBlur={handleBlur}
                         onCompositionEnd={handleCompositionEnd}
                         value={defaultValue}
                         onChange={handleChange}
