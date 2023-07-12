@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 
 export const useConst = <T>(initialValue: T | (() => T)): T => {
@@ -6,7 +5,7 @@ export const useConst = <T>(initialValue: T | (() => T)): T => {
 
     if (ref.current === undefined) {
         ref.current = {
-            value: typeof initialValue === "function" ? (initialValue as Function)() : initialValue,
+            value: typeof initialValue === "function" ? (initialValue as () => T)() : initialValue,
         };
     }
     return ref.current.value;

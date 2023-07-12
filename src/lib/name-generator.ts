@@ -18,7 +18,7 @@ export const makeNameGenerator = (size = 25) => {
         }
 
         if (generated.size > size) {
-            generated.delete(generated.values().next().value);
+            generated.delete(generated.values().next().value as string);
         }
 
         generated.add(name);
