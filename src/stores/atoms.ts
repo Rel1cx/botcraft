@@ -228,14 +228,24 @@ export const updateChatCompletionAtom = atom(
 
                 return set(addMessageAtom, id, message);
             })
-            .with("update", () => {
-                return set(messagesDb.set, completionMessageID, (prev) => {
-                    invariant(prev, `Message ${completionMessageID} not found`);
-                    return {
-                        ...prev,
-                        content: "",
-                    };
-                });
+            .with("update", async () => {
+                await set(
+                    messagesDb.set,
+                    completionMessageID,
+                    produce((draft) => {
+                        invariant(draft, `Message ${completionMessageID} not found`);
+                        draft.content = "";
+                    }),
+                );
+
+                await set(
+                    chatsDb.set,
+                    id,
+                    produce((draft) => {
+                        invariant(draft, `Chat ${id} not found`);
+                        draft.updatedAt = Date.now();
+                    }),
+                );
             })
             .exhaustive();
 
