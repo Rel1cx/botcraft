@@ -118,9 +118,6 @@ dependencies:
   jotai-immer:
     specifier: 0.2.0
     version: 0.2.0(immer@10.0.2)(jotai@2.2.2)(react@18.2.0)
-  jotai-minidb:
-    specifier: 0.0.6
-    version: 0.0.6(jotai@2.2.2)
   katex:
     specifier: 0.16.8
     version: 0.16.8
@@ -130,6 +127,9 @@ dependencies:
   nominal-types:
     specifier: 0.2.0
     version: 0.2.0
+  p-defer:
+    specifier: 4.0.0
+    version: 4.0.0
   rambda:
     specifier: 8.1.0
     version: 8.1.0
@@ -2241,11 +2241,6 @@ packages:
 
   /@rizzzse/bimap@1.2.1:
     resolution: {integrity: sha512-meFHT+JzRb26UbVJdGJkxiuZTxSgpTBNmElbFFh5S2RDOv7og0Nqtpz7SsFXSe75EWXl2EFpGrSTk20KcSuiWg==}
-
-  /@rocicorp/resolver@1.0.0:
-    resolution: {integrity: sha512-iK0QW74BKR0ogY4QwBEAMoevqypi5S/jjKqL6mc7KH7z2PFuOinOebsD1Ol8VIxrh23IPrMNwDNSrnfhKga9Vw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: false
 
   /@rollup/plugin-virtual@3.0.1(rollup@3.26.2):
     resolution: {integrity: sha512-fK8O0IL5+q+GrsMLuACVNk2x21g3yaw+sG2qn16SnUd3IlBsQyvWxLMGHmCmXRMecPjGRSZ/1LmZB4rjQm68og==}
@@ -5637,16 +5632,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /jotai-minidb@0.0.6(jotai@2.2.2):
-    resolution: {integrity: sha512-k78wEJw9ZxNTbprEduI18DKN4xg8YN/akShlI7noGWM9VxnvoZxCEhliTffbh1ZlafR/HWS+sXsZMQEuEqh7lQ==}
-    peerDependencies:
-      jotai: '>=1.10.0'
-    dependencies:
-      '@rocicorp/resolver': 1.0.0
-      idb-keyval: 6.2.1
-      jotai: 2.2.2(react@18.2.0)
-    dev: false
-
   /jotai@2.2.2(react@18.2.0):
     resolution: {integrity: sha512-Cn8hnBg1sc5ppFwEgVGTfMR5WSM0hbAasd/bdAwIwTaum0j3OUPqBSC4tyk3jtB95vicML+RRWgKFOn6gtfN0A==}
     engines: {node: '>=12.20.0'}
@@ -6712,6 +6697,11 @@ packages:
   /outdent@0.8.0:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
+
+  /p-defer@4.0.0:
+    resolution: {integrity: sha512-Vb3QRvQ0Y5XnF40ZUWW7JfLogicVh/EnA5gBIvKDJoYpeI82+1E3AlB9yOcKFS0AhHrWVnAQO39fbR0G99IVEQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
