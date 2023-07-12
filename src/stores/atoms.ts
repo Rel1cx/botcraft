@@ -310,15 +310,12 @@ export const updateChatCompletionAtom = atom(
                         return;
                     }
 
-                    const result = await generateChatTitle(
-                        apiKey,
-                        endpoint,
-                        {
-                            ...omit(["messages"], chat),
-                            content: messages,
-                        },
-                        titleLocale,
-                    )(bot);
+                    const messagesWithContent = {
+                        ...omit(["messages"], chat),
+                        content: messages,
+                    };
+
+                    const result = await generateChatTitle(apiKey, endpoint, messagesWithContent, titleLocale)(bot);
 
                     if (!result.isOk()) {
                         return;
