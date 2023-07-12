@@ -15,6 +15,7 @@
         "list-unused": "ts-unused-exports ./tsconfig.json --excludePathsFromReport=src/i18n --exitWithCount",
         "prepare": "husky install",
         "preview": "vite preview",
+        "todo": "leasot 'src/**/*.ts' 'src/**/*.tsx'",
         "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
     "browserslist": [
@@ -101,6 +102,7 @@
         "eslint-config-with-tsconfig": "1.9.4",
         "hkt-toolbelt": "0.22.0-beta.1",
         "husky": "8.0.3",
+        "leasot": "13.3.0",
         "local-pkg": "0.4.3",
         "postcss": "8.4.25",
         "rollup": "3.26.2",
