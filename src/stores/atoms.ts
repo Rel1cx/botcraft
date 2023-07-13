@@ -73,6 +73,11 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
     );
 
     // await set(chatsDb.delete, id)
+
+    if (isLastChat) {
+        await set(addChatAtom, botName);
+    }
+
     await set(
         chatsDb.set,
         id,
@@ -81,12 +86,6 @@ export const removeChatAtom = atom(null, async (get, set, botName: string, id: C
             draft.deleted = true;
         }),
     );
-
-    if (!isLastChat) {
-        return;
-    }
-
-    await set(addChatAtom, botName);
 });
 
 export const restoreChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {

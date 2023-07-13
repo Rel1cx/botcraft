@@ -1,8 +1,6 @@
-import { Button } from "@ariakit/react";
-import { LoadingOverlay, Overlay } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import { Chat as ChatIcon, ChatDots } from "@phosphor-icons/react";
 import { Option as O } from "@swan-io/boxed";
-import clsx from "clsx";
 import { produce } from "immer";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useTransientAtom } from "jotai-game";
@@ -14,8 +12,11 @@ import { match, P } from "ts-pattern";
 
 import type { MessageData } from "@/bot";
 import Icon from "@/components/atoms/Icon/Icon";
+import OverlayButton from "@/components/atoms/OverlayButton/OverlayButton";
 import Redirect from "@/components/atoms/Redirect/Redirect";
 import TitleInput from "@/components/atoms/TitleInput/TitleInput";
+import Chat from "@/components/Chat/Chat";
+import ChatList from "@/components/ChatList/ChatList";
 import MessageEditor from "@/components/MessageEditor/MessageEditor";
 import MessageIndicator from "@/components/MessageIndicator/MessageIndicator";
 import { isContainTarget } from "@/lib/browser";
@@ -33,19 +34,13 @@ import {
     useMessage,
 } from "@/stores";
 import { draftsDb, messagesDb } from "@/stores/db";
-import { tappable } from "@/theme/base.css";
 import { vars } from "@/theme/vars.css";
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id";
 
 import { Layout } from "../Layout/Layout";
 import * as css from "./styles.css";
 
-const Chat = React.lazy(() => import("@/components/Chat/Chat"));
-
 const Message = React.lazy(() => import("@/components/Message/Message"));
-
-const ChatList = React.lazy(() => import("@/components/ChatList/ChatList"));
-
 const ConfirmDialog = React.lazy(() => import("@/components/atoms/ConfirmDialog/ConfirmDialog"));
 
 type ChatDetailProps = {
@@ -127,24 +122,26 @@ const ChatMessagePresenter = React.memo(({ botName, chatID, id }: ChatMessagePre
             .run();
     }, [botName, chatID, data, getTasks, id, setDraft, updateChatCompletion]);
 
-    return React.useMemo(
-        () =>
-            match(data)
-                .with(P.nullish, () => null)
-                .with({ role: "system" }, () => null)
-                .otherwise((data) => {
-                    return (
-                        <React.Suspense>
-                            <Message
-                                id={id}
-                                data={data}
-                                onRemoveClick={handleRemoveClick}
-                                onRegenerateClick={handleRegenerateClick}
-                            />
-                        </React.Suspense>
-                    );
-                }),
-        [id, data, handleRegenerateClick, handleRemoveClick],
+    return (
+        <React.Suspense fallback={<LoadingOverlay visible />}>
+            {React.useMemo(
+                () =>
+                    match(data)
+                        .with(P.nullish, () => null)
+                        .with({ role: "system" }, () => null)
+                        .otherwise((data) => {
+                            return (
+                                <Message
+                                    id={id}
+                                    data={data}
+                                    onRemoveClick={handleRemoveClick}
+                                    onRegenerateClick={handleRegenerateClick}
+                                />
+                            );
+                        }),
+                [id, data, handleRegenerateClick, handleRemoveClick],
+            )}
+        </React.Suspense>
     );
 });
 
@@ -346,67 +343,59 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
                 />
             }
         >
-            <React.Suspense fallback={<LoadingOverlay visible />}>
-                <Chat
-                    id={chatID}
-                    className={css.content}
-                    data={chat}
-                    autoScrollEnabled={isChatGenerating}
-                    renderMessage={(id: MessageID) => (
-                        <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />
-                    )}
-                    renderIndicator={(id: MessageID) => {
-                        if (!task || generatingMessageID.toNull() !== id) {
-                            return null;
-                        }
+            <Chat
+                id={chatID}
+                className={css.content}
+                data={chat}
+                autoScrollEnabled={isChatGenerating}
+                renderMessage={(id: MessageID) => <ChatMessagePresenter botName={botName} id={id} chatID={chatID} />}
+                renderIndicator={(id: MessageID) => {
+                    if (!task || generatingMessageID.toNull() !== id) {
+                        return null;
+                    }
 
-                        return (
-                            <MessageIndicator
-                                status={task.type}
-                                onClick={() => {
-                                    match(task)
-                                        .with({ abort: P.instanceOf(Function) }, ({ abort }) => {
-                                            abort();
-                                            // TODO: implement feedback for aborting
-                                        })
-                                        // TODO: implement rest of the cases
-                                        .run();
-                                }}
-                            />
-                        );
-                    }}
-                />
-            </React.Suspense>
+                    return (
+                        <MessageIndicator
+                            status={task.type}
+                            onClick={() => {
+                                match(task)
+                                    .with({ abort: P.instanceOf(Function) }, ({ abort }) => {
+                                        abort();
+                                        // TODO: implement feedback for aborting
+                                    })
+                                    // TODO: implement rest of the cases
+                                    .run();
+                            }}
+                        />
+                    );
+                }}
+            />
             <div className={css.bottom}>
                 <MessageEditorPresenter botName={botName} chatID={chatID} />
             </div>
             {!!chat.deleted && (
-                <Overlay blur={0.5} opacity={0.25} center>
-                    <Button
-                        as="button"
-                        className={clsx(tappable, "rounded-xl bg-red-500 p-2 text-white")}
-                        onClick={() => restoreChat(botName, chatID)}
-                    >
-                        This chat has been deleted. Click to restore it.
-                    </Button>
-                </Overlay>
+                <OverlayButton onClick={() => restoreChat(botName, chatID)}>
+                    This chat has been deleted. Click to restore it.
+                </OverlayButton>
             )}
-            <ConfirmDialog
-                title="Remove chat"
-                description="Are you sure you want to remove this chat?"
-                confirmLabel="Remove"
-                danger
-                open={removing.isSome()}
-                onClose={() => {
-                    setRemoving(O.None());
-                }}
-                onConfirm={() => {
-                    removing.map(async (id) => {
-                        await onChatRemoveClick(id);
+            <React.Suspense>
+                <ConfirmDialog
+                    title="Remove chat"
+                    description="Are you sure you want to remove this chat?"
+                    confirmLabel="Remove"
+                    danger
+                    open={removing.isSome()}
+                    onClose={() => {
                         setRemoving(O.None());
-                    });
-                }}
-            />
+                    }}
+                    onConfirm={() => {
+                        removing.map(async (id) => {
+                            await onChatRemoveClick(id);
+                            setRemoving(O.None());
+                        });
+                    }}
+                />
+            </React.Suspense>
         </Layout>
     );
 });
