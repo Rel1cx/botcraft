@@ -107,7 +107,7 @@
         "husky": "8.0.3",
         "leasot": "13.3.0",
         "local-pkg": "0.4.3",
-        "postcss": "8.4.25",
+        "postcss": "8.4.26",
         "rollup": "3.26.2",
         "rollup-plugin-visualizer": "5.9.2",
         "rome": "12.1.3",
