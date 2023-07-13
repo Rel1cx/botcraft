@@ -58,35 +58,36 @@ export const addChatAtom = atom(null, async (get, set, botName: string) => {
     );
 });
 
-export const removeChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
-    const bot = get(botsDb.item(botName));
-    invariant(bot, `Bot ${botName} not found`);
-    const isLastChat = bot.chats.length === 1;
+export const removeChatAtom = atom(
+    null,
+    async (get, set, botName: string, id: ChatID, didRemovedFromBot?: (isLastChat: boolean) => Promise<void>) => {
+        const bot = get(botsDb.item(botName));
+        invariant(bot, `Bot ${botName} not found`);
+        const isLastChat = bot.chats.length === 1;
 
-    await set(
-        botsDb.set,
-        botName,
-        produce((draft) => {
-            invariant(draft, `Bot ${botName} not found`);
-            draft.chats = draft.chats.filter((chatID) => chatID !== id);
-        }),
-    );
+        await set(
+            botsDb.set,
+            botName,
+            produce((draft) => {
+                invariant(draft, `Bot ${botName} not found`);
+                draft.chats = draft.chats.filter((chatID) => chatID !== id);
+            }),
+        );
 
-    // await set(chatsDb.delete, id)
+        await didRemovedFromBot?.(isLastChat);
 
-    if (isLastChat) {
-        await set(addChatAtom, botName);
-    }
+        await set(
+            chatsDb.set,
+            id,
+            produce((draft) => {
+                invariant(draft, `Chat ${id} not found`);
+                draft.deleted = true;
+            }),
+        );
 
-    await set(
-        chatsDb.set,
-        id,
-        produce((draft) => {
-            invariant(draft, `Chat ${id} not found`);
-            draft.deleted = true;
-        }),
-    );
-});
+        return true;
+    },
+);
 
 export const restoreChatAtom = atom(null, async (get, set, botName: string, id: ChatID) => {
     const bot = get(botsDb.item(botName));

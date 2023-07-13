@@ -293,16 +293,18 @@ const ChatDetail = React.memo(({ botName, chatID }: ChatDetailProps) => {
 
     const isChatGenerating = task?.type === "sending" || task?.type === "replying";
 
-    const onAddChatClick = React.useCallback(() => {
-        void addChat(botName);
-    }, [addChat, botName]);
+    const onAddChatClick = React.useCallback(() => addChat(botName), [addChat, botName]);
 
     const onChatRemoveClick = React.useCallback(
         async (chatID: ChatID) => {
-            await removeChat(botName, chatID);
-            Router.replace("BotNewChat", { botName });
+            await removeChat(botName, chatID, async (isLastChat) => {
+                if (isLastChat) {
+                    await addChat(botName);
+                }
+                Router.replace("BotNewChat", { botName });
+            });
         },
-        [botName, removeChat],
+        [addChat, botName, removeChat],
     );
 
     if (!chat) {
