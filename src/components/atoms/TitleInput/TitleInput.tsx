@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { useConst } from "@/lib/hooks/use-const";
-
 import * as css from "./styles.css";
 
 type TitleInputProps = {
@@ -13,18 +11,7 @@ type TitleInputProps = {
 
 const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, ...rest }: TitleInputProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const defaultValue = useConst(value);
     const deferredValue = React.useDeferredValue(value);
-
-    React.useInsertionEffect(() => {
-        const input = inputRef.current;
-
-        if (!input || document.activeElement === input) {
-            return;
-        }
-
-        input.value = deferredValue ?? "";
-    }, [deferredValue]);
 
     return (
         <div id={id} className={css.root}>
@@ -33,7 +20,7 @@ const TitleInput = React.memo(({ id, onChange, placeholder = "Untitled", value, 
                 className={css.input}
                 type="text"
                 placeholder={placeholder}
-                defaultValue={defaultValue}
+                defaultValue={deferredValue}
                 onChange={onChange}
                 translate="no"
                 spellCheck="false"

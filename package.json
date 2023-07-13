@@ -18,6 +18,9 @@
         "todo": "leasot 'src/**/*.ts' 'src/**/*.tsx' 'scripts/**/*.ts'",
         "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
+    "engines": {
+        "node": ">=20.4.0"
+    },
     "browserslist": [
         "defaults and supports es6-module"
     ],
