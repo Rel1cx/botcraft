@@ -83,11 +83,11 @@
         "zod": "3.21.4"
     },
     "devDependencies": {
-        "@babel/core": "7.22.8",
+        "@babel/core": "7.22.9",
         "@tailwindcss/typography": "0.5.9",
-        "@types/node": "20.4.1",
+        "@types/node": "20.4.2",
         "@types/react": "18.2.14",
-        "@types/react-dom": "18.2.6",
+        "@types/react-dom": "18.2.7",
         "@types/throttle-debounce": "5.0.0",
         "@vanilla-extract/css": "1.12.0",
         "@vanilla-extract/vite-plugin": "3.8.2",
@@ -97,7 +97,7 @@
         "consola": "3.2.3",
         "core-dts": "0.0.3",
         "dpdm": "3.13.1",
-        "esbuild": "0.18.11",
+        "esbuild": "0.18.12",
         "eslint": "8.44.0",
         "eslint-config-with-tsconfig": "1.9.6",
         "hkt-toolbelt": "0.22.0-beta.1",
