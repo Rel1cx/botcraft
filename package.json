@@ -84,7 +84,7 @@
         "throttle-debounce": "5.0.0",
         "tilg": "0.1.1",
         "tiny-invariant": "1.3.1",
-        "ts-pattern": "5.0.2",
+        "ts-pattern": "5.0.3",
         "zod": "3.21.4"
     },
     "devDependencies": {
