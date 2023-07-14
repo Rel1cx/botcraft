@@ -58,6 +58,7 @@
         "jotai": "2.2.2",
         "jotai-game": "0.1.0",
         "jotai-immer": "0.2.0",
+        "jotai-minidb": "0.0.7",
         "katex": "0.16.8",
         "ky": "0.33.3",
         "nominal-types": "0.2.0",

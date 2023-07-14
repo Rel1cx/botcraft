@@ -1,8 +1,9 @@
 import type { Option as O } from "@swan-io/boxed";
 import { getDefaultStore } from "jotai";
+// import { MiniDb } from "@/lib/jotai-minidb";
+import { MiniDb } from "jotai-minidb";
 
 import type { Bot, MessageData } from "@/bot/types";
-import { MiniDb } from "@/lib/jotai-minidb";
 import type { ChatItem } from "@/types";
 import type { MessageID } from "@/zod/id";
 

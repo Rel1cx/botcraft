@@ -118,6 +118,9 @@ dependencies:
   jotai-immer:
     specifier: 0.2.0
     version: 0.2.0(immer@10.0.2)(jotai@2.2.2)(react@18.2.0)
+  jotai-minidb:
+    specifier: 0.0.7
+    version: 0.0.7(jotai@2.2.2)
   katex:
     specifier: 0.16.8
     version: 0.16.8
@@ -2239,6 +2242,11 @@ packages:
 
   /@rizzzse/bimap@1.2.1:
     resolution: {integrity: sha512-meFHT+JzRb26UbVJdGJkxiuZTxSgpTBNmElbFFh5S2RDOv7og0Nqtpz7SsFXSe75EWXl2EFpGrSTk20KcSuiWg==}
+
+  /@rocicorp/resolver@1.0.0:
+    resolution: {integrity: sha512-iK0QW74BKR0ogY4QwBEAMoevqypi5S/jjKqL6mc7KH7z2PFuOinOebsD1Ol8VIxrh23IPrMNwDNSrnfhKga9Vw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: false
 
   /@rollup/plugin-virtual@3.0.1(rollup@3.26.2):
     resolution: {integrity: sha512-fK8O0IL5+q+GrsMLuACVNk2x21g3yaw+sG2qn16SnUd3IlBsQyvWxLMGHmCmXRMecPjGRSZ/1LmZB4rjQm68og==}
@@ -5628,6 +5636,16 @@ packages:
       immer: 10.0.2
       jotai: 2.2.2(react@18.2.0)
       react: 18.2.0
+    dev: false
+
+  /jotai-minidb@0.0.7(jotai@2.2.2):
+    resolution: {integrity: sha512-xBhifgFy6+PmGqN9Hi2HPTJ64MC/VLyxA9y0b/qZYZ2ZDHctXeoDhzNldg6tb4rpjcZ7OzVk8WDFaUjzFHt1xw==}
+    peerDependencies:
+      jotai: '>=1.10.0'
+    dependencies:
+      '@rocicorp/resolver': 1.0.0
+      idb-keyval: 6.2.1
+      jotai: 2.2.2(react@18.2.0)
     dev: false
 
   /jotai@2.2.2(react@18.2.0):
