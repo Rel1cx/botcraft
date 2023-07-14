@@ -33,7 +33,7 @@ import {
     useChats,
     useMessage,
 } from "@/stores";
-import { draftsDb, messagesDb } from "@/stores/db";
+import { chatsDb, draftsDb, messagesDb } from "@/stores/db";
 import { vars } from "@/theme/vars.css";
 import { type ChatID, isChatID, makeMessageID, type MessageID } from "@/zod/id";
 
@@ -152,6 +152,7 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
     const setMessage = useSetAtom(messagesDb.set);
     const requestChatCompletion = useSetAtom(updateChatCompletionAtom);
     const task = useAtomValue(chatCompletionTasksAtom)[chatID];
+    const [getChat] = useTransientAtom(chatsDb.item(chatID));
     const [key, setKey] = React.useState(0);
     const [draft, setDraft] = useAtom(draftsDb.item(chatID));
     const content = draft?.content ?? "";
@@ -246,6 +247,12 @@ const MessageEditorPresenter = React.memo(({ botName, chatID }: MessageEditorPre
                         });
                     });
                     await updateMessage(messageID, trimmedContent);
+
+                    const isLastMessage = [...(getChat()?.messages ?? [])].pop() === messageID;
+
+                    if (isLastMessage) {
+                        await requestChatCompletion(botName, chatID);
+                    }
                 },
             });
         },

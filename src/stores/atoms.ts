@@ -22,7 +22,7 @@ export const apiKeyAtom = atomWithStorage("API_KEY", localStorageGetItem("API_KE
 
 export const endpointAtom = atomWithStorage("ENDPOINT", localStorageGetItem("ENDPOINT", DEFAULT_API_ENDPOINT));
 
-export const titleLocaleAtom = atomWithStorage<Locales>("TITLE_LOCALE", localStorageGetItem("TITLE_LOCALE", "en"));
+export const titleLocaleAtom = atomWithStorage("TITLE_LOCALE", localStorageGetItem<Locales>("TITLE_LOCALE", "en"));
 
 export const botListAtom = atom((get) => {
     const bots = get(botsDb.values);
