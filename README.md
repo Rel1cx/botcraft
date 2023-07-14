@@ -24,30 +24,81 @@ Local-first, customizable ChatGPT Web UI.
 
 [botcraft.vercel.app](https://botcraft.vercel.app)
 
+## Built with
+
+- [React](https://react.dev/)
+- [AriaKit](https://ariakit.org/)
+- [Mantine](https://mantine.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [react-markdown](https://github.com/remarkjs/react-markdown/)
+- [CodeMirror 6](https://codemirror.net/)
+
+## Getting Started
+
+### Requirements
+
+- [Node.js](https://nodejs.org/en/) >= 20.4.0
+- [pnpm](https://pnpm.io/) >= 8.6.7
+
+### Setup
+
+1. Clone the repository
+
+   ```sh
+   git clone https://github.com/Rel1cx/botcraft
+   ```
+
+2. Install dependencies
+
+   ```sh
+   pnpm install
+   ```
+
+3. Start the development server
+
+   ```sh
+    pnpm dev
+   ```
+
+4. Open [https://localhost:5173](https://localhost:5173) with your browser to see
+   the result.
+
 ## Development
 
 ### Install
 
-```bash
+```sh
 pnpm install
 ```
 
 ### Dev
 
-```bash
+```sh
 pnpm run dev
 ```
 
 ### Build
 
-```bash
+```sh
 pnpm run build
 ```
 
-### Generate i18n files
+### Lint
 
-```bash
-pnpm run i18n
+```sh
+pnpm run lint
+```
+
+### Format
+
+```sh
+pnpm run format
+```
+
+### Check
+
+```sh
+pnpm run check
 ```
 
 ## License
