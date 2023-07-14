@@ -3,10 +3,9 @@ import { $ } from "zx";
 await $`pnpm run i18n`;
 
 await Promise.allSettled([
-    $`pnpm run typecheck`,
     $`pnpm rome format .`,
     $`pnpm rome check .`,
-    $`pnpm tsc --noEmit`,
+    $`pnpm run typecheck`,
     $`pnpm eslint --cache --color src`,
     $`dpdm "./**/*.(ts|tsx)"`,
 ]);
