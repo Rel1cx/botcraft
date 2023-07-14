@@ -19,7 +19,7 @@
         "typecheck": "tsc --noEmit --extendedDiagnostics -p ."
     },
     "engines": {
-        "node": ">=20.4.0"
+        "node": ">=18.16.1"
     },
     "browserslist": [
         "defaults and supports es6-module"
