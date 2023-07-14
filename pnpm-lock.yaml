@@ -250,8 +250,8 @@ devDependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-with-tsconfig:
-    specifier: 1.9.6
-    version: 1.9.6(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.3)(typescript@5.1.6)
+    specifier: 1.9.7
+    version: 1.9.7(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.3)(typescript@5.1.6)
   hkt-toolbelt:
     specifier: 0.22.0-beta.1
     version: 0.22.0-beta.1
@@ -407,8 +407,8 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/eslint-parser@7.22.7(@babel/core@7.22.9)(eslint@8.44.0):
-    resolution: {integrity: sha512-LH6HJqjOyu/Qtp7LuSycZXK/CYXQ4ohdkliEaL1QTdtOXVdOVpTBKVxAo/+eeyt+x/2SRzB+zUPduVl+xiEvdg==}
+  /@babel/eslint-parser@7.22.9(@babel/core@7.22.9)(eslint@8.44.0):
+    resolution: {integrity: sha512-xdMkt39/nviO/4vpVdrEYPwXCsYIXSSAr6mC7WQsNIlGnuxKyKE7GZjalcnbSWiC4OXGNNN3UQPeHfjSC6sTDA==}
     engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
     peerDependencies:
       '@babel/core': '>=7.11.0'
@@ -416,9 +416,9 @@ packages:
     dependencies:
       '@babel/core': 7.22.9
       '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
-      '@nicolo-ribaudo/semver-v6': 6.3.3
       eslint: 8.44.0
       eslint-visitor-keys: 2.1.0
+      semver: 6.3.1
     dev: true
 
   /@babel/generator@7.22.9:
@@ -2015,11 +2015,6 @@ packages:
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
     dependencies:
       eslint-scope: 5.1.1
-    dev: true
-
-  /@nicolo-ribaudo/semver-v6@6.3.3:
-    resolution: {integrity: sha512-3Yc1fUTs69MG/uZbJlLSI3JISMn2UV2rg+1D/vROUqZyh3l6iYHCs7GMp+M40ZD7yOdDbYjJcU1oTJhrc+dGKg==}
-    hasBin: true
     dev: true
 
   /@noble/hashes@1.3.1:
@@ -4083,8 +4078,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /eslint-config-relicx@0.4.2(@next/eslint-plugin-next@13.4.9)(@typescript-eslint/eslint-plugin@6.0.0)(@typescript-eslint/parser@6.0.0)(eslint-define-config@1.21.0)(eslint-plugin-etc@2.0.3)(eslint-plugin-i@2.27.5-4)(eslint-plugin-promise@6.1.1)(eslint-plugin-react-hooks@4.6.0)(eslint-plugin-react-refresh@0.4.3)(eslint-plugin-react@7.32.2)(eslint-plugin-simple-import-sort@10.0.0)(eslint-plugin-sonarjs@0.19.0)(eslint-plugin-tailwindcss@3.13.0)(eslint-plugin-unicorn@47.0.0)(eslint@8.44.0)(typescript@5.1.6):
-    resolution: {integrity: sha512-CvWosWj2yLhuQDGBdCcpPwnVi4AQF+f7c20PtreQWmtrgXYZR+Kln7AdXuGn1n6asamPBeXFsMrze+Npmx6VqA==}
+  /eslint-config-relicx@0.4.3(@next/eslint-plugin-next@13.4.9)(@typescript-eslint/eslint-plugin@6.0.0)(@typescript-eslint/parser@6.0.0)(eslint-define-config@1.21.0)(eslint-plugin-etc@2.0.3)(eslint-plugin-i@2.27.5-4)(eslint-plugin-promise@6.1.1)(eslint-plugin-react-hooks@4.6.0)(eslint-plugin-react-refresh@0.4.3)(eslint-plugin-react@7.32.2)(eslint-plugin-simple-import-sort@10.0.0)(eslint-plugin-sonarjs@0.19.0)(eslint-plugin-tailwindcss@3.13.0)(eslint-plugin-unicorn@47.0.0)(eslint@8.44.0)(typescript@5.1.6):
+    resolution: {integrity: sha512-Zy2eei6iB6UB/D8NRAMyIexvGuhdYEyYnH73xYMGfDmMpm9ka75pfWaKILuCqnVu6bcGQNJv9ZaPJUaP2peY0A==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       '@next/eslint-plugin-next': '>=13.4.9'
@@ -4104,7 +4099,7 @@ packages:
       typescript: '>=5.1.6'
     dependencies:
       '@babel/core': 7.22.9
-      '@babel/eslint-parser': 7.22.7(@babel/core@7.22.9)(eslint@8.44.0)
+      '@babel/eslint-parser': 7.22.9(@babel/core@7.22.9)(eslint@8.44.0)
       '@babel/preset-react': 7.22.5(@babel/core@7.22.9)
       '@next/eslint-plugin-next': 13.4.9
       '@rizzzse/bimap': 1.2.1
@@ -4158,8 +4153,8 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  /eslint-config-with-tsconfig@1.9.6(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.3)(typescript@5.1.6):
-    resolution: {integrity: sha512-8L3DmiYw/oKsDxu7uIqqLsUtatEqbQLA6EQNAuNg64uE5CrfYdX4AX1rO2E4FPm4qKURQ5Ux7BPUbn6u2Ba2bQ==}
+  /eslint-config-with-tsconfig@1.9.7(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(tailwindcss@3.3.3)(typescript@5.1.6):
+    resolution: {integrity: sha512-UG4ZlEPZI7sJ4tFviMe6W/DYq8HznEN00YzrB56Dq1J77hsUH2om4LGzZsv7gJNLZkwc15adlASkoNbrBZ/6bQ==}
     engines: {node: '>=18.16.0'}
     peerDependencies:
       eslint: '>=8.43.0'
@@ -4170,7 +4165,7 @@ packages:
       '@typescript-eslint/parser': 6.0.0(eslint@8.44.0)(typescript@5.1.6)
       consola: 3.2.3
       eslint: 8.44.0
-      eslint-config-relicx: 0.4.2(@next/eslint-plugin-next@13.4.9)(@typescript-eslint/eslint-plugin@6.0.0)(@typescript-eslint/parser@6.0.0)(eslint-define-config@1.21.0)(eslint-plugin-etc@2.0.3)(eslint-plugin-i@2.27.5-4)(eslint-plugin-promise@6.1.1)(eslint-plugin-react-hooks@4.6.0)(eslint-plugin-react-refresh@0.4.3)(eslint-plugin-react@7.32.2)(eslint-plugin-simple-import-sort@10.0.0)(eslint-plugin-sonarjs@0.19.0)(eslint-plugin-tailwindcss@3.13.0)(eslint-plugin-unicorn@47.0.0)(eslint@8.44.0)(typescript@5.1.6)
+      eslint-config-relicx: 0.4.3(@next/eslint-plugin-next@13.4.9)(@typescript-eslint/eslint-plugin@6.0.0)(@typescript-eslint/parser@6.0.0)(eslint-define-config@1.21.0)(eslint-plugin-etc@2.0.3)(eslint-plugin-i@2.27.5-4)(eslint-plugin-promise@6.1.1)(eslint-plugin-react-hooks@4.6.0)(eslint-plugin-react-refresh@0.4.3)(eslint-plugin-react@7.32.2)(eslint-plugin-simple-import-sort@10.0.0)(eslint-plugin-sonarjs@0.19.0)(eslint-plugin-tailwindcss@3.13.0)(eslint-plugin-unicorn@47.0.0)(eslint@8.44.0)(typescript@5.1.6)
       eslint-config-typed-fp: 5.1.0(@typescript-eslint/eslint-plugin@6.0.0)(@typescript-eslint/parser@6.0.0)(eslint-plugin-functional@5.0.8)(eslint-plugin-total-functions@7.0.7)(eslint@8.44.0)(typescript@5.1.6)
       eslint-define-config: 1.21.0
       eslint-plugin-case-police: 0.6.1(eslint@8.44.0)(typescript@5.1.6)
@@ -4428,7 +4423,7 @@ packages:
       object.values: 1.1.6
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
-      semver: 6.3.0
+      semver: 6.3.1
       string.prototype.matchall: 4.0.8
     dev: true
 
@@ -7570,11 +7565,6 @@ packages:
 
   /semver@5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
-    hasBin: true
-    dev: true
-
-  /semver@6.3.0:
-    resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
     dev: true
 
