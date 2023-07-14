@@ -1,6 +1,6 @@
 import { Result as R } from "@swan-io/boxed";
 import ky, { type HTTPError, type KyResponse } from "ky";
-import { omit, pick } from "rambda";
+import { omit } from "rambda";
 import { z } from "zod";
 
 import type { ChatCompletionOptions, Message } from "./types";
